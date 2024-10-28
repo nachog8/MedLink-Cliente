@@ -1,13 +1,11 @@
-import Header from '@/components/Header';
-import Link from 'next/link';
 import Image from 'next/image';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/Footer';=
+import Link from 'next/link';
 
-const Home = () => {
+
+const Page = () => {
   return (
     <>
-      <Header />
-
       <Link
         href="/"
         className="my-5 ml-10 flex h-[107px] w-[219px] items-center"
@@ -87,4 +85,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Page;
