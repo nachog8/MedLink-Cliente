@@ -1,12 +1,11 @@
 "use client";
-import { Footer } from "../../components/Footer"
-import Header from "../../components/Header"
+import { Footer } from "../../components/footer/Footer"
+import Navbar from "../../components/navbar/navbar"
 import { Mapbox } from "../../components/mapbox/Mapbox"
-import { FormComponent } from "../../components/Form"
+import { FormComponent } from "../../components/form/Form-contact"
 
 export default function Contact() {
     return <>
-        <Header/>
         <div className="text-black max-w-[1295px] m-auto mt-16 bg-[#fff] max-xl:w-[95%]">
             <div className="relative">
                 <img src="/images/contact-img.svg" alt="services" />

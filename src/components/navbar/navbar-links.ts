@@ -3,5 +3,5 @@ export const navbarLinks = [
   { name: 'Profesionales', path: '/profesionales' },
   { name: 'Nosotros', path: '/nosotros' },
   { name: 'Quiénes Somos', path: '/quienes-somos' },
-  { name: 'Contacto', path: '/contacto' },
+  { name: 'Contacto', path: '/contact' },
 ];
