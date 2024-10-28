@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Footer } from '@/components/Footer';
 
 const Home = () => {
   return (
@@ -81,34 +82,7 @@ const Home = () => {
         </div>
       </article>
 
-      <footer className="bg-[#950DFC]">
-        <article className="mb-16 ml-40 flex gap-10 pt-10 max-lg:ml-8">
-          <div className="flex flex-col">
-            <h3 className="mb-4 text-xl font-medium text-white">Servicios</h3>
-            <Link href="" className="text-base font-normal text-white">
-              Consultas médicas
-            </Link>
-            <Link href="" className="text-base font-normal text-white">
-              Exámenes médicos
-            </Link>
-            <Link href="" className="text-base font-normal text-white">
-              Resultados exámenes
-            </Link>
-          </div>
-
-          <div className="flex flex-col">
-            <h3 className="mb-4 text-xl font-medium text-white">Contacto</h3>
-            <p className="text-base font-normal text-white">+569 251531851</p>
-            <p className="text-base font-normal text-white">
-              contacto@centrocousin.cl
-            </p>
-          </div>
-        </article>
-
-        <p className="pb-4 text-center text-[13px] font-normal text-white">
-          ©Centro médico Cousin todos los derechos reservados
-        </p>
-      </footer>
+      <Footer></Footer>
     </>
   );
 };
