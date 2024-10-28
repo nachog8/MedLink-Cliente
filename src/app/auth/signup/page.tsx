@@ -47,8 +47,7 @@ export default function Page() {
     if (state?.success) {
       toast({
         title: 'Registro Exitoso!!',
-        description:
-          'Tu cuenta ya fue creada, serás redirigido a Inicio de Sesión.',
+        description: 'Tu cuenta ya fue creada, serás redirigido al Home',
       });
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
