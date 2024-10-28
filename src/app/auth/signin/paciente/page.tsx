@@ -30,6 +30,17 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+//borrar luego
+
+
+
+
+
+
+
+
+
+
 export default function Page() {
   const [state, formAction] = useFormState(registerPatientAction, null);
   const [showPassword, setShowPassword] = useState(false);
