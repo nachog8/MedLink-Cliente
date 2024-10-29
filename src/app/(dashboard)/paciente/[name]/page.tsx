@@ -7,7 +7,7 @@ import { documents } from '@/data/dashboard-pacient';
 
 export default function Page() {
   return (
-    <main className="container mx-auto my-10 space-y-5 px-5 lg:grid lg:grid-cols-4 lg:gap-5 lg:space-y-0">
+    <main className="container mx-auto my-10 space-y-5 px-5 lg:grid lg:grid-cols-3 lg:gap-5 lg:space-y-0">
       <div className="space-y-5 lg:col-span-1">
         <CardProfile />
         <ClinicalSummary
@@ -21,7 +21,7 @@ export default function Page() {
           hasHealthyLifestyle={true}
         />
       </div>
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-1">
         <ClinicalHistoryCard />
       </div>
       <div className="space-y-5 lg:col-span-1">

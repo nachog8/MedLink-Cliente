@@ -54,7 +54,7 @@ export function ClinicalSummary({
       <CardContent className="grid gap-6">
         <Separator />
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-4">
+          <div className="flex flex-col justify-between gap-5">
             <InfoItem icon={Ruler} label="Altura" value={height} />
             <InfoItem icon={Weight} label="Peso" value={weight} />
             <InfoItem
@@ -65,7 +65,7 @@ export function ClinicalSummary({
             <BloodPressure status={bloodPressure} />
           </div>
 
-          <div className="space-y-4">
+          <div className="flex flex-col justify-between gap-5">
             <InfoItem
               icon={Heart}
               label="Donador"

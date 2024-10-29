@@ -1,8 +1,16 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileIcon, FileText, Image } from 'lucide-react';
+import { Download, FileIcon, FileText } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
+import { Button } from '@/components/ui/button';
+import { Image as ImageIcon } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +30,7 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
       case 'pdf':
         return <FileText className="h-4 w-4 text-red-600" />;
       case 'image':
-        return <Image className="h-4 w-4 text-blue-600" />;
+        return <ImageIcon className="h-4 w-4 text-blue-600" />;
       default:
         return <FileIcon className="h-4 w-4 text-gray-600" />;
     }
@@ -71,6 +79,22 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
                     <span className="text-sm text-gray-500">{doc.date}</span>
                   </div>
                 </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-gray-500 hover:text-gray-700"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Descargar</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             ))}
           </div>
