@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-t bg-[#950DFC]  to-[#1745E8] p-8 pl-4 pr-4 text-transparent text-white">
+    <footer className="bg-gradient-to-t bg-[#0234a1]  to-[#1745E8] p-8 pl-4 pr-4 text-transparent text-white">
       <div className="mb-8 mt-8 flex justify-around max-md:flex-col">
         <div>
             <Link href="/">
@@ -52,14 +52,14 @@ export function Footer() {
           <div className="mt-2 flex flex-col gap-2">
             <Link
               href={"https://www.whatsapp.com/"}
-              className="flex items-center text-white gap-2 rounded-lg border-[1px]  border-[#950dfc] bg-gradient-to-t from-[#7d12cf] to-[#06207C] p-6  pb-[0.3rem] pt-[0.3rem] hover:opacity-90"
+              className="flex items-center text-white gap-2 rounded-lg border-[1px]  border-[#0234a1] bg-gradient-to-t from-[#124ccc] to-[#06207C] p-6  pb-[0.3rem] pt-[0.3rem] hover:opacity-90"
             >
               <img src="/images/icons/WhatsApp.svg" alt="WhatsApp" />
               WhatsApp
             </Link>
             <Link
               href={"/contact"}
-              className="flex items-center text-white gap-2 rounded-lg border-[1px]  border-[#950dfc] bg-gradient-to-t from-[#7d12cf] to-[#06207C] p-6 pb-[0.3rem] pt-[0.3rem] hover:opacity-90"
+              className="flex items-center text-white gap-2 rounded-lg border-[1px]  border-[#0234a1] bg-gradient-to-t from-[#124ccc] to-[#06207C] p-6 pb-[0.3rem] pt-[0.3rem] hover:opacity-90"
             >
               <img src="/images/icons/Help.svg" alt="help" />
               Ayuda
