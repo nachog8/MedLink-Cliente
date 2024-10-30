@@ -22,24 +22,13 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ButtonSubmit } from '@/components/buttons/button-submit';
+import Image from 'next/image';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import { registerPatientAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-//borrar luego
-
-
-
-
-
-
-
-
-
 
 export default function Page() {
   const [state, formAction] = useFormState(registerPatientAction, null);
@@ -83,7 +72,14 @@ export default function Page() {
   return (
     <div className="container mx-auto grid gap-10 px-4 py-8 lg:grid-cols-2">
       <aside>
-        <Skeleton className="h-[350px] w-full lg:h-full" />
+        {/* <Skeleton className="h-[350px] w-full lg:h-full" /> */}
+        <Image
+          src={'/banners/patientWithProfessional.jfif'}
+          alt="form-patient"
+          width={736}
+          height={736}
+          className="w-full rounded-md"
+        />
       </aside>
       <section>
         <Card className="mx-auto w-full max-w-2xl">

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -7,8 +9,10 @@ import {
 } from '@/components/ui/card';
 
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Skeleton } from '@/components/ui/skeleton';
+
+// import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Page() {
   return (
@@ -17,9 +21,9 @@ export default function Page() {
         Registro de Usuario
       </h1>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Card>
+        <Card className="max-w-lg">
           <CardHeader>
-            <CardTitle>Paciente</CardTitle>
+            <CardTitle className="text-center text-2xl">Paciente</CardTitle>
             <CardDescription>
               Accede a una plataforma diseñada para ayudarte a gestionar y
               consultar tu historial médico, contactar con profesionales de
@@ -28,8 +32,13 @@ export default function Page() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {/* TODO: PONER IMAGENES AQUI */}
-            <Skeleton className="mb-10 h-96 w-full" />
+            <Image
+              src={'/banners/patient-security.jfif'}
+              alt="form-patient"
+              width={736}
+              height={736}
+              className="w-full rounded-md"
+            />
             <Button asChild className="w-full">
               <Link href={'/auth/signin/paciente'}>
                 Registrarse como Paciente
@@ -37,9 +46,9 @@ export default function Page() {
             </Button>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="max-w-lg">
           <CardHeader>
-            <CardTitle>Profesional</CardTitle>
+            <CardTitle className="text-center text-2xl">Profesional</CardTitle>
             <CardDescription>
               Únete a nuestra red de profesionales de la salud y ofrece tus
               servicios de manera fácil y accesible para los pacientes.
@@ -47,9 +56,14 @@ export default function Page() {
               y mantén tus datos actualizados.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            {/* TODO: PONER IMAGENES AQUI */}
-            <Skeleton className="mb-10 h-96 w-full" />
+          <CardContent className="space-y-5">
+            <Image
+              src={'/banners/professionales.jfif'}
+              alt="form-doctor"
+              width={736}
+              height={736}
+              className="w-full rounded-md"
+            />
             <Button asChild className="w-full">
               <Link href={'/auth/signin/profesional'}>
                 Registrarse como Profesional
