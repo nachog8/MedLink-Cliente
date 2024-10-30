@@ -1,5 +1,5 @@
-export const navbarLinks = [
-  { name: 'Home', path: '/home' },
+export const links = [
+  { name: 'Home', path: '/' },
   { name: 'Profesionales', path: '/profesionales' },
   { name: 'Nosotros', path: '/nosotros' },
   { name: 'Quiénes Somos', path: '/quienes-somos' },

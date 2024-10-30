@@ -11,7 +11,7 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
-import { navbarLinks } from './navbar-links';
+import { links } from '../../data/links';
 
 export const MenuNavButton = () => {
   return (
@@ -36,7 +36,7 @@ export const MenuNavButton = () => {
         <SheetDescription />
 
         <nav className="mt-7 grid space-y-6 p-4">
-          {navbarLinks.map((link, i) => (
+          {links.map((link, i) => (
             <SheetClose key={i} asChild>
               <Link
                 href={link.path}

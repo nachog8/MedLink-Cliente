@@ -1,23 +1,8 @@
 import Image from 'next/image';
-import { Footer } from '@/components/footer/Footer';
-import Link from 'next/link';
-
 
 const Page = () => {
   return (
     <>
-      <Link
-        href="/"
-        className="my-5 ml-10 flex h-[107px] w-[219px] items-center"
-      >
-        <Image
-          src="/images/icons/Logo.svg"
-          alt="Logo of the project"
-          width={219}
-          height={107}
-        />
-      </Link>
-
       <div className="relative mb-14 flex flex-col items-center justify-center">
         <Image
           src="/images/Hero.jpg"
@@ -79,8 +64,6 @@ const Page = () => {
           </div>
         </div>
       </article>
-
-      <Footer></Footer>
     </>
   );
 };

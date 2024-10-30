@@ -17,7 +17,7 @@ export function UserButton() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <CircleUserRound className="h-5 w-5 cursor-pointer" />
+        <CircleUserRound className="h-7 w-7 cursor-pointer" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="font-poppins w-40" align="end" forceMount>
         <DropdownMenuItem asChild>

@@ -1,5 +1,6 @@
 import './globals.css';
 
+import Footer from '@/components/footer';
 import type { Metadata } from 'next';
 import Navbar from '@/components/navbar/navbar';
 import { Toaster } from '@/components/ui/toaster';
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased`}>
         <Navbar />
-        {children}
+        {/* Fijarse luego si necesita de un flex-grow */}
+        <main className="min-h-screen">{children}</main>
+        <Footer />
         <Toaster />
       </body>
     </html>

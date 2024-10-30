@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MenuNavButton } from './menu-nav-button';
 import { UserButton } from './user-button';
-import { navbarLinks } from './navbar-links';
+import { links } from '../../data/links';
 
 export default function Navbar() {
   return (
@@ -21,7 +21,7 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          {navbarLinks.map((link, i) => (
+          {links.map((link, i) => (
             <Link
               key={i}
               href={link.path}
