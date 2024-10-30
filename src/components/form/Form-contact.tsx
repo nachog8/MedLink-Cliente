@@ -71,7 +71,7 @@ export function FormComponent() {
                 <label htmlFor="checkbox" className="block">Estoy de acuerdo con la política de privacidad</label>
             </div>
             <div>
-                <button type="submit" className="w-full h-[48px] max-md:h-[40px] text-white border-[#950dfc] bg-gradient-to-t from-[#7d12cf] to-[#06207C] hover:opacity-90 rounded-lg font-bold">
+                <button type="submit" className="w-full h-[48px] max-md:h-[40px] text-white border-[#950dfc] bg-gradient-to-t from-[#124ccc] to-[#06207C] hover:opacity-90 rounded-lg font-bold">
                     Enviar
                 </button>
             </div>
