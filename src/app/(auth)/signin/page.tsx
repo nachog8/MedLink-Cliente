@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Page() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="font-poppins container mx-auto px-4 py-8">
       <h1 className="mb-8 text-center text-3xl font-bold">
         Registro de Usuario
       </h1>
