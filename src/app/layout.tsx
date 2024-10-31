@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className={poppins.variable}>
         <Navbar />
         {/* Fijarse luego si necesita de un flex-grow */}
-        <main className="min-h-screen">{children}</main>
+        <main>{children}</main>
         <Footer />
         <Toaster />
       </body>
