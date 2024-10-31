@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 import type { Metadata } from 'next';
 import Navbar from '@/components/navbar';
 import { Poppins } from '@next/font/google';
+import { Providers } from './providers';
 import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
@@ -30,11 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        <Navbar />
-        {/* Fijarse luego si necesita de un flex-grow */}
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <Toaster />
+        <Providers>
+          <Navbar />
+          {/* Fijarse luego si necesita de un flex-grow */}
+          <main className="min-h-screen">{children}</main>
+
+          <Footer />
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

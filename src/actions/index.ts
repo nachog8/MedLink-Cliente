@@ -20,8 +20,11 @@ export async function loginAction(prevState: any, formData: FormData) {
   }
 
   try {
+    // Aca se ejecuta la funcion de services del llamado api
+    // const user = await loginFromApi(validateFields)
     return {
       success: true,
+      // user
     };
   } catch (error) {
     if (error instanceof Error) {
