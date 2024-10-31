@@ -104,3 +104,12 @@ export const professionalSchema = z
   });
 
 export type ProfessionalFormType = z.infer<typeof professionalSchema>;
+
+//Contact Form
+export const contactSchema = z.object({
+  email: z.string().email({
+    message: 'Por favor, introduce un email válido.',
+  }),
+});
+
+export type ContactFormType = z.infer<typeof contactSchema>;
