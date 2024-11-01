@@ -4,11 +4,3 @@ export interface User {
   name: string;
   role: string;
 }
-
-export interface AuthState {
-  token: string | null;
-  user: User | null;
-  isAuthenticated: boolean;
-  setAuth: (token: string, user: User) => void;
-  logout: () => void;
-}
