@@ -23,7 +23,6 @@ import { Button } from '@/components/ui/button';
 import { ButtonSubmit } from '@/components/buttons/button-submit';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { Skeleton } from '@/components/ui/skeleton';
 import { loginAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -64,84 +63,78 @@ export default function Page() {
   }, [state]);
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center">
-      {/* Skeleton background - Agregar imagen de fondo*/}
-      <Skeleton className="absolute inset-0 h-screen w-screen" />
+    <Card className="z-10 mx-4 w-full max-w-md">
+      <CardHeader>
+        <CardTitle className="text-center text-2xl font-bold">
+          Iniciar Sesión
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form action={formAction} className="space-y-5">
+            <FormField
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Correo electrónico</FormLabel>
+                  <FormControl>
+                    <Input type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      {/* Login card */}
-      <Card className="z-10 mx-4 w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold">
-            Iniciar Sesión
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form action={formAction} className="space-y-5">
-              <FormField
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Correo electrónico</FormLabel>
-                    <FormControl>
-                      <Input type="email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contraseña</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type={showPassword ? 'text' : 'password'}
-                          {...field}
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? (
-                            <EyeClosedIcon className="h-4 w-4" />
-                          ) : (
-                            <EyeOpenIcon className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <ButtonSubmit text="Iniciar Sesión" />
-              <p className="text-center text-sm text-blue-600 text-muted-foreground">
-                Don&apos;t have an account?
-                <Link
-                  href="/auth/signin"
-                  className="mx-4 font-medium text-primary hover:underline"
-                  prefetch={false}
-                >
-                  Register
-                </Link>
-              </p>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <Link href="#" className="text-sm text-blue-600 hover:underline">
-            ¿Olvidaste tu contraseña?
-          </Link>
-        </CardFooter>
-      </Card>
-    </div>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeClosedIcon className="h-4 w-4" />
+                        ) : (
+                          <EyeOpenIcon className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <ButtonSubmit text="Iniciar Sesión" />
+            <p className="text-center text-sm text-blue-600 text-muted-foreground">
+              Don&apos;t have an account?
+              <Link
+                href="/auth/signin"
+                className="mx-4 font-medium text-primary hover:underline"
+                prefetch={false}
+              >
+                Register
+              </Link>
+            </p>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="flex justify-center">
+        <Link href="#" className="text-sm text-blue-600 hover:underline">
+          ¿Olvidaste tu contraseña?
+        </Link>
+      </CardFooter>
+    </Card>
   );
 }
