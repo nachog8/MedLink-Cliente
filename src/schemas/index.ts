@@ -40,6 +40,9 @@ export type PatientFormType = z.infer<typeof patientSchema>;
 
 export const professionalSchema = z
   .object({
+    specialty: z.string({
+      message: 'La especialidad es requerida',
+    }),
     email: z.string().email({
       message: 'Debe ser un email válido.',
     }),

@@ -1,5 +1,6 @@
 'use client';
 
+import { Controller, useForm } from 'react-hook-form';
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import {
   Form,
@@ -10,14 +11,21 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { ProfessionalFormType, professionalSchema } from '@/schemas';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ButtonSubmit } from '@/components/buttons/button-submit';
 import { Input } from '@/components/ui/input';
 import { registerProfessionalAction } from '@/actions';
+import { specialties } from '@/data/specialties';
 import { toast } from '@/hooks/use-toast';
-import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -28,6 +36,7 @@ export default function FormSignProfessional() {
   const form = useForm<ProfessionalFormType>({
     resolver: zodResolver(professionalSchema),
     defaultValues: {
+      specialty: undefined,
       email: '',
       password: '',
       confirmPassword: '',
@@ -58,8 +67,8 @@ export default function FormSignProfessional() {
 
   return (
     <Form {...form}>
-      <form action={formAction} className="space-y-2">
-        {/* <Controller
+      <form action={formAction} className="space-y-2 p-1">
+        <Controller
           name="specialty"
           control={form.control}
           render={({ field }) => (
@@ -76,8 +85,8 @@ export default function FormSignProfessional() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {specialties.map(({ name }, i) => (
-                    <SelectItem key={i} value={name}>
+                  {specialties.map(({ name, nameEn }, i) => (
+                    <SelectItem key={i} value={nameEn}>
                       {name}
                     </SelectItem>
                   ))}
@@ -86,7 +95,7 @@ export default function FormSignProfessional() {
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         <FormField
           control={form.control}
           name="email"

@@ -9,38 +9,36 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { PatientFormType, patientSchema } from '@/schemas';
+import { LoginFormType, loginSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ButtonSubmit } from '@/components/buttons/button-submit';
 import { Input } from '@/components/ui/input';
-import { registerPatientAction } from '@/actions';
+import { loginAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function FormSignInPatient() {
-  const [state, formAction] = useFormState(registerPatientAction, null);
+export default function FormSignUp() {
+  const [state, formAction] = useFormState(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const form = useForm<PatientFormType>({
-    resolver: zodResolver(patientSchema),
+  const form = useForm<LoginFormType>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: '',
     },
     mode: 'onChange',
   });
+  //TODO: Modificar los toast - solo los puse para ver la funcionalidad
 
   useEffect(() => {
     if (state?.success) {
       toast({
         title: 'Registro Exitoso!!',
-        description:
-          'Tu cuenta ya fue creada, serás redirigido a Inicio de Sesión.',
+        description: 'Tu cuenta ya fue creada, serás redirigido al Home',
       });
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
@@ -57,15 +55,14 @@ export default function FormSignInPatient() {
 
   return (
     <Form {...form}>
-      <form action={formAction} className="space-y-4 p-1">
+      <form action={formAction} className="space-y-5">
         <FormField
-          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Correo electrónico</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="juan@example.com" {...field} />
+                <Input type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -100,38 +97,7 @@ export default function FormSignInPatient() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirmar Contraseña</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    {...field}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeClosedIcon className="h-4 w-4" />
-                    ) : (
-                      <EyeOpenIcon className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <ButtonSubmit text="Registrarse" />
+        <ButtonSubmit text="Iniciar Sesión" />
       </form>
     </Form>
   );

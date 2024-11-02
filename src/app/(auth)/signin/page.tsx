@@ -7,8 +7,9 @@ import { TabSplitContainer } from '@/components/singin/tab-split-container';
 
 export default function Page() {
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-8 font-poppins">
-      <Tabs defaultValue="paciente" className="mx-auto w-full">
+    <div className="container mx-auto max-w-5xl px-4 py-8">
+      {/* TODO: Resolver widht de tabs  */}
+      <Tabs defaultValue="paciente" className="mx-auto md:w-[512px] lg:w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="paciente">Paciente</TabsTrigger>
           <TabsTrigger value="profesional">Profesional</TabsTrigger>
