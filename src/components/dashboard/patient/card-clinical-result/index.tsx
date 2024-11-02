@@ -2,6 +2,7 @@ import {
   Activity,
   AlertTriangle,
   Bike,
+  ClipboardList,
   Droplet,
   Heart,
   Ruler,
@@ -44,7 +45,8 @@ export function ClinicalSummary({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-primary">
+        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
+          <ClipboardList className="h-5 w-5 text-indigo-500" />
           Resumen Clínico
         </CardTitle>
         <CardDescription>
