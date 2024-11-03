@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/navbar';
 import { Poppins } from '@next/font/google';
 import { Toaster } from '@/components/ui/toaster';
+import { AuthProvider } from '@/context/auth-context';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,13 +30,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.variable}>
-        <Navbar />
-        {/* Fijarse luego si necesita de un flex-grow */}
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <Toaster />
-      </body>
+      <AuthProvider>
+        <body className={poppins.variable}>
+          <Navbar />
+          {/* Fijarse luego si necesita de un flex-grow */}
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
   );
 }
