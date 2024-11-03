@@ -140,24 +140,3 @@ export const documents: Document[] = [
     date: '20 Feb 2024',
   },
 ];
-
-// Example patient data
-export const patientInfo = {
-  fullName: 'Javier Martin Rodriguez',
-  birthDate: '11/03/1996',
-  age: 27,
-  gender: 'Masculino',
-  civilStatus: 'Soltero',
-  phone: '+34 612 345 678',
-  emergencyPhone: '+34 698 765 432',
-  email: 'javier.rodriguez@email.com',
-  address: 'Calle Principal 123, Madrid, España',
-  documentId: '12345678A',
-  nationality: 'Española',
-  occupation: 'Ingeniero de Software',
-  emergencyContact: {
-    name: 'Ana Rodriguez',
-    relation: 'Madre',
-    phone: '+34 698 765 432',
-  },
-};
