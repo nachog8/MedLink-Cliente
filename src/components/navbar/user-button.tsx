@@ -19,9 +19,9 @@ export function UserButton() {
       <DropdownMenuTrigger asChild>
         <CircleUserRound className="h-7 w-7 cursor-pointer" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="font-poppins w-40" align="end" forceMount>
+      <DropdownMenuContent className="w-40 font-poppins" align="end" forceMount>
         <DropdownMenuItem asChild>
-          <Link href="/auth/signup" className="flex items-center">
+          <Link href="/signup" className="flex items-center">
             <span>Iniciar sesión</span>
           </Link>
         </DropdownMenuItem>
