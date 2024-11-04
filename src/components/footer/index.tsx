@@ -9,7 +9,7 @@ import { SocialButton } from './footer-button-social';
 
 export default function Footer() {
   return (
-    <footer className="font-poppins bg-gradient-to-b from-primary/10 via-primary/5 to-background">
+    <footer className="bg-white font-poppins">
       <div className="container mx-auto px-4 py-8 text-center md:py-12 lg:py-16 lg:text-start">
         <div className="grid gap-8 lg:grid-cols-5">
           <div className="space-y-4">

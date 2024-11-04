@@ -30,15 +30,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-        <body className={poppins.variable}>
-          <Navbar />
-          {/* Fijarse luego si necesita de un flex-grow */}
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <Toaster />
-        </body>
-      </AuthProvider>
+      <body className={poppins.variable}>
+        <Navbar />
+        {/* Fijarse luego si necesita de un flex-grow */}
+        <main>{children}</main>
+        <Footer />
+        <Toaster />
+      </body>
     </html>
   );
 }

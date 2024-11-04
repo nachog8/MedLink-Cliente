@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Card,
   CardContent,
@@ -7,134 +5,73 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { LoginFormType, loginSchema } from '@/schemas';
-import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { ButtonSubmit } from '@/components/buttons/button-submit';
-import { Input } from '@/components/ui/input';
+import FormSignUp from '@/components/form/form-signup';
+import Image from 'next/image';
 import Link from 'next/link';
-import { loginAction } from '@/actions';
-import { toast } from '@/hooks/use-toast';
-import { useForm } from 'react-hook-form';
-import { useFormState } from 'react-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Separator } from '@/components/ui/separator';
 
 export default function Page() {
-  const [state, formAction] = useFormState(loginAction, null);
-  const [showPassword, setShowPassword] = useState(false);
-  const form = useForm<LoginFormType>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    mode: 'onChange',
-  });
-  //TODO: Modificar los toast - solo los puse para ver la funcionalidad
-
-  useEffect(() => {
-    if (state?.success) {
-      toast({
-        title: 'Registro Exitoso!!',
-        description:
-          'Tu cuenta ya fue creada, serás redirigido a Inicio de Sesión.',
-      });
-    } else if (state?.error) {
-      const errorMessage = Array.isArray(state.error)
-        ? state.error.map((err) => `${err.message}`).join('\n')
-        : state.error;
-
-      toast({
-        title: 'Error en el registro',
-        description: errorMessage,
-        variant: 'destructive',
-      });
-    }
-  }, [state]);
-
+  // TODO:REVISAR CLASES SI SE PUEDE OPTIMIZAR
   return (
-    <Card className="z-10 mx-4 w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold">
-          Iniciar Sesión
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form action={formAction} className="space-y-5">
-            <FormField
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Correo electrónico</FormLabel>
-                  <FormControl>
-                    <Input type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className="mx-auto grid max-w-6xl gap-8 px-5 lg:grid-cols-2 lg:px-0">
+      {/* Left Side - Card */}
+      <div className="flex items-center justify-center">
+        <Card className="h-full w-full max-w-lg transform rounded-2xl transition-all duration-300 hover:shadow-xl">
+          <CardHeader className="space-y-6 text-center">
+            <div className="mx-auto">
+              <Image
+                src="/banners/shield_user.png"
+                alt="MedLink Logo"
+                width={80}
+                height={80}
+                priority
+                className="aspect-square"
+              />
+            </div>
+            <CardTitle className="text-2xl font-semibold tracking-tight">
+              Hola, bienvenido de vuelta
+            </CardTitle>
+            <Separator className="mx-auto w-3/4" />
+          </CardHeader>
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contraseña</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        type={showPassword ? 'text' : 'password'}
-                        {...field}
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeClosedIcon className="h-4 w-4" />
-                        ) : (
-                          <EyeOpenIcon className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <ButtonSubmit text="Iniciar Sesión" />
-            <p className="text-center text-sm text-blue-600 text-muted-foreground">
-              Don&apos;t have an account?
+          <CardContent className="px-6">
+            <FormSignUp />
+          </CardContent>
+
+          <CardFooter className="flex flex-col space-y-4 px-6 pb-6 pt-2">
+            <Link
+              href="#"
+              className="text-sm text-blue-600 transition-colors hover:text-blue-800 hover:underline"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+            <div className="text-sm text-muted-foreground">
+              No tienes una cuenta?{' '}
               <Link
-                href="/auth/signin"
-                className="mx-4 font-medium text-primary hover:underline"
+                href="/signin"
+                className="font-medium text-primary transition-colors hover:text-primary/80 hover:underline"
                 prefetch={false}
               >
-                Register
+                Registro
               </Link>
-            </p>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        <Link href="#" className="text-sm text-blue-600 hover:underline">
-          ¿Olvidaste tu contraseña?
-        </Link>
-      </CardFooter>
-    </Card>
+            </div>
+          </CardFooter>
+        </Card>
+      </div>
+
+      {/* Right Side - Image */}
+      <div className="hidden lg:block">
+        <div className="relative aspect-square w-full overflow-hidden rounded-2xl">
+          <Image
+            src="/banners/signup.jpg"
+            alt="Medical professionals at work"
+            fill
+            priority
+            className="object-cover object-center transition-transform duration-300 hover:scale-105"
+          />
+        </div>
+      </div>
+    </div>
   );
 }

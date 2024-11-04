@@ -40,14 +40,9 @@ export async function registerPatientAction(
   const data = Object.fromEntries(formData.entries());
 
   const patientData = {
-    firstName: data.firstName,
-    lastName: data.lastName,
-    document: data.document,
     email: data.email,
-    phone: data.phone,
     password: data.password,
     confirmPassword: data.confirmPassword,
-    gender: data.gender,
   };
 
   const validatedFields = patientSchema.safeParse(patientData);
@@ -81,16 +76,11 @@ export async function registerProfessionalAction(
   const data = Object.fromEntries(formData.entries());
 
   const professionalData = {
-    firstName: data.firstName,
-    lastName: data.lastName,
-    document: data.document,
     specialty: data.specialty,
     email: data.email,
-    phone: data.phone,
     password: data.password,
     confirmPassword: data.confirmPassword,
     registrationNumber: data.registrationNumber,
-    registrationType: data.registrationType,
   };
 
   const validatedFields = professionalSchema.safeParse(professionalData);

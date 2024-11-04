@@ -11,18 +11,18 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center">
+    <div className="relative w-full">
       {/* Imagen de fondo */}
       <Image
         src={'/images/fondo.jpg'}
         width={5000}
         height={3750}
         alt={'fondo'}
-        className="absolute inset-0 h-screen w-screen object-cover"
+        className="absolute inset-0 -z-10 h-screen w-screen object-cover"
       />
 
       {/* Contenido centrado */}
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10 py-14 font-poppins">{children}</div>
     </div>
   );
 }
