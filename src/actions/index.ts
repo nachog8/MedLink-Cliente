@@ -2,9 +2,10 @@
 
 import { loginSchema, patientSchema, professionalSchema } from '@/schemas';
 
+import { AxiosError } from 'axios';
 import { authService } from '@/services/auth-service';
 
-const { register } = authService;
+const { register, login } = authService;
 
 export async function loginAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
@@ -25,13 +26,14 @@ export async function loginAction(prevState: any, formData: FormData) {
 
   try {
     // Aca se ejecuta la funcion de services del llamado api
-    // const user = await loginFromApi(validateFields)
+    const resp = await login(validatedFields.data);
     return {
-      success: true,
-      // user
+      ...resp,
     };
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof AxiosError) {
+      return { error: error.response?.data || error.message };
+    } else if (error instanceof Error) {
       return { error: error.message };
     }
     return { error: 'An unexpected error occurred' };
@@ -68,7 +70,9 @@ export async function registerPatientAction(
       success: true,
     };
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof AxiosError) {
+      return { error: error.response?.data || error.message };
+    } else if (error instanceof Error) {
       return { error: error.message };
     }
     return { error: 'An unexpected error occurred' };
@@ -82,11 +86,11 @@ export async function registerProfessionalAction(
   const data = Object.fromEntries(formData.entries());
 
   const professionalData = {
-    specialty: data.specialty,
+    specialization: data.specialization,
     email: data.email,
     password: data.password,
     confirmPassword: data.confirmPassword,
-    registrationNumber: data.registrationNumber,
+    licenseNumber: data.licenseNumber,
   };
 
   const validatedFields = professionalSchema.safeParse(professionalData);
@@ -100,8 +104,11 @@ export async function registerProfessionalAction(
     return { error: errorDetails };
   }
 
-  const { confirmPassword, ...newProfessional } = validatedFields.data;
-
+  const { confirmPassword, ...newProfessional } = {
+    ...validatedFields.data,
+    licenseNumber: Number(validatedFields.data.licenseNumber),
+  };
+  console.log('Data a enviar:', newProfessional);
   try {
     const resp = await register(newProfessional);
     return {
@@ -109,7 +116,9 @@ export async function registerProfessionalAction(
       success: true,
     };
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof AxiosError) {
+      return { error: error.response?.data || error.message };
+    } else if (error instanceof Error) {
       return { error: error.message };
     }
     return { error: 'An unexpected error occurred' };

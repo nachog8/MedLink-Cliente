@@ -1,6 +1,12 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Download, FileIcon, FileText } from 'lucide-react';
 import {
   Tooltip,
@@ -50,10 +56,14 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
   return (
     <Card>
       <CardHeader className="rounded-t-lg border-b bg-white pb-4">
-        <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-800">
+        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
           <FileText className="h-5 w-5 text-indigo-500" />
           Documentación Médica
         </CardTitle>
+        <CardDescription>
+          Archivo de informes, resultados y documentos importantes que respaldan
+          el historial de salud del paciente.
+        </CardDescription>
       </CardHeader>
       <CardContent className="p-4">
         <ScrollArea className="h-[250px] pr-4">

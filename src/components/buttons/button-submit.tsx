@@ -12,16 +12,12 @@ interface ButtonSubmitProps {
 export const ButtonSubmit = ({ text }: ButtonSubmitProps) => {
   const { pending } = useFormStatus();
   const form = useFormContext();
-  
+
   const isFormValid = form && form.formState.isValid;
   const isSubmitDisabled = pending || !isFormValid;
 
   return (
-    <Button 
-      type="submit" 
-      className="my-10 w-full" 
-      disabled={isSubmitDisabled}
-    >
+    <Button type="submit" className="my-10 w-full" disabled={isSubmitDisabled}>
       {pending ? <Loading color="accent" size="sm" /> : text}
     </Button>
   );

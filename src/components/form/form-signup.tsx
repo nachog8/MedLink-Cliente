@@ -17,11 +17,14 @@ import { ButtonSubmit } from '@/components/buttons/button-submit';
 import { Input } from '@/components/ui/input';
 import { loginAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/auth-context';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function FormSignUp() {
+  const { login } = useAuth();
   const [state, formAction] = useFormState(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<LoginFormType>({
@@ -32,26 +35,30 @@ export default function FormSignUp() {
     },
     mode: 'onChange',
   });
+  const router = useRouter();
   //TODO: Modificar los toast - solo los puse para ver la funcionalidad
 
   useEffect(() => {
     if (state?.success) {
       toast({
-        title: 'Registro Exitoso!!',
+        title: 'Inicio de Sesión Exitoso!!',
         description: 'Tu cuenta ya fue creada, serás redirigido al Home',
       });
+      setTimeout(() => {
+        login(state.payload.token);
+      }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
         : state.error;
 
       toast({
-        title: 'Error en el registro',
+        title: 'Error al Iniciar Sesión',
         description: errorMessage,
         variant: 'destructive',
       });
     }
-  }, [state]);
+  }, [state, router, login]);
 
   return (
     <Form {...form}>

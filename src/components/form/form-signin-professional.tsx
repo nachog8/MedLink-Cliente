@@ -27,6 +27,7 @@ import { registerProfessionalAction } from '@/actions';
 import { specialties } from '@/data/specialties';
 import { toast } from '@/hooks/use-toast';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function FormSignProfessional() {
@@ -36,15 +37,15 @@ export default function FormSignProfessional() {
   const form = useForm<ProfessionalFormType>({
     resolver: zodResolver(professionalSchema),
     defaultValues: {
-      specialty: undefined,
+      specialization: undefined,
       email: '',
       password: '',
       confirmPassword: '',
-      registrationNumber: '',
+      licenseNumber: undefined,
     },
     mode: 'onChange',
   });
-
+  const router = useRouter();
   useEffect(() => {
     if (state?.success) {
       toast({
@@ -52,6 +53,9 @@ export default function FormSignProfessional() {
         description:
           'Your account has been created. You will be redirected to the Login page.',
       });
+      setTimeout(() => {
+        router.push('/signup');
+      }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
@@ -69,7 +73,7 @@ export default function FormSignProfessional() {
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-1">
         <Controller
-          name="specialty"
+          name="specialization"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -77,7 +81,7 @@ export default function FormSignProfessional() {
               <Select
                 onValueChange={field.onChange}
                 value={field.value}
-                name="specialty"
+                name="specialization"
               >
                 <FormControl>
                   <SelectTrigger>
@@ -171,12 +175,12 @@ export default function FormSignProfessional() {
         />
         <FormField
           control={form.control}
-          name="registrationNumber"
+          name="licenseNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Número de Matrícula</FormLabel>
               <FormControl>
-                <Input placeholder="M12345" {...field} />
+                <Input placeholder="12345" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

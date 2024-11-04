@@ -31,11 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        <Navbar />
-        {/* Fijarse luego si necesita de un flex-grow */}
-        <main>{children}</main>
-        <Footer />
-        <Toaster />
+        <AuthProvider>
+          <Navbar />
+          {/* Fijarse luego si necesita de un flex-grow */}
+          <main>{children}</main>
+          <Footer />
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

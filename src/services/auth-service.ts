@@ -1,14 +1,12 @@
-import { Register, RegisterProfessional } from '@/interfaces/auth.js';
+import { Register, RegisterProfessional } from '@/interfaces/auth';
 
-import api from '../config/axios.js';
+import api from '@/config/axios';
 
 export const authService = {
-  async login(email: string, password: string) {
+  async login(data: { email: string; password: string }) {
     try {
-      const response = await api.post('/auth/login', { email, password });
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-      }
+      const response = await api.post('/auth/login', data);
+
       return response.data;
     } catch (error) {
       throw (error as Error).message;
@@ -18,20 +16,21 @@ export const authService = {
   async register(userData: RegisterProfessional | Register) {
     try {
       const response = await api.post('/auth/register', userData);
+
       return response.data;
     } catch (error) {
+      console.log((error as Error).message);
       throw (error as Error).message;
     }
   },
 
-  async logout() {
-    try {
-      await api.post('/auth/logout');
-      localStorage.removeItem('token');
-    } catch (error) {
-      throw (error as Error).message;
-    }
-  },
+  //   async logout() {
+  //     try {
+  //       await api.post('/auth/logout');
+  //     } catch (error) {
+  //       throw (error as Error).message;
+  //     }
+  //   },
 
   //   async forgotPassword(email) {
   //     try {

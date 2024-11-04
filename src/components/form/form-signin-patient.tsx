@@ -19,6 +19,7 @@ import { registerPatientAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function FormSignInPatient() {
@@ -35,6 +36,8 @@ export default function FormSignInPatient() {
     mode: 'onChange',
   });
 
+  const router = useRouter();
+
   useEffect(() => {
     if (state?.success) {
       toast({
@@ -42,6 +45,9 @@ export default function FormSignInPatient() {
         description:
           'Tu cuenta ya fue creada, serás redirigido a Inicio de Sesión.',
       });
+      setTimeout(() => {
+        router.push('/signup');
+      }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

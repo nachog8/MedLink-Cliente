@@ -3,14 +3,15 @@
 import React, { ReactNode, createContext, useEffect, useState } from 'react';
 
 import Cookies from 'js-cookie';
-// import { any } from '@/interfaces/users';
 import { useRouter } from 'next/navigation';
+
+// import { any } from '@/interfaces/users';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   user: any | null; //cuando sepa que informacion vuelve recien agregar en any el type IUser
   loading: boolean;
-  login: (newToken: string, userData: any) => void;
+  login: (newToken: string) => void;
   logout: () => void;
 }
 
@@ -37,12 +38,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
-  const login = (newToken: string, userData: any) => {
+  const login = (newToken: string) => {
     Cookies.set('token', newToken, { expires: 1 });
-    Cookies.set('user', JSON.stringify(userData), { expires: 1 });
-
     setIsAuthenticated(true);
-    setUser(userData);
     router.push('/');
   };
 

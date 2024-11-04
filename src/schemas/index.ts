@@ -3,8 +3,8 @@
 import { z } from 'zod';
 
 // Regex
-// const numberRegex = /^\d+$/;
-const matriculaRegex = /^(M|m)\d{4,6}$/;
+const numberRegex = /^\d+$/;
+// const matriculaRegex = /^(M|m)\d{4,6}$/;
 
 // Login User Schema
 export const loginSchema = z.object({
@@ -40,7 +40,7 @@ export type PatientFormType = z.infer<typeof patientSchema>;
 
 export const professionalSchema = z
   .object({
-    specialty: z.string({
+    specialization: z.string({
       message: 'La especialidad es requerida',
     }),
     email: z.string().email({
@@ -51,13 +51,13 @@ export const professionalSchema = z
       message: 'La contraseña debe tener al menos 8 caracteres.',
     }),
     confirmPassword: z.string(),
-    registrationNumber: z
+    licenseNumber: z
       .string()
       .min(4, {
         message: 'El número de matrícula debe tener al menos 4 caracteres.',
       })
       .regex(
-        matriculaRegex,
+        numberRegex,
         'El número de matrícula no coincide con los estándares Argentinos'
       ),
   })
