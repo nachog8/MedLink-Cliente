@@ -2,6 +2,10 @@
 
 import { loginSchema, patientSchema, professionalSchema } from '@/schemas';
 
+import { authService } from '@/services/auth-service';
+
+const { register } = authService;
+
 export async function loginAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
   const loginData = {
@@ -58,7 +62,9 @@ export async function registerPatientAction(
   const { confirmPassword, ...newPatient } = validatedFields.data;
 
   try {
+    const resp = await register(newPatient);
     return {
+      data: resp,
       success: true,
     };
   } catch (error) {
@@ -97,7 +103,9 @@ export async function registerProfessionalAction(
   const { confirmPassword, ...newProfessional } = validatedFields.data;
 
   try {
+    const resp = await register(newProfessional);
     return {
+      data: resp,
       success: true,
     };
   } catch (error) {
