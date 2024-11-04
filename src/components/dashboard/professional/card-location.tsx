@@ -3,21 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-
-const locations = [
-  {
-    name: 'Hospital Italiano',
-    address: 'Av. Juan B. Justo 4200, CABA',
-    schedule: 'Lunes y Miércoles 9:00 - 15:00',
-    insurance: ['OSDE', 'Swiss Medical', 'Galeno'],
-  },
-  {
-    name: 'Consultorio Privado',
-    address: 'Av. Santa Fe 1234, CABA',
-    schedule: 'Martes y Jueves 14:00 - 20:00',
-    insurance: ['OSDE Premium', 'Swiss Medical Plan Oro', 'Consulta Privada'],
-  },
-];
+import { locations } from '@/data/dashboard-professional';
 
 export default function LocationsCard() {
   return (
