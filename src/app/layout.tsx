@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/navbar';
 import { Poppins } from '@next/font/google';
 import { Toaster } from '@/components/ui/toaster';
-import { AuthProvider } from '@/context/auth-context';
+// import { AuthProvider } from '@/context/auth-context';
 
 const poppins = Poppins({
   subsets: ['latin'],
