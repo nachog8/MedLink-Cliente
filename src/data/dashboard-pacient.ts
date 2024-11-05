@@ -19,7 +19,7 @@ export const sectionsHistoryMedical = [
     ],
   },
   {
-    title: 'Hábitos',
+    title: 'Antecedentes No Patologicos',
     items: [
       { name: 'Fumador', value: 'No' },
       { name: 'Alcohol', value: 'Social' },
