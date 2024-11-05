@@ -7,7 +7,7 @@ import { Mapbox } from '@/components/mapbox/mapbox';
 export default function Page() {
   return (
     <>
-      <div className="font-poppins m-auto mt-16 max-w-[1295px] bg-[#fff] text-black max-xl:w-[95%]">
+      <div className="m-auto mt-16 max-w-[1295px] bg-[#fff] font-poppins text-black max-xl:w-[95%]">
         <div className="relative">
           {/* TODO-1: El image deberia ser manejado con image de next no con el comun*/}
           {/* TODO-2: La imagen si va a ser un banner deberia de ocupar todo el ancho, sugiero sacarlo afuera, la relacion de aspecto n oes el correcto */}
@@ -32,11 +32,11 @@ export default function Page() {
           </div>
           <div className="w-full p-2">
             {/* TODO: El componente "Mapbox" se le puede pasar direcciones? como convierto las direcciones en coordenadas? Manejar eso */}
-            <Mapbox
+            {/* <Mapbox
               height={100}
               ubication={[-34.5750938, -58.4240719]}
               direction={'Sanatorio de la Trinidad -Palermo'}
-            ></Mapbox>
+            /> */}
           </div>
         </div>
       </div>
