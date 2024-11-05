@@ -1,23 +1,24 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { format } from 'date-fns';
-
 import {
+  Bike,
   Calendar as CalendarIcon,
-  User,
-  Phone,
-  Mail,
-  MapPin,
-  Image,
-  Ruler,
-  Weight,
+  CircleAlert,
   Droplet,
   Heart,
+  HeartHandshake,
+  Image as ImageIcon,
+  Mail,
+  MapPin,
+  Phone,
+  Ruler,
+  User,
+  Weight,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import {
+  EditProfileFormType,
+  editProfileSchema,
+} from '@/schemas/schemas-profile';
 import {
   Form,
   FormControl,
@@ -27,8 +28,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -36,49 +40,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
 
-const formSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  last_name: z
-    .string()
-    .min(2, { message: 'Last name must be at least 2 characters.' }),
-  birth_date: z.date(),
-  genre: z.enum(['male', 'female', 'other']),
-  about_me: z
-    .string()
-    .max(500, { message: 'About me must not exceed 500 characters.' }),
-  phone: z
-    .string()
-    .regex(/^\+?[0-9\s-()]+$/, { message: 'Invalid phone number format.' }),
-  email: z.string().email({ message: 'Invalid email address.' }),
-  province: z.string(),
-  city: z.string(),
-  avatar_image: z.string().url({ message: 'Invalid URL for avatar image.' }),
-  banner_image: z
-    .string()
-    .url({ message: 'Invalid URL for banner image.' })
-    .optional(),
-  height: z.string(),
-  weight: z.string(),
-  bloodType: z.string(),
-  bloodPressure: z.string(),
-  isDonor: z.boolean(),
-  hasAllergies: z.boolean(),
-  hasChronicDiseases: z.boolean(),
-  hasHealthyLifestyle: z.boolean(),
-});
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { edithProfilePatientAction } from '@/actions';
+import { format } from 'date-fns';
+import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function EditProfileForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [state, formAction] = useFormState(edithProfilePatientAction, null);
+  const form = useForm<EditProfileFormType>({
+    resolver: zodResolver(editProfileSchema),
     defaultValues: {
       name: 'blanca',
       last_name: 'barreto',
@@ -104,19 +84,33 @@ export default function EditProfileForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Edicion de Perfil Exitoso!!',
+        description: 'Tu perfil ya fue editado. ¿Gracias!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
+      toast({
+        title: 'Error en la edición.',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 px-3">
+      <form action={formAction} className="space-y-5 px-3">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nombre</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -135,7 +129,7 @@ export default function EditProfileForm() {
           name="last_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Last Name</FormLabel>
+              <FormLabel>Apellido</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -154,7 +148,7 @@ export default function EditProfileForm() {
           name="birth_date"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+              <FormLabel>Fecha de Nacimiento</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -168,7 +162,7 @@ export default function EditProfileForm() {
                       {field.value ? (
                         format(field.value, 'PPP')
                       ) : (
-                        <span>Pick a date</span>
+                        <span>Elige una Fecha</span>
                       )}
                       <CalendarIcon
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-400"
@@ -206,9 +200,9 @@ export default function EditProfileForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="male">Masculino</SelectItem>
+                  <SelectItem value="female">Femenino</SelectItem>
+                  <SelectItem value="other">Otro</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -220,9 +214,9 @@ export default function EditProfileForm() {
           name="about_me"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>About Me</FormLabel>
+              <FormLabel>Sobre mi</FormLabel>
               <FormControl>
-                <Textarea {...field} className="bg-sky-50" />
+                <Textarea {...field} className="h-32 bg-sky-50" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -233,7 +227,7 @@ export default function EditProfileForm() {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone</FormLabel>
+              <FormLabel>Telefono</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -271,7 +265,7 @@ export default function EditProfileForm() {
           name="province"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Province</FormLabel>
+              <FormLabel>Provincia</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -290,7 +284,7 @@ export default function EditProfileForm() {
           name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>City</FormLabel>
+              <FormLabel>Ciudad</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -309,11 +303,11 @@ export default function EditProfileForm() {
           name="avatar_image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Avatar Image URL</FormLabel>
+              <FormLabel>Imagen de Avatar</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
-                  <Image
+                  <ImageIcon
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-400"
                     size={18}
                   />
@@ -328,11 +322,11 @@ export default function EditProfileForm() {
           name="banner_image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Banner Image URL</FormLabel>
+              <FormLabel>Imagen para Banner</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
-                  <Image
+                  <ImageIcon
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-400"
                     size={18}
                   />
@@ -347,7 +341,7 @@ export default function EditProfileForm() {
           name="height"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Height</FormLabel>
+              <FormLabel>Altura</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -366,7 +360,7 @@ export default function EditProfileForm() {
           name="weight"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Weight</FormLabel>
+              <FormLabel>Peso</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -385,7 +379,7 @@ export default function EditProfileForm() {
           name="bloodType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Blood Type</FormLabel>
+              <FormLabel>Tipo de Sangre</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -404,7 +398,7 @@ export default function EditProfileForm() {
           name="bloodPressure"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Blood Pressure</FormLabel>
+              <FormLabel>Tendencia de Presión Arterial</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input {...field} className="bg-sky-50 pl-10" />
@@ -422,49 +416,14 @@ export default function EditProfileForm() {
           control={form.control}
           name="isDonor"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-sky-50 p-4">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-green-200 p-4">
               <div className="space-y-0.5">
-                <FormLabel className="text-base">Organ Donor</FormLabel>
-                <FormDescription>
-                  Are you registered as an organ donor?
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="hasAllergies"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-sky-50 p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Allergies</FormLabel>
-                <FormDescription>Do you have any allergies?</FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="hasChronicDiseases"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-sky-50 p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Chronic Diseases</FormLabel>
-                <FormDescription>
-                  Do you have any chronic diseases?
+                <FormLabel className="flex gap-3 text-green-800">
+                  <HeartHandshake className="text-green-400" size={18} />
+                  Donador de Organos
+                </FormLabel>
+                <FormDescription className="text-green-800">
+                  ¿Estás registrado como donante de órganos?
                 </FormDescription>
               </div>
               <FormControl>
@@ -480,11 +439,14 @@ export default function EditProfileForm() {
           control={form.control}
           name="hasHealthyLifestyle"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-sky-50 p-4">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-green-200 p-4">
               <div className="space-y-0.5">
-                <FormLabel className="text-base">Healthy Lifestyle</FormLabel>
-                <FormDescription>
-                  Do you maintain a healthy lifestyle?
+                <FormLabel className="flex gap-3 text-green-800">
+                  <Bike className="text-green-400" size={18} />
+                  Estilo de Vida
+                </FormLabel>
+                <FormDescription className="text-green-800">
+                  ¿Mantienes un estilo de vida saludable?
                 </FormDescription>
               </div>
               <FormControl>
@@ -496,9 +458,54 @@ export default function EditProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-sky-400 hover:bg-sky-500">
-          Update Profile
-        </Button>
+        <FormField
+          control={form.control}
+          name="hasAllergies"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-orange-400 p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="flex gap-3 text-orange-800">
+                  <CircleAlert className="text-orange-700" size={18} />
+                  Alergias
+                </FormLabel>
+                <FormDescription className="text-orange-800">
+                  Posees alguna alergia a medicamentos u de otro tipo?
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="hasChronicDiseases"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-orange-400 p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="flex gap-3 text-orange-800">
+                  <CircleAlert className="text-orange-700" size={18} />
+                  Enfermedades Cronicas
+                </FormLabel>
+                <FormDescription className="text-orange-800">
+                  Tienes alguna enfermedad cronica?
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit">Actualizar Perfil</Button>
       </form>
     </Form>
   );

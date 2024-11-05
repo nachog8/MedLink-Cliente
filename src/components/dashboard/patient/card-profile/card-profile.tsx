@@ -1,17 +1,19 @@
-import { Pencil } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Pencil, Settings } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import EditProfileForm from '@/components/form/patient/form-profile-patient';
+import Image from 'next/image';
+import { PasswordChangeForm } from '@/components/form/patient/form-update-password';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const CardProfile = () => {
@@ -41,22 +43,47 @@ export const CardProfile = () => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="mt-6" variant="outline">
+              <Button className="mr-5 mt-6" variant="outline">
                 <Pencil className="mr-2 h-4 w-4" />
-                Edit Profile
+                Editar Perfil
               </Button>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] w-full max-w-[90vw] sm:max-w-[600px]">
               <DialogHeader>
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're
-                  done.
-                </DialogDescription>
+                <div className="flex items-center gap-5">
+                  <Image
+                    width={150}
+                    height={150}
+                    alt="female-edit-profile"
+                    src={'/images/profile/female-edit-profile.png'}
+                    className="mx-auto"
+                  />
+                  <div className="space-y-5">
+                    <DialogTitle className="flex justify-center text-2xl">
+                      <Pencil className="mr-2 h-6 w-6 text-sky-300" />
+                      Editar Perfil
+                    </DialogTitle>
+                    <DialogDescription>
+                      Realice cambios en su perfil aquí. Haga clic en guardar
+                      cuando haya terminado.
+                    </DialogDescription>
+                  </div>
+                </div>
               </DialogHeader>
-              <ScrollArea className="max-h-[70vh] w-full p-3 pr-4">
+              <ScrollArea className="max-h-[40vh] w-full p-3">
                 <EditProfileForm />
               </ScrollArea>
+            </DialogContent>
+          </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <Settings className="mr-2 h-4 w-4" />
+                Cambiar Contraseña
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <PasswordChangeForm />
             </DialogContent>
           </Dialog>
         </div>
