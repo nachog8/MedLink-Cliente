@@ -19,41 +19,33 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
-  physicalActivity: z.enum(['si', 'no']).optional(),
-  physicalActivityDetails: z.string().optional(),
-  smoking: z.enum(['si', 'no']).optional(),
-  smokingDetails: z.string().optional(),
-  alcoholism: z.enum(['si', 'no']).optional(),
-  alcoholismDetails: z.string().optional(),
-  otherSubstances: z.enum(['si', 'no']).optional(),
-  otherSubstancesDetails: z.string().optional(),
-  recentVaccination: z.enum(['si', 'no']).optional(),
-  recentVaccinationDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
-  otherDetails: z.string().optional(),
+  foodAllergy: z.enum(['si', 'no']).optional(),
+  foodAllergyDetails: z.string().optional(),
+  insectAllergy: z.enum(['si', 'no']).optional(),
+  insectAllergyDetails: z.string().optional(),
+  medicineAllergy: z.enum(['si', 'no']).optional(),
+  medicineAllergyDetails: z.string().optional(),
+  otherAllergies: z.enum(['si', 'no']).optional(),
+  otherAllergiesDetails: z.string().optional(),
 });
-//TODO: Revisar el porque al resetear el formulario, los checkbox me siguen marcando el valor seleccionado
-export default function NoPathologicalForm() {
+
+export default function AllergyForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      physicalActivity: undefined,
-      smoking: undefined,
-      alcoholism: undefined,
-      otherSubstances: undefined,
-      recentVaccination: undefined,
-      other: undefined,
+      foodAllergy: undefined,
+      insectAllergy: undefined,
+      medicineAllergy: undefined,
+      otherAllergies: undefined,
     },
   });
 
   const handleNoToAll = () => {
     form.reset({
-      physicalActivity: 'no',
-      smoking: 'no',
-      alcoholism: 'no',
-      otherSubstances: 'no',
-      recentVaccination: 'no',
-      other: 'no',
+      foodAllergy: 'no',
+      insectAllergy: 'no',
+      medicineAllergy: 'no',
+      otherAllergies: 'no',
     });
   };
 
@@ -106,16 +98,16 @@ export default function NoPathologicalForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardContent className="space-y-6">
-            {renderField('physicalActivity', 'Actividad física')}
-            {form.watch('physicalActivity') === 'si' && (
+            {renderField('foodAllergy', 'Alergia a alimentos')}
+            {form.watch('foodAllergy') === 'si' && (
               <FormField
                 control={form.control}
-                name="physicalActivityDetails"
+                name="foodAllergyDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre actividad física"
+                        placeholder="Detalles sobre alergia a alimentos"
                         {...field}
                       />
                     </FormControl>
@@ -124,16 +116,16 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('smoking', 'Tabaquismo')}
-            {form.watch('smoking') === 'si' && (
+            {renderField('insectAllergy', 'Alergia a insectos')}
+            {form.watch('insectAllergy') === 'si' && (
               <FormField
                 control={form.control}
-                name="smokingDetails"
+                name="insectAllergyDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre tabaquismo"
+                        placeholder="Detalles sobre alergia a insectos"
                         {...field}
                       />
                     </FormControl>
@@ -142,16 +134,16 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('alcoholism', 'Alcoholismo')}
-            {form.watch('alcoholism') === 'si' && (
+            {renderField('medicineAllergy', 'Alergia a medicamentos')}
+            {form.watch('medicineAllergy') === 'si' && (
               <FormField
                 control={form.control}
-                name="alcoholismDetails"
+                name="medicineAllergyDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre alcoholismo"
+                        placeholder="Detalles sobre alergia a medicamentos"
                         {...field}
                       />
                     </FormControl>
@@ -160,51 +152,18 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('otherSubstances', 'Uso de otras sustancias (drogas)')}
-            {form.watch('otherSubstances') === 'si' && (
+            {renderField('otherAllergies', 'Otras alergias')}
+            {form.watch('otherAllergies') === 'si' && (
               <FormField
                 control={form.control}
-                name="otherSubstancesDetails"
+                name="otherAllergiesDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre uso de otras sustancias"
+                        placeholder="Detalles sobre otras alergias"
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-            {renderField('recentVaccination', 'Vacuna o inmunización reciente')}
-            {form.watch('recentVaccination') === 'si' && (
-              <FormField
-                control={form.control}
-                name="recentVaccinationDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Detalles sobre vacuna o inmunización reciente"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-            {renderField('other', 'Otros')}
-            {form.watch('other') === 'si' && (
-              <FormField
-                control={form.control}
-                name="otherDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea placeholder="Otros detalles" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

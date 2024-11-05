@@ -19,40 +19,40 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
-  physicalActivity: z.enum(['si', 'no']).optional(),
-  physicalActivityDetails: z.string().optional(),
-  smoking: z.enum(['si', 'no']).optional(),
-  smokingDetails: z.string().optional(),
-  alcoholism: z.enum(['si', 'no']).optional(),
-  alcoholismDetails: z.string().optional(),
-  otherSubstances: z.enum(['si', 'no']).optional(),
-  otherSubstancesDetails: z.string().optional(),
-  recentVaccination: z.enum(['si', 'no']).optional(),
-  recentVaccinationDetails: z.string().optional(),
+  diabetes: z.enum(['si', 'no']).optional(),
+  diabetesDetails: z.string().optional(),
+  heartDiseases: z.enum(['si', 'no']).optional(),
+  heartDiseasesDetails: z.string().optional(),
+  hypertension: z.enum(['si', 'no']).optional(),
+  hypertensionDetails: z.string().optional(),
+  thyroidDiseases: z.enum(['si', 'no']).optional(),
+  thyroidDiseasesDetails: z.string().optional(),
+  chronicKidneyDisease: z.enum(['si', 'no']).optional(),
+  chronicKidneyDiseaseDetails: z.string().optional(),
   other: z.enum(['si', 'no']).optional(),
   otherDetails: z.string().optional(),
 });
-//TODO: Revisar el porque al resetear el formulario, los checkbox me siguen marcando el valor seleccionado
-export default function NoPathologicalForm() {
+
+export default function FamilyInheritanceForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      physicalActivity: undefined,
-      smoking: undefined,
-      alcoholism: undefined,
-      otherSubstances: undefined,
-      recentVaccination: undefined,
+      diabetes: undefined,
+      heartDiseases: undefined,
+      hypertension: undefined,
+      thyroidDiseases: undefined,
+      chronicKidneyDisease: undefined,
       other: undefined,
     },
   });
 
   const handleNoToAll = () => {
     form.reset({
-      physicalActivity: 'no',
-      smoking: 'no',
-      alcoholism: 'no',
-      otherSubstances: 'no',
-      recentVaccination: 'no',
+      diabetes: 'no',
+      heartDiseases: 'no',
+      hypertension: 'no',
+      thyroidDiseases: 'no',
+      chronicKidneyDisease: 'no',
       other: 'no',
     });
   };
@@ -106,16 +106,16 @@ export default function NoPathologicalForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardContent className="space-y-6">
-            {renderField('physicalActivity', 'Actividad física')}
-            {form.watch('physicalActivity') === 'si' && (
+            {renderField('diabetes', 'Diabetes')}
+            {form.watch('diabetes') === 'si' && (
               <FormField
                 control={form.control}
-                name="physicalActivityDetails"
+                name="diabetesDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre actividad física"
+                        placeholder="Detalles sobre diabetes"
                         {...field}
                       />
                     </FormControl>
@@ -124,16 +124,16 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('smoking', 'Tabaquismo')}
-            {form.watch('smoking') === 'si' && (
+            {renderField('heartDiseases', 'Cardiopatías')}
+            {form.watch('heartDiseases') === 'si' && (
               <FormField
                 control={form.control}
-                name="smokingDetails"
+                name="heartDiseasesDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre tabaquismo"
+                        placeholder="Detalles sobre cardiopatías"
                         {...field}
                       />
                     </FormControl>
@@ -142,16 +142,16 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('alcoholism', 'Alcoholismo')}
-            {form.watch('alcoholism') === 'si' && (
+            {renderField('hypertension', 'Hipertensión arterial')}
+            {form.watch('hypertension') === 'si' && (
               <FormField
                 control={form.control}
-                name="alcoholismDetails"
+                name="hypertensionDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre alcoholismo"
+                        placeholder="Detalles sobre hipertensión arterial"
                         {...field}
                       />
                     </FormControl>
@@ -160,16 +160,16 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('otherSubstances', 'Uso de otras sustancias (drogas)')}
-            {form.watch('otherSubstances') === 'si' && (
+            {renderField('thyroidDiseases', 'Enfermedades tiroideas')}
+            {form.watch('thyroidDiseases') === 'si' && (
               <FormField
                 control={form.control}
-                name="otherSubstancesDetails"
+                name="thyroidDiseasesDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre uso de otras sustancias"
+                        placeholder="Detalles sobre enfermedades tiroideas"
                         {...field}
                       />
                     </FormControl>
@@ -178,16 +178,16 @@ export default function NoPathologicalForm() {
                 )}
               />
             )}
-            {renderField('recentVaccination', 'Vacuna o inmunización reciente')}
-            {form.watch('recentVaccination') === 'si' && (
+            {renderField('chronicKidneyDisease', 'Enfermedad renal crónica')}
+            {form.watch('chronicKidneyDisease') === 'si' && (
               <FormField
                 control={form.control}
-                name="recentVaccinationDetails"
+                name="chronicKidneyDiseaseDetails"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        placeholder="Detalles sobre vacuna o inmunización reciente"
+                        placeholder="Detalles sobre enfermedad renal crónica"
                         {...field}
                       />
                     </FormControl>
@@ -204,7 +204,10 @@ export default function NoPathologicalForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea placeholder="Otros detalles" {...field} />
+                      <Textarea
+                        placeholder="Detalles sobre otros antecedentes"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -212,12 +215,12 @@ export default function NoPathologicalForm() {
               />
             )}
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button type="button" variant="outline" onClick={handleNoToAll}>
-              No a todo
+          <CardFooter className="space-x-4">
+            <Button type="button" onClick={handleNoToAll} variant="outline">
+              No a todos
             </Button>
-            <Button type="button" variant="outline" onClick={handleClearAll}>
-              Limpiar todo
+            <Button type="button" onClick={handleClearAll} variant="outline">
+              Limpiar todos
             </Button>
             <Button type="submit">Guardar</Button>
           </CardFooter>

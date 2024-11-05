@@ -5,14 +5,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
-import { FileText } from 'lucide-react';
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { ScrollArea } from '@/components/ui/scroll-area';
-
+import AllergyForm from '@/components/form/patient/form-allergies';
+import FamilyInheritanceForm from '@/components/form/patient/form-family-inheritance';
+import { FileText } from 'lucide-react';
 import { LayoutContentTab } from './layout-content-tab';
+import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
+import PathologicalForm from '@/components/form/patient/form-pathological-history';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
 
 export default function ClinicalHistoryCard() {
   return (
@@ -70,6 +72,8 @@ export default function ClinicalHistoryCard() {
               items={[]}
               description="Registra aquí tus alergias conocidas, como a medicamentos, alimentos o productos químicos. Mantener esta información actualizada es clave para evitar reacciones adversas y asegurar un cuidado seguro en caso de emergencias."
               title="Antecedentes de Alergias"
+              form_dialog_information={<AllergyForm />}
+              title_dialog_information="Alergias"
             />
           </TabsContent>
           <TabsContent value={'pathological'}>
@@ -77,6 +81,8 @@ export default function ClinicalHistoryCard() {
               items={[]}
               description="Registra aquí tus enfermedades previas o condiciones de salud diagnosticadas, como hipertensión, diabetes o asma. Esta información es esencial para un seguimiento médico adecuado."
               title="Antecedentes Patologicos"
+              form_dialog_information={<PathologicalForm />}
+              title_dialog_information="Enfermedades Patologicas"
             />
           </TabsContent>
           <TabsContent value={'no-pathological'}>
@@ -84,6 +90,8 @@ export default function ClinicalHistoryCard() {
               items={[]}
               description="Incluye información sobre tus hábitos diarios que impactan tu salud, como alimentación, ejercicio, consumo de tabaco o alcohol, y estilo de vida general."
               title="Antecedentes No Patologicos"
+              form_dialog_information={<NoPathologicalForm />}
+              title_dialog_information="Enfermedades No Patologicas"
             />
           </TabsContent>
           <TabsContent value={'vaccination schedule'}>
@@ -91,6 +99,8 @@ export default function ClinicalHistoryCard() {
               items={[]}
               description="Mantén un registro de tus vacunas recibidas, fechas y refuerzos. Un esquema de vacunación actualizado es clave para prevenir enfermedades y fortalecer tu sistema inmunológico."
               title="Esquema de Vacunación"
+              form_dialog_information={<VaccinationScheduleForm />}
+              title_dialog_information="Esquema de Vacunación"
             />
           </TabsContent>
           <TabsContent value={'family inheritance'}>
@@ -98,6 +108,8 @@ export default function ClinicalHistoryCard() {
               items={[]}
               description="Registra condiciones de salud presentes en tu familia, como enfermedades cardíacas o diabetes. Estos antecedentes ayudan a comprender factores de riesgo y a tomar precauciones."
               title="Antecedentes Heredo Familiar"
+              form_dialog_information={<FamilyInheritanceForm />}
+              title_dialog_information="Enfermedades Hereditarias"
             />
           </TabsContent>
         </Tabs>

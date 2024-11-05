@@ -1,5 +1,4 @@
-import React from 'react';
-import { Check, X, AlertCircle, Plus } from 'lucide-react';
+import { AlertCircle, Check, Plus, X } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -8,9 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Dialog,
   DialogContent,
@@ -19,7 +15,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import HealthForm from '@/components/form/patient/form-no-pathological-history';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+
+import { Button } from '@/components/ui/button';
+import React from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
 interface StatusItem {
   title: string;
   status: boolean;
@@ -30,12 +31,18 @@ interface StatusCardProps {
   items: StatusItem[];
   title: string;
   description: string;
+  form_dialog_information: JSX.Element;
+  title_dialog_information?: string;
+  description_dialog_information?: string;
 }
 
 export function LayoutContentTab({
   items,
   description,
   title,
+  form_dialog_information: Form,
+  description_dialog_information,
+  title_dialog_information,
 }: StatusCardProps) {
   return (
     <Card>
@@ -92,7 +99,7 @@ export function LayoutContentTab({
       </CardContent>
       <CardFooter className="flex justify-end">
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
               Agregar más información
@@ -100,15 +107,12 @@ export function LayoutContentTab({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogTitle>{title_dialog_information}</DialogTitle>
               <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                {description_dialog_information}
               </DialogDescription>
             </DialogHeader>
-            <ScrollArea className="h-96 w-full">
-              <HealthForm />
-            </ScrollArea>
+            <ScrollArea className="max-h-[550px] w-full">{Form}</ScrollArea>
           </DialogContent>
         </Dialog>
       </CardFooter>
