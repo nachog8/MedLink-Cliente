@@ -13,7 +13,6 @@ import { FileText } from 'lucide-react';
 import { LayoutContentTab } from './layout-content-tab';
 import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
 import PathologicalForm from '@/components/form/patient/form-pathological-history';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
 
 export default function ClinicalHistoryCard() {
@@ -32,40 +31,38 @@ export default function ClinicalHistoryCard() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue={'allergies'} className="w-full">
-          <ScrollArea className="w-full">
-            <TabsList className="mb-4 h-auto w-full flex-wrap justify-stretch">
-              <TabsTrigger
-                value={'allergies'}
-                className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Alergias
-              </TabsTrigger>
-              <TabsTrigger
-                value={'pathological'}
-                className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Antecedentes Patologicos
-              </TabsTrigger>
-              <TabsTrigger
-                value={'no-pathological'}
-                className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Antecedentes No Patologicos
-              </TabsTrigger>
-              <TabsTrigger
-                value={'vaccination schedule'}
-                className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Esquema de Vacunación
-              </TabsTrigger>
-              <TabsTrigger
-                value={'family inheritance'}
-                className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Antecedente Heredo Familiar
-              </TabsTrigger>
-            </TabsList>
-          </ScrollArea>
+          <TabsList className="mb-4 h-auto w-full flex-wrap justify-stretch">
+            <TabsTrigger
+              value={'allergies'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Alergias
+            </TabsTrigger>
+            <TabsTrigger
+              value={'pathological'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Antecedentes Patologicos
+            </TabsTrigger>
+            <TabsTrigger
+              value={'no-pathological'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Antecedentes No Patologicos
+            </TabsTrigger>
+            <TabsTrigger
+              value={'vaccination schedule'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Esquema de Vacunación
+            </TabsTrigger>
+            <TabsTrigger
+              value={'family inheritance'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Antecedente Heredo Familiar
+            </TabsTrigger>
+          </TabsList>
 
           <TabsContent value={'allergies'}>
             <LayoutContentTab

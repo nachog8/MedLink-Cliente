@@ -47,7 +47,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { edithProfilePatientAction } from '@/actions';
+import { edithProfilePatientAction } from '@/actions/patient-actions';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
 import { useEffect } from 'react';
@@ -88,7 +88,7 @@ export default function EditProfileForm() {
     if (state?.success) {
       toast({
         title: 'Edicion de Perfil Exitoso!!',
-        description: 'Tu perfil ya fue editado. ¿Gracias!!',
+        description: 'Tu perfil ya fue editado. Gracias!!',
       });
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)

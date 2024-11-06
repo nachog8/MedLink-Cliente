@@ -1,5 +1,6 @@
 'use client';
 
+import { AllergieFormType, allergieSchema } from '@/schemas/schemas-profile';
 import {
   Form,
   FormControl,
@@ -11,13 +12,17 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AllergieFormType, allergieSchema } from '@/schemas/schemas-profile';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { allergiePatientAction } from '@/actions/patient-actions';
+import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function AllergyForm() {
+  const [state, formAction] = useFormState(allergiePatientAction, null);
   const form = useForm<AllergieFormType>({
     resolver: zodResolver(allergieSchema),
     defaultValues: {
@@ -27,6 +32,25 @@ export default function AllergyForm() {
       otherAllergies: undefined,
     },
   });
+
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Datos sobre ALERGIA actualizado con Exitoso!!',
+        description: 'El campo ya fue editado. Gracias!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
+
+      toast({
+        title: 'Error en la edición.',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
 
   const handleNoToAll = () => {
     form.reset({
@@ -40,10 +64,6 @@ export default function AllergyForm() {
   const handleClearAll = () => {
     form.reset();
   };
-
-  function onSubmit(values: AllergieFormType) {
-    console.log(values);
-  }
 
   const renderField = (field: keyof AllergieFormType, label: string) => (
     <>
@@ -82,7 +102,7 @@ export default function AllergyForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-5">
+      <form action={formAction} className="space-y-2 p-5">
         {renderField('foodAllergy', 'Alergia a alimentos')}
         {form.watch('foodAllergy') === 'si' && (
           <FormField

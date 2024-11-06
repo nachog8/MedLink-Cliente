@@ -8,20 +8,25 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   NoPathologicalFormType,
   noPathologicalSchema,
 } from '@/schemas/schemas-profile';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { noPathologicalPatientAction } from '@/actions/patient-actions';
+import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 //TODO: Revisar el porque al resetear el formulario, los checkbox me siguen marcando el valor seleccionado
 export default function NoPathologicalForm() {
+  const [state, formAction] = useFormState(noPathologicalPatientAction, null);
   const form = useForm<NoPathologicalFormType>({
     resolver: zodResolver(noPathologicalSchema),
     defaultValues: {
@@ -33,7 +38,25 @@ export default function NoPathologicalForm() {
       other: undefined,
     },
   });
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title:
+          'Datos sobre ANTECEDENTES NO PATOLOGICOS actualizado con Exitoso!!',
+        description: 'El campo ya fue editado. Gracias!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
+      toast({
+        title: 'Error en la edición.',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
   const handleNoToAll = () => {
     form.reset({
       physicalActivity: 'no',
@@ -48,10 +71,6 @@ export default function NoPathologicalForm() {
   const handleClearAll = () => {
     form.reset();
   };
-
-  function onSubmit(values: NoPathologicalFormType) {
-    console.log(values);
-  }
 
   const renderField = (field: keyof NoPathologicalFormType, label: string) => (
     <FormField
@@ -88,7 +107,7 @@ export default function NoPathologicalForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-5">
+      <form action={formAction} className="space-y-2 p-5">
         {renderField('physicalActivity', 'Actividad física')}
         {form.watch('physicalActivity') === 'si' && (
           <FormField

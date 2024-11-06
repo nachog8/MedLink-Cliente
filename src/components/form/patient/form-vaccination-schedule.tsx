@@ -9,19 +9,24 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Separator } from '@/components/ui/separator';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   VaccinationFormType,
   vaccinationSchema,
 } from '@/schemas/schemas-profile';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { vaccinationPatientAction } from '@/actions/patient-actions';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function VaccinationScheduleForm() {
+  const [state, formAction] = useFormState(vaccinationPatientAction, null);
   const form = useForm<VaccinationFormType>({
     resolver: zodResolver(vaccinationSchema),
     defaultValues: {
@@ -54,10 +59,24 @@ export default function VaccinationScheduleForm() {
       otherVaccines: undefined,
     },
   });
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Datos sobre ESQUEMA DE VACUNACIÓN actualizado con Exitoso!!',
+        description: 'El campo ya fue editado. Gracias!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
-  function onSubmit(values: VaccinationFormType) {
-    console.log(values);
-  }
+      toast({
+        title: 'Error en la edición.',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
 
   function onReset() {
     form.reset();
@@ -89,7 +108,7 @@ export default function VaccinationScheduleForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-5">
+      <form action={formAction} className="space-y-2 p-5">
         {renderSection(
           'Nacimiento',
           <>

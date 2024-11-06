@@ -15,16 +15,21 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { SecurityFormType, securitySchema } from '@/schemas/schemas-profile';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Lock } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { updatePasswordPatientAction } from '@/actions/patient-actions';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SecurityFormType, securitySchema } from '@/schemas/schemas-profile';
 
 export function PasswordChangeForm() {
+  const [state, formAction] = useFormState(updatePasswordPatientAction, null);
+
   const form = useForm<SecurityFormType>({
     resolver: zodResolver(securitySchema),
     defaultValues: {
@@ -35,10 +40,24 @@ export function PasswordChangeForm() {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: SecurityFormType) => {
-    console.log(data);
-    // Add your password change logic here
-  };
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Actualizacion de Contraseña Exitoso!!',
+        description: 'Tu contraseña ya fue editado. Gracias!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
+
+      toast({
+        title: 'Error en la edición.',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
 
   return (
     <Card className="border-0 shadow-none">
@@ -53,7 +72,7 @@ export function PasswordChangeForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form action={formAction} className="space-y-4">
             <FormField
               control={form.control}
               name="currentPassword"

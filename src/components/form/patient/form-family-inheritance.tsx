@@ -1,6 +1,10 @@
 'use client';
 
 import {
+  FamilyInheritanceFormType,
+  familyInheritanceSchema,
+} from '@/schemas/schemas-profile';
+import {
   Form,
   FormControl,
   FormField,
@@ -11,16 +15,20 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  FamilyInheritanceFormType,
-  familyInheritanceSchema,
-} from '@/schemas/schemas-profile';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { familyInheritancePatientAction } from '@/actions/patient-actions';
+import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function FamilyInheritanceForm() {
+  const [state, formAction] = useFormState(
+    familyInheritancePatientAction,
+    null
+  );
   const form = useForm<FamilyInheritanceFormType>({
     resolver: zodResolver(familyInheritanceSchema),
     defaultValues: {
@@ -32,7 +40,25 @@ export default function FamilyInheritanceForm() {
       other: undefined,
     },
   });
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title:
+          'Datos sobre ANTECEDENTES HEREDO FAMILIAR actualizado con Exitoso!!',
+        description: 'El campo ya fue editado. Gracias!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
+      toast({
+        title: 'Error en la edición.',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
   const handleNoToAll = () => {
     form.reset({
       diabetes: 'no',
@@ -47,10 +73,6 @@ export default function FamilyInheritanceForm() {
   const handleClearAll = () => {
     form.reset();
   };
-
-  function onSubmit(values: FamilyInheritanceFormType) {
-    console.log(values);
-  }
 
   const renderField = (
     field: keyof FamilyInheritanceFormType,
@@ -90,7 +112,7 @@ export default function FamilyInheritanceForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-5">
+      <form action={formAction} className="space-y-2 p-5">
         {renderField('diabetes', 'Diabetes')}
         {form.watch('diabetes') === 'si' && (
           <FormField
