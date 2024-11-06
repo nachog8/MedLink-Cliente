@@ -20,28 +20,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Lock } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-
-const securitySchema = z
-  .object({
-    currentPassword: z.string().min(1, 'La contraseña actual es requerida'),
-    newPassword: z
-      .string()
-      .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
-    confirmPassword: z
-      .string()
-      .min(1, 'Por favor confirma tu nueva contraseña'),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Las contraseñas no coinciden',
-    path: ['confirmPassword'],
-  });
-
-type FormData = z.infer<typeof securitySchema>;
+import { SecurityFormType, securitySchema } from '@/schemas/schemas-profile';
 
 export function PasswordChangeForm() {
-  const form = useForm<FormData>({
+  const form = useForm<SecurityFormType>({
     resolver: zodResolver(securitySchema),
     defaultValues: {
       currentPassword: '',
@@ -51,7 +35,7 @@ export function PasswordChangeForm() {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: SecurityFormType) => {
     console.log(data);
     // Add your password change logic here
   };

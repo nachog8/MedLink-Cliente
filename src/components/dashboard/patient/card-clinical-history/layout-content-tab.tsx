@@ -105,14 +105,16 @@ export function LayoutContentTab({
               Agregar más información
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="font-poppins">
             <DialogHeader>
               <DialogTitle>{title_dialog_information}</DialogTitle>
               <DialogDescription>
                 {description_dialog_information}
               </DialogDescription>
             </DialogHeader>
-            <ScrollArea className="max-h-[550px] w-full">{Form}</ScrollArea>
+            <ScrollArea className="max-h-[400px] w-full rounded-xl border-2 border-muted">
+              {Form}
+            </ScrollArea>
           </DialogContent>
         </Dialog>
       </CardFooter>

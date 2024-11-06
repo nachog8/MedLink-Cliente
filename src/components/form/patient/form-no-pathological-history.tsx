@@ -1,8 +1,5 @@
 'use client';
 
-import * as z from 'zod';
-
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -17,25 +14,16 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  NoPathologicalFormType,
+  noPathologicalSchema,
+} from '@/schemas/schemas-profile';
+import { Separator } from '@/components/ui/separator';
 
-const formSchema = z.object({
-  physicalActivity: z.enum(['si', 'no']).optional(),
-  physicalActivityDetails: z.string().optional(),
-  smoking: z.enum(['si', 'no']).optional(),
-  smokingDetails: z.string().optional(),
-  alcoholism: z.enum(['si', 'no']).optional(),
-  alcoholismDetails: z.string().optional(),
-  otherSubstances: z.enum(['si', 'no']).optional(),
-  otherSubstancesDetails: z.string().optional(),
-  recentVaccination: z.enum(['si', 'no']).optional(),
-  recentVaccinationDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
-  otherDetails: z.string().optional(),
-});
 //TODO: Revisar el porque al resetear el formulario, los checkbox me siguen marcando el valor seleccionado
 export default function NoPathologicalForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<NoPathologicalFormType>({
+    resolver: zodResolver(noPathologicalSchema),
     defaultValues: {
       physicalActivity: undefined,
       smoking: undefined,
@@ -61,14 +49,11 @@ export default function NoPathologicalForm() {
     form.reset();
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: NoPathologicalFormType) {
     console.log(values);
   }
 
-  const renderField = (
-    field: keyof z.infer<typeof formSchema>,
-    label: string
-  ) => (
+  const renderField = (field: keyof NoPathologicalFormType, label: string) => (
     <FormField
       control={form.control}
       name={field}
@@ -78,7 +63,7 @@ export default function NoPathologicalForm() {
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
-              value={field.value}
+              value={field.value || ''}
               className="flex gap-5"
             >
               <FormItem className="flex items-center space-x-3 space-y-0">
@@ -102,127 +87,130 @@ export default function NoPathologicalForm() {
   );
 
   return (
-    <Card className="w-full max-w-2xl p-5">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <CardContent className="space-y-6">
-            {renderField('physicalActivity', 'Actividad física')}
-            {form.watch('physicalActivity') === 'si' && (
-              <FormField
-                control={form.control}
-                name="physicalActivityDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Detalles sobre actividad física"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 p-5">
+        {renderField('physicalActivity', 'Actividad física')}
+        {form.watch('physicalActivity') === 'si' && (
+          <FormField
+            control={form.control}
+            name="physicalActivityDetails"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Detalles sobre actividad física"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {renderField('smoking', 'Tabaquismo')}
-            {form.watch('smoking') === 'si' && (
-              <FormField
-                control={form.control}
-                name="smokingDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Detalles sobre tabaquismo"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          />
+        )}
+        <Separator />
+        {renderField('smoking', 'Tabaquismo')}
+        {form.watch('smoking') === 'si' && (
+          <FormField
+            control={form.control}
+            name="smokingDetails"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Detalles sobre tabaquismo"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {renderField('alcoholism', 'Alcoholismo')}
-            {form.watch('alcoholism') === 'si' && (
-              <FormField
-                control={form.control}
-                name="alcoholismDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Detalles sobre alcoholismo"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          />
+        )}
+        <Separator />
+        {renderField('alcoholism', 'Alcoholismo')}
+        {form.watch('alcoholism') === 'si' && (
+          <FormField
+            control={form.control}
+            name="alcoholismDetails"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Detalles sobre alcoholismo"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {renderField('otherSubstances', 'Uso de otras sustancias (drogas)')}
-            {form.watch('otherSubstances') === 'si' && (
-              <FormField
-                control={form.control}
-                name="otherSubstancesDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Detalles sobre uso de otras sustancias"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          />
+        )}
+        <Separator />
+        {renderField('otherSubstances', 'Uso de otras sustancias (drogas)')}
+        {form.watch('otherSubstances') === 'si' && (
+          <FormField
+            control={form.control}
+            name="otherSubstancesDetails"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Detalles sobre uso de otras sustancias"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {renderField('recentVaccination', 'Vacuna o inmunización reciente')}
-            {form.watch('recentVaccination') === 'si' && (
-              <FormField
-                control={form.control}
-                name="recentVaccinationDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Detalles sobre vacuna o inmunización reciente"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          />
+        )}
+        <Separator />
+        {renderField('recentVaccination', 'Vacuna o inmunización reciente')}
+        {form.watch('recentVaccination') === 'si' && (
+          <FormField
+            control={form.control}
+            name="recentVaccinationDetails"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Detalles sobre vacuna o inmunización reciente"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {renderField('other', 'Otros')}
-            {form.watch('other') === 'si' && (
-              <FormField
-                control={form.control}
-                name="otherDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea placeholder="Otros detalles" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          />
+        )}
+        <Separator />
+        {renderField('other', 'Otros')}
+        {form.watch('other') === 'si' && (
+          <FormField
+            control={form.control}
+            name="otherDetails"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea placeholder="Otros detalles" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button type="button" variant="outline" onClick={handleNoToAll}>
-              No a todo
-            </Button>
-            <Button type="button" variant="outline" onClick={handleClearAll}>
-              Limpiar todo
-            </Button>
-            <Button type="submit">Guardar</Button>
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+          />
+        )}
+        <Separator />
+
+        <div className="flex justify-evenly py-2">
+          <Button type="button" variant="outline" onClick={handleNoToAll}>
+            No a todo
+          </Button>
+          <Button type="button" variant="outline" onClick={handleClearAll}>
+            Limpiar todo
+          </Button>
+          <Button type="submit">Guardar</Button>
+        </div>
+      </form>
+    </Form>
   );
 }
