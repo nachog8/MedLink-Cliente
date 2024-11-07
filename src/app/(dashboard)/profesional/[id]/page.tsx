@@ -1,6 +1,7 @@
 import CardMedicalProfessional from '@/components/dashboard/professional/card-tabs';
-import CardMedicalSkills from '@/components/dashboard/professional/card-medical-skills';
+
 import ProfileCard from '@/components/dashboard/professional/card-profile';
+import CardListPatients from '@/components/dashboard/professional/card-list-patients';
 
 export default function DoctorProfile() {
   return (
@@ -18,7 +19,7 @@ export default function DoctorProfile() {
           <div className="lg:col-span-2">
             <CardMedicalProfessional />
           </div>
-          <CardMedicalSkills />
+          <CardListPatients />
         </div>
       </div>
     </div>
