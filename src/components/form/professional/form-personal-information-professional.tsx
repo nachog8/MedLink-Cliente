@@ -1,5 +1,3 @@
-import * as z from 'zod';
-
 import {
   Card,
   CardContent,
@@ -28,44 +26,70 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  personalInfoSchema,
+  PersonalInfoType,
+} from '@/schemas/professionalSchema';
+import { useFormState } from 'react-dom';
+import { personalInfoProfessionalAction } from '@/actions/professional-actions';
+import { toast } from '@/hooks/use-toast';
 
-export const personalInfoSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
-  avatar: z.string().url('Must be a valid URL'),
-  bannerImg: z.string().url('Must be a valid URL'),
-  about_me: z.string().min(10, 'About me must be at least 10 characters'),
-  genre: z.enum(['male', 'female', 'other']),
-  location: z.object({
-    province: z.string().min(2, 'Province must be at least 2 characters'),
-    city: z.string().min(2, 'City must be at least 2 characters'),
-  }),
-  contact: z.object({
-    phone: z.string().min(10, 'Phone must be at least 10 characters'),
-    email: z.string().email('Must be a valid email'),
-  }),
-  galleryImage: z.array(z.string().url('Must be a valid URL')),
-});
+export function PersonalInfoForm() {
+  const [skillInput, setSkillInput] = useState('');
+  const [state, formAction] = useFormState(
+    personalInfoProfessionalAction,
+    null
+  );
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Actualizacion de Informacion Exitoso!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
-type PersonalInfoFormProps = {
-  onSubmit: (values: z.infer<typeof personalInfoSchema>) => void;
-};
+      toast({
+        title: 'Error en la Actualizacion',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
 
-export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
-  const form = useForm<z.infer<typeof personalInfoSchema>>({
+  const form = useForm<PersonalInfoType>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
-      name: '',
+      first_name: '',
       last_name: '',
       avatar: '',
-      bannerImg: '',
       about_me: '',
       genre: undefined,
-      location: { province: '', city: '' },
-      contact: { phone: '', email: '' },
-      galleryImage: [''],
+      location: '',
+      phone: '',
+      email: '',
+      skills: [],
     },
   });
+
+  const addSkill = () => {
+    if (skillInput.trim() !== '') {
+      const currentSkills = form.getValues('skills') || [];
+      form.setValue('skills', [...currentSkills, skillInput.trim()]);
+      setSkillInput('');
+    }
+  };
+
+  const removeSkill = (index: number) => {
+    const currentSkills = form.getValues('skills') || [];
+    form.setValue(
+      'skills',
+      currentSkills.filter((_, i) => i !== index)
+    );
+  };
 
   return (
     <Card>
@@ -81,11 +105,11 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form action={formAction} className="space-y-3">
             <div className="grid gap-3 md:grid-cols-2">
               <FormField
                 control={form.control}
-                name="name"
+                name="first_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Nombre</FormLabel>
@@ -127,22 +151,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="bannerImg"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL Imagen de Fondo</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com/banner.jpg"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name="about_me"
@@ -161,7 +170,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
               )}
             />
 
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="genre"
@@ -189,25 +198,15 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
               />
               <FormField
                 control={form.control}
-                name="location.province"
+                name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Provincia</FormLabel>
+                    <FormLabel>Lugar de Trabajo</FormLabel>
                     <FormControl>
-                      <Input placeholder="Tu provincia" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="location.city"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ciudad</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Tu ciudad" {...field} />
+                      <Input
+                        placeholder="Example: Corrientes, Corrientes"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -217,7 +216,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
 
             <FormField
               control={form.control}
-              name="contact.phone"
+              name="phone"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Telefóno</FormLabel>
@@ -230,7 +229,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
             />
             <FormField
               control={form.control}
-              name="contact.email"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -241,6 +240,48 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="skills"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Habilidades</FormLabel>
+                  <div className="flex space-x-2">
+                    <FormControl>
+                      <Input
+                        placeholder="Añade una habilidad"
+                        value={skillInput}
+                        onChange={(e) => setSkillInput(e.target.value)}
+                      />
+                    </FormControl>
+                    <Button type="button" onClick={addSkill}>
+                      Añadir
+                    </Button>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {field.value?.map((skill, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center rounded-full bg-secondary px-3 py-1 text-secondary-foreground"
+                      >
+                        {skill}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="ml-2 h-auto p-0"
+                          onClick={() => removeSkill(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid md:justify-items-end">
               <Button type="submit">Guardar Información</Button>
             </div>

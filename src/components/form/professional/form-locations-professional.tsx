@@ -1,5 +1,3 @@
-import * as z from 'zod';
-
 import {
   Card,
   CardContent,
@@ -20,35 +18,46 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  locationProfessionalSchema,
+  LocationProfessionalType,
+} from '@/schemas/professionalSchema';
+import { useFormState } from 'react-dom';
+import { locationsProfessionalAction } from '@/actions/professional-actions';
+import { useEffect } from 'react';
+import { toast } from '@/hooks/use-toast';
 
-export const locationSchema = z.object({
-  locations: z.array(
-    z.object({
-      name: z.string().min(2, 'Name must be at least 2 characters'),
-      address: z.string().min(5, 'Address must be at least 5 characters'),
-      schedule: z.string().min(5, 'Schedule must be at least 5 characters'),
-      insurance: z.array(z.string()),
-    })
-  ),
-});
-
-type LocationsFormProps = {
-  onSubmit: (values: z.infer<typeof locationSchema>) => void;
-};
-
-export function LocationsForm({ onSubmit }: LocationsFormProps) {
-  const form = useForm<z.infer<typeof locationSchema>>({
-    resolver: zodResolver(locationSchema),
+export function LocationsForm() {
+  const [state, formAction] = useFormState(locationsProfessionalAction, null);
+  const form = useForm<LocationProfessionalType>({
+    resolver: zodResolver(locationProfessionalSchema),
     defaultValues: {
-      locations: [{ name: '', address: '', schedule: '', insurance: [''] }],
+      locations: [{ name: '', address: '', schedule: '' }],
     },
   });
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Actualizacion de Informacion Exitoso!!',
+      });
+    } else if (state?.error) {
+      console.log(state?.error);
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
+      toast({
+        title: 'Error en la Actualizacion',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
   const addLocation = () => {
     const currentLocations = form.getValues('locations');
     form.setValue('locations', [
       ...currentLocations,
-      { name: '', address: '', schedule: '', insurance: [] },
+      { name: '', address: '', schedule: '' },
     ]);
   };
 
@@ -65,7 +74,7 @@ export function LocationsForm({ onSubmit }: LocationsFormProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <form action={formAction} className="space-y-5">
             {form.watch('locations').map((_, index) => (
               <div key={index} className="space-y-3">
                 <FormField

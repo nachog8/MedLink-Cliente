@@ -1,5 +1,3 @@
-import * as z from 'zod';
-
 import {
   Card,
   CardContent,
@@ -20,22 +18,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { seguritySchema, SegurityType } from '@/schemas/professionalSchema';
+import { useEffect } from 'react';
+import { toast } from '@/hooks/use-toast';
+import { useFormState } from 'react-dom';
+import { segurityProfessionalAction } from '@/actions/professional-actions';
 
-export const seguritySchema = z
-  .object({
-    currentPassword: z.string().min(1, 'Current password is required'),
-
-    newPassword: z
-      .string({ required_error: 'Password is required' })
-      .min(6, { message: 'Password must be at least 6 characters' }),
-    confirmPassword: z.string().min(1, 'Please confirm your new password'),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
 export const PasswordChangeForm = () => {
-  const form = useForm<z.infer<typeof seguritySchema>>({
+  const [state, formAction] = useFormState(segurityProfessionalAction, null);
+  const form = useForm<SegurityType>({
     resolver: zodResolver(seguritySchema),
     defaultValues: {
       currentPassword: '',
@@ -44,7 +35,23 @@ export const PasswordChangeForm = () => {
     },
     mode: 'onChange',
   });
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Actualizacion de Informacion Exitoso!!',
+      });
+    } else if (state?.error) {
+      const errorMessage = Array.isArray(state.error)
+        ? state.error.map((err) => `${err.message}`).join('\n')
+        : state.error;
 
+      toast({
+        title: 'Error en la Actualizacion',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  }, [state]);
   return (
     <Card>
       <CardHeader>
@@ -55,7 +62,7 @@ export const PasswordChangeForm = () => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className="space-y-5">
+          <form action={formAction} className="space-y-5">
             <FormField
               control={form.control}
               name="currentPassword"
