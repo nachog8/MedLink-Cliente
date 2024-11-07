@@ -7,7 +7,7 @@ import { documents } from '@/data/dashboard-pacient';
 
 export default function Page() {
   return (
-    <main className="container mx-auto space-y-5 px-5 py-20 font-poppins">
+    <main className="container mx-auto space-y-5 py-20 font-poppins">
       <div className="grid justify-items-center gap-5 lg:grid-cols-3 lg:justify-items-start">
         <CardProfile />
         <div className="w-full lg:col-span-2">

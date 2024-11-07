@@ -78,7 +78,6 @@ export async function registerPatientAction(
     return { error: 'An unexpected error occurred' };
   }
 }
-
 export async function registerProfessionalAction(
   prevState: any,
   formData: FormData

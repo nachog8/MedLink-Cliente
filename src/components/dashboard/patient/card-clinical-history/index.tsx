@@ -5,28 +5,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { FileText, Plus } from 'lucide-react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { sectionsHistoryMedical } from '@/data/dashboard-pacient';
+import AllergyForm from '@/components/form/patient/form-allergies';
+import FamilyInheritanceForm from '@/components/form/patient/form-family-inheritance';
+import { FileText } from 'lucide-react';
+import { LayoutContentTab } from './layout-content-tab';
+import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
+import PathologicalForm from '@/components/form/patient/form-pathological-history';
+import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
 
 export default function ClinicalHistoryCard() {
   return (
@@ -43,77 +30,85 @@ export default function ClinicalHistoryCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue={sectionsHistoryMedical[0].title} className="w-full">
-          <ScrollArea className="w-full">
-            <TabsList className="mb-4 h-auto w-full flex-wrap justify-stretch">
-              {sectionsHistoryMedical.map((section) => (
-                <TabsTrigger
-                  key={section.title}
-                  value={section.title}
-                  className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                >
-                  {section.title}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </ScrollArea>
-
-          {sectionsHistoryMedical.map((section) => (
-            <TabsContent
-              key={section.title}
-              value={section.title}
-              className="mt-4"
+        <Tabs defaultValue={'allergies'} className="w-full">
+          <TabsList className="mb-4 h-auto w-full flex-wrap justify-stretch">
+            <TabsTrigger
+              value={'allergies'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Nombre</TableHead>
-                      <TableHead>Valor</TableHead>
-                      {section.items.some((item) => 'date' in item) && (
-                        <TableHead>Fecha</TableHead>
-                      )}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {section.items.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">
-                          {item.name}
-                        </TableCell>
-                        <TableCell>{item.value || '-'}</TableCell>
-                        {section.items.some((item) => 'date' in item) && (
-                          <TableCell>{item.date || '-'}</TableCell>
-                        )}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              Alergias
+            </TabsTrigger>
+            <TabsTrigger
+              value={'pathological'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Antecedentes Patologicos
+            </TabsTrigger>
+            <TabsTrigger
+              value={'no-pathological'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Antecedentes No Patologicos
+            </TabsTrigger>
+            <TabsTrigger
+              value={'vaccination schedule'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Esquema de Vacunación
+            </TabsTrigger>
+            <TabsTrigger
+              value={'family inheritance'}
+              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Antecedente Heredo Familiar
+            </TabsTrigger>
+          </TabsList>
 
-              <div className="mt-4 flex justify-end">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Agregar más información
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>
-                        Agregar nuevo registro a {section.title.toLowerCase()}
-                      </DialogTitle>
-                      <DialogDescription>
-                        Aquí irá el formulario para agregar{' '}
-                        {section.title.toLowerCase()}.
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </TabsContent>
-          ))}
+          <TabsContent value={'allergies'}>
+            <LayoutContentTab
+              items={[]}
+              description="Registra aquí tus alergias conocidas, como a medicamentos, alimentos o productos químicos. Mantener esta información actualizada es clave para evitar reacciones adversas y asegurar un cuidado seguro en caso de emergencias."
+              title="Antecedentes de Alergias"
+              form_dialog_information={<AllergyForm />}
+              title_dialog_information="Alergias"
+            />
+          </TabsContent>
+          <TabsContent value={'pathological'}>
+            <LayoutContentTab
+              items={[]}
+              description="Registra aquí tus enfermedades previas o condiciones de salud diagnosticadas, como hipertensión, diabetes o asma. Esta información es esencial para un seguimiento médico adecuado."
+              title="Antecedentes Patologicos"
+              form_dialog_information={<PathologicalForm />}
+              title_dialog_information="Enfermedades Patologicas"
+            />
+          </TabsContent>
+          <TabsContent value={'no-pathological'}>
+            <LayoutContentTab
+              items={[]}
+              description="Incluye información sobre tus hábitos diarios que impactan tu salud, como alimentación, ejercicio, consumo de tabaco o alcohol, y estilo de vida general."
+              title="Antecedentes No Patologicos"
+              form_dialog_information={<NoPathologicalForm />}
+              title_dialog_information="Enfermedades No Patologicas"
+            />
+          </TabsContent>
+          <TabsContent value={'vaccination schedule'}>
+            <LayoutContentTab
+              items={[]}
+              description="Mantén un registro de tus vacunas recibidas, fechas y refuerzos. Un esquema de vacunación actualizado es clave para prevenir enfermedades y fortalecer tu sistema inmunológico."
+              title="Esquema de Vacunación"
+              form_dialog_information={<VaccinationScheduleForm />}
+              title_dialog_information="Esquema de Vacunación"
+            />
+          </TabsContent>
+          <TabsContent value={'family inheritance'}>
+            <LayoutContentTab
+              items={[]}
+              description="Registra condiciones de salud presentes en tu familia, como enfermedades cardíacas o diabetes. Estos antecedentes ayudan a comprender factores de riesgo y a tomar precauciones."
+              title="Antecedentes Heredo Familiar"
+              form_dialog_information={<FamilyInheritanceForm />}
+              title_dialog_information="Enfermedades Hereditarias"
+            />
+          </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
