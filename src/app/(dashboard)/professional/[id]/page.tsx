@@ -5,7 +5,6 @@ import ProfileCard from '@/components/dashboard/professional/card-profile';
 export default function DoctorProfile() {
   return (
     <div className="relative font-poppins">
-      {/* Hero Banner */}
       <div
         className="h-[350px] w-full bg-cover bg-center"
         style={{
