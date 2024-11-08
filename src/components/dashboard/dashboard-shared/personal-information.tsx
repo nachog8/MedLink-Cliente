@@ -42,15 +42,13 @@ export function PersonalInfoCard() {
       </CardHeader>
       <CardContent className="space-y-1">
         <Separator />
-        <ScrollArea className="h-60 w-full p-5">
-          <InfoRow label="Nombre" value="Barreto Blanca" />
-          <InfoRow label="Fecha de nacimiento" value="18-09-1985" />
-          <InfoRow label="Genero" value="Femenino" />
-          <InfoRow label="Provincia" value="Corrientes" />
-          <InfoRow label="Localidad" value="Corrientes" />
-          <InfoRow label="Telefono" value="+54-3718-441861" />
-          <InfoRow label="Email" value="palmirabarrett@hotmail.com" />
-        </ScrollArea>
+
+        <InfoRow label="Nombre" value="Barreto Blanca" />
+        <InfoRow label="Fecha de nacimiento" value="18-09-1985" />
+        <InfoRow label="Genero" value="Femenino" />
+        <InfoRow label="Locación" value="Corrientes, Corrientes" />
+        <InfoRow label="Telefono" value="+54-3718-441861" />
+        <InfoRow label="Email" value="palmirabarrett@hotmail.com" />
       </CardContent>
     </Card>
   );

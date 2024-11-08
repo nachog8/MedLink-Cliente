@@ -54,25 +54,15 @@ export const CardProfile = () => {
                   Editar Perfil
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-h-[90vh] w-full max-w-[90vw] sm:max-w-[600px]">
+              <DialogContent>
                 <DialogHeader>
-                  <div className="flex flex-col items-center gap-5">
-                    <Image
-                      width={150}
-                      height={150}
-                      alt="female-edit-profile"
-                      src={'/images/profile/female-edit-profile.png'}
-                      className="mx-auto"
-                    />
-
-                    <DialogTitle className="flex justify-center text-2xl">
-                      <Pencil className="mr-2 h-6 w-6" />
-                      Editar Perfil
-                    </DialogTitle>
-                    <DialogDescription></DialogDescription>
-                  </div>
+                  <DialogTitle className="flex justify-start text-2xl">
+                    <Pencil className="mr-2 h-6 w-6" />
+                    Editar Perfil
+                  </DialogTitle>
+                  <DialogDescription></DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[40vh] w-full p-3">
+                <ScrollArea className="max-h-[70vh] w-full p-3">
                   <EditProfileForm />
                 </ScrollArea>
               </DialogContent>
