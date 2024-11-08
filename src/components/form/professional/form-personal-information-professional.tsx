@@ -44,6 +44,7 @@ export function PersonalInfoForm() {
   );
   useEffect(() => {
     if (state?.success) {
+      console.log(state.data);
       toast({
         title: 'Actualizacion de Informacion Exitoso!!',
       });
@@ -71,13 +72,15 @@ export function PersonalInfoForm() {
       location: '',
       phone: '',
       email: '',
-      skills: [],
+      skills: undefined,
     },
   });
 
   const addSkill = () => {
     if (skillInput.trim() !== '') {
       const currentSkills = form.getValues('skills') || [];
+      console.log('este es currentSkills', currentSkills);
+      console.log('este es form', form);
       form.setValue('skills', [...currentSkills, skillInput.trim()]);
       setSkillInput('');
     }

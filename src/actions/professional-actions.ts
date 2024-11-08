@@ -4,6 +4,7 @@ import { locationProfessionalSchema, personalInfoSchema, seguritySchema } from "
 
 export async function personalInfoProfessionalAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
+  console.log("aqui muestro data", data)
   const personalInfoData = {
     first_name: data.first_name,
   last_name: data.last_name,
@@ -16,6 +17,7 @@ export async function personalInfoProfessionalAction(prevState: any, formData: F
   skills: data.skills,
   };
 
+// console.log("aqui muestro personalInfoData", personalInfoData)
   const validatedFields = personalInfoSchema.safeParse(personalInfoData);
 
   if (!validatedFields.success) {
@@ -28,6 +30,7 @@ export async function personalInfoProfessionalAction(prevState: any, formData: F
 
   try {
     return {
+      data: validatedFields.data,
       success: true,
     };
   } catch (error) {
