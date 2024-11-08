@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const personalInfoSchema = z.object({
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   avatar: z.string().optional(),
-  about_me: z
+  aboutMe: z
     .string()
     .max(233, 'About me must be at least 233 characters')
     .optional(),
@@ -15,7 +15,7 @@ export const personalInfoSchema = z.object({
   skills: z.array(z.string()).optional(),
 });
 
-export type PersonalInfoType = z.infer<typeof personalInfoSchema>
+export type PersonalInfoType = z.infer<typeof personalInfoSchema>;
 
 export const locationProfessionalSchema = z.object({
   locations: z.array(
@@ -23,12 +23,13 @@ export const locationProfessionalSchema = z.object({
       name: z.string(),
       address: z.string(),
       schedule: z.string(),
-      
     })
   ),
 });
 
-export type LocationProfessionalType = z.infer<typeof locationProfessionalSchema>
+export type LocationProfessionalType = z.infer<
+  typeof locationProfessionalSchema
+>;
 
 export const seguritySchema = z
   .object({
@@ -41,6 +42,6 @@ export const seguritySchema = z
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],
-});
+  });
 
-export type SegurityType = z.infer<typeof seguritySchema>
+export type SegurityType = z.infer<typeof seguritySchema>;
