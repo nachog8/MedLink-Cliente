@@ -10,7 +10,7 @@ export default function DoctorProfile() {
       <div
         className="h-[350px] w-full bg-cover bg-center"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2940')`,
+          backgroundImage: `url('/images/icons/banner.svg')`,
         }}
       />
       <div className="container mx-auto">

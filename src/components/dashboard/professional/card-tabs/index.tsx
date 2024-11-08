@@ -10,27 +10,20 @@ import { doctorInfo, locations } from '@/data/dashboard-professional';
 
 import { AtentionMedicalTab } from './tab-attencion-medical';
 import { FileText } from 'lucide-react';
-import Image from 'next/image';
+
 import MultiFormComponent from './tab-settings';
 import { PersonalInformationTab } from './tab-information-personal';
 
 export default function CardMedicalProfessional() {
   return (
     <Card>
-      <CardHeader className="relative">
-        <Image
-          src={'/images/icons/banner.svg'}
-          alt="banner-card-doctor"
-          width="1500"
-          height="400"
-          className="rounded-xl"
-        />
-        <div className="flex flex-col p-4 xl:absolute xl:max-w-md xl:text-white">
+      <CardHeader>
+        <div className="flex flex-col p-4">
           <CardTitle className="flex items-center gap-2 text-2xl font-semibold">
             <FileText className="h-5 w-5" />
             Perfil Médico
           </CardTitle>
-          <CardDescription className="xl:text-white">
+          <CardDescription>
             Explora el perfil del médico con información completa, desde sus
             datos personales y especialidades hasta los lugares y horarios de
             atención. Encuentra todo lo necesario para programar tu cita de

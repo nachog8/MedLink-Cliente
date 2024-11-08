@@ -9,7 +9,7 @@ import { userProfile } from '@/data/dashboard-professional';
 export default function ProfileCard() {
   const { abilities, avatarUrl, name } = userProfile;
   return (
-    <Card className="mx-auto -mt-28 max-w-6xl border-none shadow-xl">
+    <Card className="mx-auto -mt-16 max-w-6xl border-none shadow-xl">
       <CardContent className="p-6">
         <div className="flex flex-col items-center gap-6 md:flex-row md:items-center">
           {/* Avatar */}

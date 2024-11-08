@@ -52,14 +52,11 @@ export const doctorInfo = {
   about_me:
     'Soy un profesional de la salud dedicado, con experiencia en cirugía general y comprometido con brindar atención de calidad y personalizada a cada paciente. Mi enfoque se basa en una combinación de conocimientos actualizados, trato humano y escucha activa, buscando  siempre el bienestar integral de quienes confían en mí.',
   gender: 'male',
-  contact: {
+
     phone: '+54-3718-441861',
     email: 'barrett@hotmail.com',
-  },
-  location: {
-    province: 'Corrientes',
-    city: 'Corrientes',
-  },
+
+  location: "Corrientes,Corrientes"
 };
 
 export const userProfile = {
