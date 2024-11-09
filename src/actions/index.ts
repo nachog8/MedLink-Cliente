@@ -1,11 +1,17 @@
 'use server';
 
-import { loginSchema, patientSchema, professionalSchema } from '@/schemas';
+import {
+  forgotPasswordSchema,
+  loginSchema,
+  patientSchema,
+  professionalSchema,
+  resetPasswordSchema,
+} from '@/schemas';
 
 import { AxiosError } from 'axios';
 import { authService } from '@/services/auth-service';
 
-const { register, login } = authService;
+const { register, login, forgotPassword } = authService;
 
 export async function loginAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
@@ -115,6 +121,79 @@ export async function registerProfessionalAction(
       success: true,
     };
   } catch (error) {
+    if (error instanceof AxiosError) {
+      return { error: error.response?.data || error.message };
+    } else if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'An unexpected error occurred' };
+  }
+}
+
+export async function forgotPasswordAction(prevState: any, formData: FormData) {
+  const data = Object.fromEntries(formData.entries());
+  const forgotPasswordData = {
+    email: data.email,
+  };
+
+  const validatedFields = forgotPasswordSchema.safeParse(forgotPasswordData);
+
+  if (!validatedFields.success) {
+    const errorDetails = validatedFields.error.errors.map((err) => ({
+      field: err.path[0],
+      message: err.message,
+    }));
+    return { error: errorDetails };
+  }
+
+  try {
+    const resp = await forgotPassword(validatedFields.data);
+    return {
+      success: resp.success,
+      payload: {
+        message: resp.payload.message,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    if (error instanceof AxiosError) {
+      return { error: error.response?.data || error.message };
+    } else if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'An unexpected error occurred' };
+  }
+}
+
+export async function resetPasswordAction(prevState: any, formData: FormData) {
+  const data = Object.fromEntries(formData.entries());
+  const resetPasswordData = {
+    newPassword: data.newPassword,
+    confirmPassword: data.confirmPassword,
+  };
+
+  const validatedFields = resetPasswordSchema.safeParse(resetPasswordData);
+
+  if (!validatedFields.success) {
+    const errorDetails = validatedFields.error.errors.map((err) => ({
+      field: err.path[0],
+      message: err.message,
+    }));
+    return { error: errorDetails };
+  }
+
+  const { confirmPassword, ...newPassword } = validatedFields.data;
+  try {
+    // const resp = await forgotPassword(validatedFields.data);
+    return {
+      // success: resp.success,
+      // payload: {
+      //   message: resp.payload.message,
+      // },
+      success: true,
+    };
+  } catch (error) {
+    console.log(error);
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {

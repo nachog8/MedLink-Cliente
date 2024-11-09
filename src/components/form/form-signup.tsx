@@ -36,7 +36,6 @@ export default function FormSignUp() {
     mode: 'onChange',
   });
   const router = useRouter();
-  //TODO: Modificar los toast - solo los puse para ver la funcionalidad
 
   useEffect(() => {
     if (state?.success) {
@@ -49,7 +48,7 @@ export default function FormSignUp() {
       }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
-        ? state.error.map((err) => `${err.message}`).join('\n')
+        ? state.error.map((error) => `${error.message}`).join('\n')
         : state.error;
 
       toast({

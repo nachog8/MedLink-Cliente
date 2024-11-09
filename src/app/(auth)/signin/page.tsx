@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import FormSignInPatient from '@/components/form/form-signin-patient';
 import FormSignProfessional from '@/components/form/form-signin-professional';
-import { TabSplitContainer } from '@/components/singin/tab-split-container';
+import { TabSplitContainer } from '@/components/user-auth/tab-split-container';
 
 export default function Page() {
   return (

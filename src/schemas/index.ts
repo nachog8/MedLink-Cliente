@@ -76,3 +76,26 @@ export const contactSchema = z.object({
 });
 
 export type ContactFormType = z.infer<typeof contactSchema>;
+
+// Forgot Password Schema
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string({ message: 'El email es requerido' })
+    .email({ message: 'Debe ser un email válido.' }),
+});
+
+export type ForgotPasswordType = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    newPassword: z
+      .string({ required_error: 'Password is required' })
+      .min(6, { message: 'Password must be at least 6 characters' }),
+    confirmPassword: z.string().min(1, 'Please confirm your new password'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
+
+export type ResetPasswordType = z.infer<typeof resetPasswordSchema>;

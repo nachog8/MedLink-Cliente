@@ -24,20 +24,20 @@ export const authService = {
     }
   },
 
+  async forgotPassword(data: { email: string }) {
+    try {
+      const response = await api.post('/auth/forgot-password', data);
+      return response.data;
+    } catch (error) {
+      throw (error as Error).message;
+    }
+  },
+
   //   async logout() {
   //     try {
   //       await api.post('/auth/logout');
   //     } catch (error) {
   //       throw (error as Error).message;
-  //     }
-  //   },
-
-  //   async forgotPassword(email) {
-  //     try {
-  //       const response = await api.post('/auth/forgot-password', { email });
-  //       return response.data;
-  //     } catch (error) {
-  //         throw (error as Error).message;
   //     }
   //   },
 
