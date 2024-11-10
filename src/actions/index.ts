@@ -83,7 +83,7 @@ export async function registerProfessionalAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-
+  console.log(data);
   const professionalData = {
     specialization: data.specialization,
     email: data.email,

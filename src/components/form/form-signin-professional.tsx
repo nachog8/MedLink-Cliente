@@ -67,7 +67,7 @@ export default function FormSignProfessional() {
         variant: 'destructive',
       });
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <Form {...form}>
@@ -89,9 +89,9 @@ export default function FormSignProfessional() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {specialties.map(({ name, nameEn }, i) => (
-                    <SelectItem key={i} value={nameEn}>
-                      {name}
+                  {specialties.map(({ label, value }, i) => (
+                    <SelectItem key={i} value={value}>
+                      {label}
                     </SelectItem>
                   ))}
                 </SelectContent>
