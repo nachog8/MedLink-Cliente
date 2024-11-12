@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+import { ForgotPassword } from '@/components/user-auth/forgot-my-password';
 import FormSignUp from '@/components/form/form-signup';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -40,14 +41,9 @@ export default function Page() {
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4 px-6 pb-6 pt-2">
-            <Link
-              href="#"
-              className="text-sm text-blue-600 transition-colors hover:text-blue-800 hover:underline"
-            >
-              ¿Olvidaste tu contraseña?
-            </Link>
+            <ForgotPassword />
             <div className="text-sm text-muted-foreground">
-              No tienes una cuenta?{' '}
+              No tienes una cuenta?
               <Link
                 href="/signin"
                 className="font-medium text-primary transition-colors hover:text-primary/80 hover:underline"

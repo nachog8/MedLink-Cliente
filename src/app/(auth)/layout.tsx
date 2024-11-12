@@ -12,7 +12,6 @@ export default function AuthLayout({
 }) {
   return (
     <div className="relative w-full">
-      Imagen de fondo
       <Image
         src={'/images/fondo.jpg'}
         width={5000}
