@@ -1,42 +1,63 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Home } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const router = useRouter();
 
   return (
-    <div className="flex items-center justify-center p-4 font-poppins">
-      <div className="w-full max-w-lg space-y-6 text-center">
-        <div className="space-y-6">
+    <Card className="mx-auto my-10 max-w-2xl font-poppins">
+      <CardHeader>
+        <CardTitle className="text-center text-3xl font-bold">
+          👮🚨 Error 401 - No Authorized
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-5 text-center">
           <Image
-            src="/banners/401s.png"
-            alt="error-401-noauthorized"
-            width={1920}
-            height={1080}
+            src="/banners/401 Error Unauthorized-rafiki.png"
+            width={400}
+            height={400}
+            alt="image-401 noauthorized"
+            className="mx-auto object-cover"
           />
-
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="text-4xl font-bold text-gray-800 md:text-5xl">
             Acceso No Autorizado
-          </h2>
-          <p className="text-muted-foreground">
+          </h1>
+          <p className="mx-auto text-center text-xl text-gray-600">
             Lo sentimos, no tienes permiso para acceder a esta página. Por
             favor, verifica tus credenciales e intenta nuevamente.
           </p>
         </div>
-
+      </CardContent>
+      <CardFooter className="my-5 flex items-center justify-between space-x-5 lg:justify-around">
         <Button
           onClick={() => router.back()}
           variant="default"
-          className="mx-auto gap-2"
+          className="font-medium"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver atrás
         </Button>
-      </div>
-    </div>
+        <Button className="font-medium" asChild>
+          <Link href={'/'}>
+            <Home className="h-5 w-5" />
+            Volver al inicio
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
