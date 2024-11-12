@@ -17,17 +17,15 @@ export async function edithProfilePatientAction(
   const data = Object.fromEntries(formData.entries());
 
   const editProfileData = {
-    name: data.name,
-    last_name: data.last_name,
-    birth_date: data.birth_date,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    birthDate: data.birthDate,
     genre: data.genre,
-    about_me: data.about_me,
+    aboutMe: data.aboutMe,
     phone: data.phone,
     email: data.email,
-    province: data.province,
-    city: data.city,
-    avatar_image: data.avatar_image,
-    banner_image: data.banner_image,
+    location: data.location,
+    avatar: data.avatar,
     height: data.height,
     weight: data.weight,
     bloodType: data.bloodType,
@@ -48,7 +46,7 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-
+  console.log(validatedFields.data);
   try {
     return {
       success: true,
@@ -102,7 +100,7 @@ export async function allergiePatientAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-
+  console.log('aqui muestro data ni bien entra', data);
   const allergieData = {
     foodAllergy: data.foodAllergy,
     foodAllergyDetails: data.foodAllergyDetails,
@@ -124,7 +122,7 @@ export async function allergiePatientAction(
 
     return { error: errorDetails };
   }
-
+  console.log('datos enviados', validatedFields.data);
   try {
     return {
       success: true,

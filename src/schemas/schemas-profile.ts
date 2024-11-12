@@ -1,34 +1,50 @@
 import { z } from 'zod';
 
 export const editProfileSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  last_name: z
+  firstName: z
     .string()
-    .min(2, { message: 'Last name must be at least 2 characters.' }),
-  birth_date: z.date(),
-  genre: z.enum(['male', 'female', 'other']),
-  about_me: z
+    .min(2, { message: 'El nombre debe tener al menos 2 caracteres.' })
+    .optional(),
+  lastName: z
     .string()
-    .max(500, { message: 'About me must not exceed 500 characters.' }),
+    .min(2, { message: 'El apellido debe tener al menos 2 caracteres.' })
+    .optional(),
+  birthDate: z.date().optional(),
+  genre: z.enum(['male', 'female', 'other']).optional(),
+  aboutMe: z
+    .string()
+    .max(500, { message: 'La descripción no debe exceder 500 caracteres.' })
+    .optional(),
   phone: z
     .string()
-    .regex(/^\+?[0-9\s-()]+$/, { message: 'Invalid phone number format.' }),
-  email: z.string().email({ message: 'Invalid email address.' }),
-  province: z.string(),
-  city: z.string(),
-  avatar_image: z.string().url({ message: 'Invalid URL for avatar image.' }),
-  banner_image: z
-    .string()
-    .url({ message: 'Invalid URL for banner image.' })
+    .regex(/^\+?[0-9\s-()]+$/, {
+      message: 'Formato de número de teléfono no válido.',
+    })
     .optional(),
-  height: z.string(),
-  weight: z.string(),
-  bloodType: z.string(),
-  bloodPressure: z.string(),
-  isDonor: z.boolean(),
-  hasAllergies: z.boolean(),
-  hasChronicDiseases: z.boolean(),
-  hasHealthyLifestyle: z.boolean(),
+  email: z.string().email({ message: 'Correo electrónico no válido.' }), // Campo requerido
+  location: z.string().optional(),
+  avatar: z
+    .instanceof(File)
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: 'El avatar debe ser menor a 5MB.',
+    })
+    .refine(
+      (file) =>
+        ['image/jpeg', 'image/png', 'image/gif', null].includes(file.type),
+      {
+        message:
+          'El avatar debe ser un archivo de imagen válido (JPEG, PNG, GIF).',
+      }
+    )
+    .optional(),
+  height: z.string().optional(),
+  weight: z.string().optional(),
+  bloodType: z.string().optional(),
+  bloodPressure: z.string().optional(),
+  isDonor: z.boolean().optional(),
+  hasAllergies: z.boolean().optional(),
+  hasChronicDiseases: z.boolean().optional(),
+  hasHealthyLifestyle: z.boolean().optional(),
 });
 
 export type EditProfileFormType = z.infer<typeof editProfileSchema>;
@@ -129,7 +145,6 @@ export const securitySchema = z
   });
 
 export type SecurityFormType = z.infer<typeof securitySchema>;
-
 
 export const vaccinationSchema = z.object({
   atBirth: z.object({

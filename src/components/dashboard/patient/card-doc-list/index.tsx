@@ -4,21 +4,22 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Download, FileIcon, FileText } from 'lucide-react';
+import { Download, FileIcon, FileText, Trash2 } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-
 import { Button } from '@/components/ui/button';
 import { Image as ImageIcon } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import FileUploadDialog from '@/components/buttons/button-upload-files';
 
 type Document = {
   name: string;
@@ -56,10 +57,12 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
   return (
     <Card>
       <CardHeader className="rounded-t-lg border-b bg-white pb-4">
-        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
-          <FileText className="h-5 w-5 text-indigo-500" />
-          Documentación Médica
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
+            <FileText className="h-5 w-5 text-indigo-500" />
+            Documentación Médica
+          </CardTitle>
+        </div>
         <CardDescription>
           Archivo de informes, resultados y documentos importantes que respaldan
           el historial de salud del paciente.
@@ -89,27 +92,48 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
                     <span className="text-sm text-gray-500">{doc.date}</span>
                   </div>
                 </div>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-gray-500 hover:text-gray-700"
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Descargar</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <div className="flex items-center gap-2">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-gray-500 hover:text-gray-700"
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Descargar</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Eliminar</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </div>
             ))}
           </div>
         </ScrollArea>
       </CardContent>
+      <CardFooter>
+        <FileUploadDialog />
+      </CardFooter>
     </Card>
   );
 }

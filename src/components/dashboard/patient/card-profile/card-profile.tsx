@@ -19,7 +19,13 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 export const CardProfile = () => {
   return (
     <Card className="w-full max-w-[500px] overflow-hidden">
-      <div className="h-48 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+      <Image
+        src={'/images/profile/banner-profile.jpg'}
+        width={720}
+        height={480}
+        alt="banner-profile"
+        className="h-72 object-fill"
+      />
 
       {/* Profile Content */}
       <div className="relative px-6 pb-6 text-center">
@@ -40,52 +46,39 @@ export const CardProfile = () => {
             objetivo es gestionar de manera proactiva mi salud y mantener un
             registro actualizado para una mejor atención médica.
           </p>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="mr-5 mt-6" variant="outline">
-                <Pencil className="mr-2 h-4 w-4" />
-                Editar Perfil
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-h-[90vh] w-full max-w-[90vw] sm:max-w-[600px]">
-              <DialogHeader>
-                <div className="flex items-center gap-5">
-                  <Image
-                    width={150}
-                    height={150}
-                    alt="female-edit-profile"
-                    src={'/images/profile/female-edit-profile.png'}
-                    className="mx-auto"
-                  />
-                  <div className="space-y-5">
-                    <DialogTitle className="flex justify-center text-2xl">
-                      <Pencil className="mr-2 h-6 w-6 text-sky-300" />
-                      Editar Perfil
-                    </DialogTitle>
-                    <DialogDescription>
-                      Realice cambios en su perfil aquí. Haga clic en guardar
-                      cuando haya terminado.
-                    </DialogDescription>
-                  </div>
-                </div>
-              </DialogHeader>
-              <ScrollArea className="max-h-[40vh] w-full p-3">
-                <EditProfileForm />
-              </ScrollArea>
-            </DialogContent>
-          </Dialog>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <Settings className="mr-2 h-4 w-4" />
-                Cambiar Contraseña
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <PasswordChangeForm />
-            </DialogContent>
-          </Dialog>
+          <div className="mt-8 flex justify-between gap-5 lg:flex-col xl:flex-row">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <Pencil className="h-4 w-4" />
+                  Editar Perfil
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="flex justify-start text-2xl">
+                    <Pencil className="mr-2 h-6 w-6" />
+                    Editar Perfil
+                  </DialogTitle>
+                  <DialogDescription></DialogDescription>
+                </DialogHeader>
+                <ScrollArea className="max-h-[70vh] w-full p-3">
+                  <EditProfileForm />
+                </ScrollArea>
+              </DialogContent>
+            </Dialog>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <Settings className="h-4 w-4" />
+                  Cambiar Contraseña
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <PasswordChangeForm />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
     </Card>
