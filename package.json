@@ -40,6 +40,7 @@
     "cmdk": "^1.0.4",
     "embla-carousel-react": "^8.3.1",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.453.0",
     "mapbox-gl": "^3.7.0",
     "medlink-cliente": "file:",

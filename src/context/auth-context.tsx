@@ -3,13 +3,17 @@
 import React, { ReactNode, createContext, useEffect, useState } from 'react';
 
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 
-// import { any } from '@/interfaces/users';
+interface DecodedToken {
+  id: string;
+  role: string;
+}
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  user: any | null; //cuando sepa que informacion vuelve recien agregar en any el type IUser
+  user: DecodedToken | null;
   loading: boolean;
   login: (newToken: string) => void;
   logout: () => void;
@@ -19,20 +23,17 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<DecodedToken | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const storedToken = Cookies.get('token');
-    const storedUser = Cookies.get('user');
 
     if (storedToken) {
       setIsAuthenticated(true);
-    }
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const decodedUser: DecodedToken = jwtDecode(storedToken);
+      setUser(decodedUser);
     }
 
     setLoading(false);
@@ -40,6 +41,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (newToken: string) => {
     Cookies.set('token', newToken, { expires: 1 });
+    const decodedUser: DecodedToken = jwtDecode(newToken);
+    setUser(decodedUser);
     setIsAuthenticated(true);
     router.push('/');
   };
@@ -48,7 +51,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(false);
     setUser(null);
     Cookies.remove('token');
-    Cookies.remove('user');
     router.push('/signup');
   };
 

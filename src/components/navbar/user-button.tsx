@@ -1,30 +1,64 @@
 'use client';
 
+import { CircleUserRound, LayoutDashboard, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { CircleUserRound } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useAuth } from '@/context/auth-context';
 
 export function UserButton() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, logout, user } = useAuth();
+
+  const profileUrl = user
+    ? user.role === 'Patient'
+      ? `/paciente/${user.id}`
+      : user.role === 'Doctor'
+        ? `/professional/${user.id}`
+        : null
+    : null;
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <CircleUserRound className="h-7 w-7 cursor-pointer" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40 font-poppins" align="end" forceMount>
-        <DropdownMenuItem asChild>
-          <Link href="/signup" className="flex items-center">
-            <span>Iniciar sesión</span>
-          </Link>
-        </DropdownMenuItem>
+        <DropdownMenuLabel className="text-center">
+          ¡Bienvenido!
+        </DropdownMenuLabel>
+        {isAuthenticated ? (
+          <>
+            {profileUrl && (
+              <DropdownMenuItem asChild>
+                <Link href={profileUrl} className="flex items-center">
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  <span>Perfil</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={logout}
+              className="flex items-center text-red-600"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Sign out</span>
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <DropdownMenuItem asChild>
+            <Link href="/signup" className="flex items-center">
+              <span>Iniciar sesión</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
