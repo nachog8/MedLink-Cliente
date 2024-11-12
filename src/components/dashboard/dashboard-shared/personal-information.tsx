@@ -6,7 +6,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { UserCircle } from 'lucide-react';
 

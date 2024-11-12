@@ -9,7 +9,14 @@ export default function Page() {
   return (
     <main className="container mx-auto space-y-5 py-20 font-poppins">
       <div className="grid justify-items-center gap-5 lg:grid-cols-3 lg:justify-items-start">
-        <CardProfile />
+        <CardProfile
+        // firstName="blanca"
+        // lastName="barreto"
+        // age={40}
+        // location="Corrientes, Capital"
+        // bio="Comprometida con el seguimiento de mi bienestar..."
+        // avatarUrl="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=256&h=256&fit=crop"
+        />
         <div className="w-full lg:col-span-2">
           <ClinicalHistoryCard />
         </div>
