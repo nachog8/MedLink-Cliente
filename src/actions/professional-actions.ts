@@ -1,21 +1,30 @@
-"use server"
+'use server';
 
-import { locationProfessionalSchema, personalInfoSchema, seguritySchema } from "@/schemas/professionalSchema";
+import {
+  locationProfessionalSchema,
+  personalInfoSchema,
+  seguritySchema,
+} from '@/schemas/professionalSchema';
 
-export async function personalInfoProfessionalAction(prevState: any, formData: FormData) {
+export async function personalInfoProfessionalAction(
+  prevState: any,
+  formData: FormData
+) {
+  console.log('aqui muestro data', formData);
   const data = Object.fromEntries(formData.entries());
   const personalInfoData = {
-    first_name: data.first_name,
-  last_name: data.last_name,
-  avatar: data.avatar,
-  about_me: data.about_me,
-  genre: data.genre,
-  location: data.location,
-  phone: data.phone,
-  email: data.email,
-  skills: data.skills,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    avatar: data.avatar,
+    aboutMe: data.about_me,
+    genre: data.genre,
+    location: data.location,
+    phone: data.phone,
+    email: data.email,
+    skills: data.skills,
   };
 
+  // console.log("aqui muestro personalInfoData", personalInfoData)
   const validatedFields = personalInfoSchema.safeParse(personalInfoData);
 
   if (!validatedFields.success) {
@@ -28,6 +37,7 @@ export async function personalInfoProfessionalAction(prevState: any, formData: F
 
   try {
     return {
+      data: validatedFields.data,
       success: true,
     };
   } catch (error) {
@@ -38,49 +48,41 @@ export async function personalInfoProfessionalAction(prevState: any, formData: F
   }
 }
 
-export async function locationsProfessionalAction(prevState: any, formData: FormData) {
- 
+export async function locationsProfessionalAction(
+  prevState: any,
+  formData: FormData
+) {
   const data = Object.fromEntries(formData.entries());
 
-
   const locationsData = {
-    locations: []
+    locations: [],
   };
 
-  
   Object.keys(data).forEach((key) => {
     const match = key.match(/^locations\.(\d+)\.(\w+)$/);
     if (match) {
-      const index = parseInt(match[1], 10); 
-      const field = match[2]; 
+      const index = parseInt(match[1], 10);
+      const field = match[2];
 
-    
       if (!locationsData.locations[index]) {
         locationsData.locations[index] = {};
       }
 
-     
       locationsData.locations[index][field] = data[key];
     }
   });
 
- 
-  
-
   const validatedFields = locationProfessionalSchema.safeParse(locationsData);
 
-  
   if (!validatedFields.success) {
     const errorDetails = validatedFields.error.errors.map((err) => ({
-      field: err.path.join('.'),  
+      field: err.path.join('.'),
       message: err.message,
     }));
     return { error: errorDetails };
   }
-  
 
   try {
-
     return {
       data: validatedFields.data,
       success: true,
@@ -93,10 +95,13 @@ export async function locationsProfessionalAction(prevState: any, formData: Form
   }
 }
 
-export async function segurityProfessionalAction(prevState: any, formData: FormData) {
+export async function segurityProfessionalAction(
+  prevState: any,
+  formData: FormData
+) {
   const data = Object.fromEntries(formData.entries());
   const segurityData = {
-     currentPassword: data.currentPassword,
+    currentPassword: data.currentPassword,
     newPassword: data.newPassword,
     confirmPassword: data.confirmPassword,
   };
@@ -110,7 +115,7 @@ export async function segurityProfessionalAction(prevState: any, formData: FormD
     }));
     return { error: errorDetails };
   }
- const { confirmPassword, ...newPassword } = validatedFields.data;
+  const { confirmPassword, ...newPassword } = validatedFields.data;
   try {
     return {
       success: true,

@@ -14,27 +14,27 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {
+  PersonalInfoType,
+  personalInfoSchema,
+} from '@/schemas/professionalSchema';
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import {
-  personalInfoSchema,
-  PersonalInfoType,
-} from '@/schemas/professionalSchema';
-import { useFormState } from 'react-dom';
 import { personalInfoProfessionalAction } from '@/actions/professional-actions';
 import { toast } from '@/hooks/use-toast';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export function PersonalInfoForm() {
   const [skillInput, setSkillInput] = useState('');
@@ -44,6 +44,7 @@ export function PersonalInfoForm() {
   );
   useEffect(() => {
     if (state?.success) {
+      console.log(state.data);
       toast({
         title: 'Actualizacion de Informacion Exitoso!!',
       });
@@ -63,11 +64,11 @@ export function PersonalInfoForm() {
   const form = useForm<PersonalInfoType>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
-      first_name: '',
-      last_name: '',
+      firstName: '',
+      lastName: '',
       avatar: '',
-      about_me: '',
-      genre: undefined,
+      aboutMe: '',
+      genre: 'male',
       location: '',
       phone: '',
       email: '',
@@ -78,6 +79,7 @@ export function PersonalInfoForm() {
   const addSkill = () => {
     if (skillInput.trim() !== '') {
       const currentSkills = form.getValues('skills') || [];
+
       form.setValue('skills', [...currentSkills, skillInput.trim()]);
       setSkillInput('');
     }
@@ -109,7 +111,7 @@ export function PersonalInfoForm() {
             <div className="grid gap-3 md:grid-cols-2">
               <FormField
                 control={form.control}
-                name="first_name"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Nombre</FormLabel>
@@ -122,7 +124,7 @@ export function PersonalInfoForm() {
               />
               <FormField
                 control={form.control}
-                name="last_name"
+                name="lastName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Apellido</FormLabel>
@@ -154,7 +156,7 @@ export function PersonalInfoForm() {
 
             <FormField
               control={form.control}
-              name="about_me"
+              name="aboutMe"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Sobre mi</FormLabel>
@@ -283,7 +285,12 @@ export function PersonalInfoForm() {
             />
 
             <div className="grid md:justify-items-end">
-              <Button type="submit">Guardar Información</Button>
+              <Button
+                type="submit"
+                onClick={() => console.log(form.getValues())}
+              >
+                Guardar Información
+              </Button>
             </div>
           </form>
         </Form>

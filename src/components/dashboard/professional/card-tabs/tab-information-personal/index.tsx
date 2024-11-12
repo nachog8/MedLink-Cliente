@@ -1,32 +1,15 @@
-import {
-  Building2,
-  FileText,
-  Mail,
-  MapPin,
-  Phone,
-  User,
-  Users,
-} from 'lucide-react';
+import { FileText, Mail, MapPin, Phone, User, Users } from 'lucide-react';
 
 import { Separator } from '@/components/ui/separator';
-
-interface ContactInfo {
-  phone: string;
-  email: string;
-}
-
-interface LocationInfo {
-  province: string;
-  city: string;
-}
 
 interface DoctorInfo {
   name: string;
   last_name: string;
   about_me: string;
   gender: string;
-  contact: ContactInfo;
-  location: LocationInfo;
+  phone: string;
+  email: string;
+  location: string;
 }
 
 interface InfoRowProps {
@@ -68,22 +51,17 @@ export function PersonalInformationTab({ info }: { info: DoctorInfo }) {
         <InfoRow
           icon={<Phone className="h-4 w-4" />}
           label="Teléfono"
-          value={data.contact.phone}
+          value={data.phone}
         />
         <InfoRow
           icon={<Mail className="h-4 w-4" />}
           label="Email"
-          value={data.contact.email}
-        />
-        <InfoRow
-          icon={<Building2 className="h-4 w-4" />}
-          label="Provincia"
-          value={data.location.province}
+          value={data.email}
         />
         <InfoRow
           icon={<MapPin className="h-4 w-4" />}
-          label="Ciudad"
-          value={data.location.city}
+          label="Locación"
+          value={data.location}
         />
       </>
     );
