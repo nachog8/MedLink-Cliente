@@ -10,7 +10,7 @@ export const editProfileSchema = z.object({
     .min(2, { message: 'El apellido debe tener al menos 2 caracteres.' })
     .optional(),
   birthDate: z.date().optional(),
-  genre: z.enum(['male', 'female', 'other']).optional(),
+  genre: z.enum(['MALE', 'FEMALE', 'OTHER']).optional(),
   aboutMe: z
     .string()
     .max(500, { message: 'La descripción no debe exceder 500 caracteres.' })

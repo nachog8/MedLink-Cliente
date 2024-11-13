@@ -1,5 +1,5 @@
 'use client';
-
+import { es } from 'date-fns/locale';
 import {
   Bike,
   Calendar as CalendarIcon,
@@ -55,30 +55,66 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function EditProfileForm() {
+interface Props {
+  firstName?: string;
+  lastName?: string;
+  birthDate?: Date;
+  genre?: 'MALE' | 'FEMALE' | 'OTHER';
+  aboutMe?: string;
+  phone?: string;
+  email?: string;
+  location?: string;
+  avatar?: string | null;
+  height?: string;
+  weight?: string;
+  bloodType?: string;
+  bloodPressure?: string;
+  isDonor?: boolean;
+  hasAllergies?: boolean;
+  hasChronicDiseases?: boolean;
+  hasHealthyLifestyle?: boolean;
+}
+
+export default function EditProfileForm({
+  firstName,
+  lastName,
+  birthDate,
+  genre,
+  aboutMe,
+  phone,
+  email,
+  location,
+  height,
+  weight,
+  bloodType,
+  bloodPressure,
+  isDonor,
+  hasAllergies,
+  hasChronicDiseases,
+  hasHealthyLifestyle,
+}: Props) {
   const [state, formAction] = useFormState(edithProfilePatientAction, null);
   const [fileName, setFileName] = useState<string | null>(null);
   const form = useForm<EditProfileFormType>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
-      firstName: 'blanca',
-      lastName: 'barreto',
-      birthDate: new Date('1986-02-03'),
-      genre: 'female',
-      aboutMe:
-        'Comprometida con el seguimiento de mi bienestar y la consulta de información médica en tiempo real, facilitando la comunicación y el intercambio de información con profesionales de la salud. Mi objetivo es gestionar de manera proactiva mi salud y mantener un registro actualizado para una mejor atención médica.',
-      phone: '+54-3718-441861',
-      email: 'barrett@hotmail.com',
-      location: 'Corrientes, Corrientes',
+      firstName,
+      lastName,
+      birthDate,
+      genre,
+      aboutMe,
+      phone,
+      email,
+      location,
       avatar: undefined,
-      height: '175 cm',
-      weight: '70 kg',
-      bloodType: 'O+',
-      bloodPressure: 'normal',
-      isDonor: true,
-      hasAllergies: false,
-      hasChronicDiseases: false,
-      hasHealthyLifestyle: true,
+      height,
+      weight,
+      bloodType,
+      bloodPressure,
+      isDonor,
+      hasAllergies,
+      hasChronicDiseases,
+      hasHealthyLifestyle,
     },
   });
 
@@ -154,19 +190,16 @@ export default function EditProfileForm() {
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'relative w-[240px] pl-10 text-left font-normal',
+                        'w-[240px] pl-3 text-left font-normal',
                         !field.value && 'text-muted-foreground'
                       )}
                     >
                       {field.value ? (
-                        format(field.value, 'PPP')
+                        format(field.value, 'PPP', { locale: es })
                       ) : (
-                        <span>Elige una Fecha</span>
+                        <span>Elige una fecha</span>
                       )}
-                      <CalendarIcon
-                        className="absolute left-3 top-1/2 -translate-y-1/2"
-                        size={18}
-                      />
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -179,6 +212,13 @@ export default function EditProfileForm() {
                       date > new Date() || date < new Date('1900-01-01')
                     }
                     initialFocus
+                    locale={es}
+                    formatters={{
+                      formatWeekdayName: (day) =>
+                        format(day, 'EEEEE', { locale: es }).toUpperCase(),
+                      formatCaption: (date) =>
+                        format(date, 'LLLL yyyy', { locale: es }),
+                    }}
                   />
                 </PopoverContent>
               </Popover>
@@ -192,16 +232,16 @@ export default function EditProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Genre</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select a genre" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="male">Masculino</SelectItem>
-                  <SelectItem value="female">Femenino</SelectItem>
-                  <SelectItem value="other">Otro</SelectItem>
+                  <SelectItem value="MALE">Masculino</SelectItem>
+                  <SelectItem value="FEMALE">Femenino</SelectItem>
+                  <SelectItem value="OTHER">Otro</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -390,15 +430,26 @@ export default function EditProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tendencia de Presión Arterial</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input {...field} className="pl-10" />
-                  <Heart
-                    className="absolute left-3 top-1/2 -translate-y-1/2"
-                    size={18}
-                  />
-                </div>
-              </FormControl>
+              <Select
+                onValueChange={field.onChange}
+                value={field.value}
+                {...field}
+              >
+                <FormControl>
+                  <SelectTrigger className="relative pl-10">
+                    <Heart
+                      className="absolute left-3 top-1/2 -translate-y-1/2"
+                      size={18}
+                    />
+                    <SelectValue placeholder="Seleccione la tendencia" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="RISING">ALTO</SelectItem>
+                  <SelectItem value="NORMAL">NORMAL</SelectItem>
+                  <SelectItem value="FALLING">BAJO</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -495,6 +546,40 @@ export default function EditProfileForm() {
             </FormItem>
           )}
         />
+        {/* Campos ocultos para enviar datos en el submit */}
+        <input
+          type="hidden"
+          name="bloodPressure"
+          value={form.watch('bloodPressure') || ''}
+        />
+        <input
+          type="hidden"
+          name="isDonor"
+          value={form.watch('isDonor') ? 'true' : 'false'}
+        />
+        <input
+          type="hidden"
+          name="hasAllergies"
+          value={form.watch('hasAllergies') ? 'true' : 'false'}
+        />
+        <input
+          type="hidden"
+          name="hasChronicDiseases"
+          value={form.watch('hasChronicDiseases') ? 'true' : 'false'}
+        />
+        <input
+          type="hidden"
+          name="hasHealthyLifestyle"
+          value={form.watch('hasHealthyLifestyle') ? 'true' : 'false'}
+        />
+        <input
+          type="hidden"
+          name="birthDate"
+          value={
+            form.watch('birthDate') ? form.watch('birthDate').toISOString() : ''
+          }
+        />
+        <input type="hidden" name="genre" value={form.watch('genre') || ''} />
 
         <Button type="submit">Actualizar Perfil</Button>
       </form>

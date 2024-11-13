@@ -22,14 +22,14 @@ import { Separator } from '@/components/ui/separator';
 import { StatusBadge } from './status-badge';
 
 interface ClinicalSummaryProps {
-  height: string;
-  weight: string;
-  bloodType: string;
-  bloodPressure: 'hipotensión' | 'normal' | 'hipertensión';
-  isDonor: boolean;
-  hasAllergies: boolean;
-  hasChronicDiseases: boolean;
-  hasHealthyLifestyle: boolean;
+  height?: number;
+  weight?: number;
+  bloodType?: string;
+  bloodPressure?: string;
+  isDonor?: boolean;
+  hasAllergies?: boolean;
+  hasChronicDiseases?: boolean;
+  hasHealthyLifestyle?: boolean;
 }
 
 export function ClinicalSummary({
@@ -42,10 +42,11 @@ export function ClinicalSummary({
   hasChronicDiseases,
   hasHealthyLifestyle,
 }: ClinicalSummaryProps) {
+  console.log(bloodPressure);
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
+        <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-800">
           <ClipboardList className="h-5 w-5 text-indigo-500" />
           Resumen Clínico
         </CardTitle>
@@ -85,7 +86,6 @@ export function ClinicalSummary({
                 <StatusBadge value={hasChronicDiseases} invertColors={true} />
               }
             />
-
             <InfoItem
               icon={Bike}
               label="Estilo de Vida Saludable"

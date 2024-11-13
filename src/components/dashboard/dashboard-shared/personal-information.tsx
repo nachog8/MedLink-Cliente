@@ -6,8 +6,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { translateGender } from '@/lib/translate-gender';
 import { UserCircle } from 'lucide-react';
 
 interface InfoRowProps {
@@ -15,7 +15,7 @@ interface InfoRowProps {
   value: string;
 }
 
-function InfoRow({ label, value }: InfoRowProps) {
+function InfoRow({ label, value = 'N/A' }: InfoRowProps) {
   return (
     <div className="flex flex-col space-y-1.5">
       <div className="flex items-center justify-between py-2">
@@ -27,28 +27,40 @@ function InfoRow({ label, value }: InfoRowProps) {
   );
 }
 
-export function PersonalInfoCard() {
+interface PersonalInfoCardProps {
+  birthDate: string;
+  gender: string;
+  location: string;
+  phone: string;
+  email: string;
+  age: string;
+}
+
+export function PersonalInfoCard({
+  birthDate,
+  gender,
+  location,
+  phone,
+  email,
+  age,
+}: PersonalInfoCardProps) {
   return (
     <Card className="w-full shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
+        <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-800">
           <UserCircle className="h-5 w-5 text-indigo-500" />
           Información Personal
         </CardTitle>
-        <CardDescription>
-          Datos básicos del paciente esenciales para su identificación y
-          atención.
-        </CardDescription>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="space-y-1">
         <Separator />
-
-        <InfoRow label="Nombre" value="Barreto Blanca" />
-        <InfoRow label="Fecha de nacimiento" value="18-09-1985" />
-        <InfoRow label="Genero" value="Femenino" />
-        <InfoRow label="Locación" value="Corrientes, Corrientes" />
-        <InfoRow label="Telefono" value="+54-3718-441861" />
-        <InfoRow label="Email" value="palmirabarrett@hotmail.com" />
+        <InfoRow label="Fecha de nacimiento" value={birthDate} />
+        <InfoRow label="Edad" value={age} />
+        <InfoRow label="Género" value={translateGender(gender)} />
+        <InfoRow label="Locación" value={location} />
+        <InfoRow label="Teléfono" value={phone} />
+        <InfoRow label="Email" value={email} />
       </CardContent>
     </Card>
   );
