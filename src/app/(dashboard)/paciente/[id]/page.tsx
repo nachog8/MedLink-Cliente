@@ -7,12 +7,13 @@ import { documents } from '@/data/dashboard-pacient';
 export default function Page() {
   const data = {
     id: '60d0fe4f5311236168a109ca',
-    firstName: 'John',
-    lastName: 'Doe',
-    dateOfBirth: '1990-01-01',
-    gender: 'MALE',
-    aboutMe: 'I am a software developer.',
-    email: 'john.doe@example.com',
+    firstName: 'Blanca',
+    lastName: 'Barreto',
+    dateOfBirth: '1986-12-03',
+    gender: 'FEMALE',
+    aboutMe:
+      'Paciente femenina de 35 años, activa y saludable, con historial de migrañas y controlada para hipertensión. No fumadora, hábitos alimenticios equilibrados, y realiza ejercicio moderado.',
+    email: 'blanca.barreto@example.com',
     avatar:
       'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=256&h=256&fit=crop',
     phone: '1234567890',
@@ -21,13 +22,14 @@ export default function Page() {
       height: 180,
       weight: 75,
       bloodType: 'O+',
-      bloodPressureTrend: 'NORMAL',
+      bloodPressureTrend: 'RISING',
       isDonor: true,
       hasAllergies: false,
       hasChronicDiseases: false,
       hasHealthyLifestyle: true,
     },
   };
+
   return (
     <main className="container mx-auto space-y-5 py-20 font-poppins">
       <div className="grid justify-items-center gap-5 lg:grid-cols-3 lg:justify-items-start">

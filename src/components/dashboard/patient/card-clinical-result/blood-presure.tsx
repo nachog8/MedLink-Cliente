@@ -8,14 +8,14 @@ interface BloodPressureProps {
 }
 
 export function BloodPressure({ status }: BloodPressureProps) {
-  // Verifica si status tiene un valor válido
-  const statusEnum =
-    status && BloodPressureTrend[status as keyof typeof BloodPressureTrend]
-      ? BloodPressureTrend[status as keyof typeof BloodPressureTrend]
-      : null;
+  const statusEnum = Object.values(BloodPressureTrend).includes(
+    status as BloodPressureTrend
+  )
+    ? (status as BloodPressureTrend)
+    : null;
 
-  const getStatusColor = (status: BloodPressureTrend | null): string => {
-    if (!status) return 'text-gray-500'; // Color para "N/A" si no hay status
+  const getStatusColor = (status: string | null): string => {
+    if (!status) return 'text-gray-500';
     switch (status) {
       case BloodPressureTrend.NORMAL:
         return 'text-green-500';
@@ -27,15 +27,15 @@ export function BloodPressure({ status }: BloodPressureProps) {
     }
   };
 
-  const getDisplayStatus = (status: BloodPressureTrend | null): string => {
+  const getDisplayStatus = (status: string | null): string => {
     if (!status) return 'N/A';
     switch (status) {
       case BloodPressureTrend.NORMAL:
-        return 'Normal';
+        return 'NORMAL';
       case BloodPressureTrend.RISING:
-        return 'Rising';
+        return 'ALTO';
       case BloodPressureTrend.FALLING:
-        return 'Falling';
+        return 'BAJO';
       default:
         return 'Unknown';
     }

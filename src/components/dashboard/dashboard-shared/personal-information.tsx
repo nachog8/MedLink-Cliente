@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card';
 
 import { Separator } from '@/components/ui/separator';
+import { translateGender } from '@/lib/translate-gender';
 import { UserCircle } from 'lucide-react';
 
 interface InfoRowProps {
@@ -14,7 +15,7 @@ interface InfoRowProps {
   value: string;
 }
 
-function InfoRow({ label, value }: InfoRowProps) {
+function InfoRow({ label, value = 'N/A' }: InfoRowProps) {
   return (
     <div className="flex flex-col space-y-1.5">
       <div className="flex items-center justify-between py-2">
@@ -26,25 +27,13 @@ function InfoRow({ label, value }: InfoRowProps) {
   );
 }
 
-function translateGender(gender: string) {
-  switch (gender.toUpperCase()) {
-    case 'MALE':
-      return 'Masculino';
-    case 'FEMALE':
-      return 'Femenino';
-    case 'OTHER':
-      return 'Otro';
-    default:
-      return gender;
-  }
-}
-
 interface PersonalInfoCardProps {
   birthDate: string;
   gender: string;
   location: string;
   phone: string;
   email: string;
+  age: string;
 }
 
 export function PersonalInfoCard({
@@ -53,11 +42,12 @@ export function PersonalInfoCard({
   location,
   phone,
   email,
+  age,
 }: PersonalInfoCardProps) {
   return (
     <Card className="w-full shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
+        <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-800">
           <UserCircle className="h-5 w-5 text-indigo-500" />
           Información Personal
         </CardTitle>
@@ -66,6 +56,7 @@ export function PersonalInfoCard({
       <CardContent className="space-y-1">
         <Separator />
         <InfoRow label="Fecha de nacimiento" value={birthDate} />
+        <InfoRow label="Edad" value={age} />
         <InfoRow label="Género" value={translateGender(gender)} />
         <InfoRow label="Locación" value={location} />
         <InfoRow label="Teléfono" value={phone} />

@@ -37,7 +37,7 @@ interface Props {
     height?: number;
     weight?: number;
     bloodType?: string;
-    BloodPressureTrend?: string;
+    bloodPressureTrend?: string;
     isDonor?: boolean;
     hasAllergies?: boolean;
     hasChronicDiseases?: boolean;
@@ -58,7 +58,7 @@ export const CardProfile = ({
   clinical,
 }: Props) => {
   return (
-    <Card className="l w-full max-w-[500px] space-y-5 overflow-hidden">
+    <Card className="w-full max-w-[500px] overflow-hidden">
       <CardHeader className="flex justify-center pb-0 pt-6">
         <Avatar className="mx-auto h-40 w-40 border-4 border-white shadow-lg">
           <AvatarImage
@@ -71,17 +71,12 @@ export const CardProfile = ({
         </Avatar>
       </CardHeader>
       <CardContent className="space-y-5">
-        <Card>
-          <CardContent className="space-y-5 p-3 text-center">
-            <h2 className="text-2xl font-semibold capitalize text-gray-900">
-              {firstName && lastName ? firstName + ' ' + lastName : ''}
-            </h2>
-            <p className="mt-1 text-gray-600">
-              {age && location ? `${age} años` : ''}
-            </p>
-            <p className="mx-auto mt-4 max-w-md text-sm text-gray-500">{bio}</p>
-          </CardContent>
-        </Card>
+        <section className="space-y-5 p-3 text-center">
+          <h2 className="text-2xl font-semibold capitalize text-gray-900">
+            {firstName && lastName ? firstName + ' ' + lastName : ''}
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-sm text-gray-500">{bio}</p>
+        </section>
 
         <PersonalInfoCard
           birthDate={dateOfBirth || ''}
@@ -89,12 +84,13 @@ export const CardProfile = ({
           location={location || ''}
           phone={phone || ''}
           email={email || ''}
+          age={age?.toLocaleString() || ''}
         />
         <ClinicalSummary
           height={clinical?.height}
           weight={clinical?.weight}
           bloodType={clinical?.bloodType}
-          bloodPressure={clinical?.BloodPressureTrend}
+          bloodPressure={clinical?.bloodPressureTrend}
           isDonor={clinical?.isDonor}
           hasAllergies={clinical?.hasAllergies}
           hasChronicDiseases={clinical?.hasChronicDiseases}
@@ -123,16 +119,16 @@ export const CardProfile = ({
                 firstName={firstName}
                 lastName={lastName}
                 birthDate={new Date(dateOfBirth)}
-                genre={gender as 'male' | 'female' | 'other'}
+                genre={gender as 'MALE' | 'FEMALE' | 'OTHER'}
                 aboutMe={bio}
                 phone={phone}
                 email={email}
-                location={location}  
+                location={location}
                 avatar={avatarUrl}
                 height={`${clinical?.height}`}
                 weight={`${clinical?.weight}`}
                 bloodType={clinical?.bloodType}
-                bloodPressure={clinical?.BloodPressureTrend}
+                bloodPressure={clinical?.bloodPressureTrend}
                 isDonor={clinical?.isDonor}
                 hasAllergies={clinical?.hasAllergies}
                 hasChronicDiseases={clinical?.hasChronicDiseases}

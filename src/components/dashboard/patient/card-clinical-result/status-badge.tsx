@@ -1,10 +1,8 @@
-'use client';
-
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 interface StatusBadgeProps {
-  value: boolean;
+  value?: boolean;
   labels?: { true: string; false: string };
   variants?: { true: string; false: string };
   invertColors?: boolean;
@@ -17,6 +15,9 @@ export function StatusBadge({
   invertColors = false,
 }: StatusBadgeProps) {
   const getColorClass = () => {
+    if (value === undefined) {
+      return 'bg-gray-400'; // Color para "N/A"
+    }
     if (invertColors) {
       return value ? variants.false : variants.true;
     }
@@ -25,7 +26,7 @@ export function StatusBadge({
 
   return (
     <Badge className={cn('mt-1 text-white', getColorClass())}>
-      {value ? labels.true : labels.false}
+      {value === undefined ? 'N/A' : value ? labels.true : labels.false}
     </Badge>
   );
 }

@@ -19,7 +19,7 @@ export async function edithProfilePatientAction(
   const editProfileData = {
     firstName: data.firstName,
     lastName: data.lastName,
-    birthDate: data.birthDate,
+    birthDate: new Date(data.birthDate),
     genre: data.genre,
     aboutMe: data.aboutMe,
     phone: data.phone,
@@ -30,10 +30,10 @@ export async function edithProfilePatientAction(
     weight: data.weight,
     bloodType: data.bloodType,
     bloodPressure: data.bloodPressure,
-    isDonor: data.isDonor,
-    hasAllergies: data.hasAllergies,
-    hasChronicDiseases: data.hasChronicDiseases,
-    hasHealthyLifestyle: data.hasHealthyLifestyle,
+    isDonor: data.isDonor === "true",
+    hasAllergies: data.hasAllergies === "true",
+    hasChronicDiseases: data.hasChronicDiseases === "true",
+    hasHealthyLifestyle: data.hasHealthyLifestyle === "true"
   };
 
   const validatedFields = editProfileSchema.safeParse(editProfileData);
@@ -46,7 +46,15 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-  console.log(validatedFields.data);
+
+    const formattedData = {
+    ...validatedFields.data,
+    birthDate: validatedFields.data.birthDate
+      ? validatedFields.data.birthDate.toISOString().split("T")[0]
+      : undefined,
+  };
+
+console.log(formattedData);
   try {
     return {
       success: true,
