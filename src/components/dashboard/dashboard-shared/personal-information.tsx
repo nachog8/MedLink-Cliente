@@ -26,7 +26,34 @@ function InfoRow({ label, value }: InfoRowProps) {
   );
 }
 
-export function PersonalInfoCard() {
+function translateGender(gender: string) {
+  switch (gender.toUpperCase()) {
+    case 'MALE':
+      return 'Masculino';
+    case 'FEMALE':
+      return 'Femenino';
+    case 'OTHER':
+      return 'Otro';
+    default:
+      return gender;
+  }
+}
+
+interface PersonalInfoCardProps {
+  birthDate: string;
+  gender: string;
+  location: string;
+  phone: string;
+  email: string;
+}
+
+export function PersonalInfoCard({
+  birthDate,
+  gender,
+  location,
+  phone,
+  email,
+}: PersonalInfoCardProps) {
   return (
     <Card className="w-full shadow-sm">
       <CardHeader>
@@ -34,20 +61,15 @@ export function PersonalInfoCard() {
           <UserCircle className="h-5 w-5 text-indigo-500" />
           Información Personal
         </CardTitle>
-        <CardDescription>
-          Datos básicos del paciente esenciales para su identificación y
-          atención.
-        </CardDescription>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="space-y-1">
         <Separator />
-
-        <InfoRow label="Nombre" value="Barreto Blanca" />
-        <InfoRow label="Fecha de nacimiento" value="18-09-1985" />
-        <InfoRow label="Genero" value="Femenino" />
-        <InfoRow label="Locación" value="Corrientes, Corrientes" />
-        <InfoRow label="Telefono" value="+54-3718-441861" />
-        <InfoRow label="Email" value="palmirabarrett@hotmail.com" />
+        <InfoRow label="Fecha de nacimiento" value={birthDate} />
+        <InfoRow label="Género" value={translateGender(gender)} />
+        <InfoRow label="Locación" value={location} />
+        <InfoRow label="Teléfono" value={phone} />
+        <InfoRow label="Email" value={email} />
       </CardContent>
     </Card>
   );

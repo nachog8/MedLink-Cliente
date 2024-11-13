@@ -22,14 +22,14 @@ import { Separator } from '@/components/ui/separator';
 import { StatusBadge } from './status-badge';
 
 interface ClinicalSummaryProps {
-  height: string;
-  weight: string;
-  bloodType: string;
-  bloodPressure: 'hipotensión' | 'normal' | 'hipertensión';
-  isDonor: boolean;
-  hasAllergies: boolean;
-  hasChronicDiseases: boolean;
-  hasHealthyLifestyle: boolean;
+  height?: number;
+  weight?: number;
+  bloodType?: string;
+  bloodPressure?: string;
+  isDonor?: boolean;
+  hasAllergies?: boolean;
+  hasChronicDiseases?: boolean;
+  hasHealthyLifestyle?: boolean;
 }
 
 export function ClinicalSummary({
@@ -42,6 +42,8 @@ export function ClinicalSummary({
   hasChronicDiseases,
   hasHealthyLifestyle,
 }: ClinicalSummaryProps) {
+  const renderValue = (value) => (value !== undefined ? value : 'N/A');
+
   return (
     <Card>
       <CardHeader>
@@ -57,39 +59,56 @@ export function ClinicalSummary({
         <Separator />
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col justify-between gap-5">
-            <InfoItem icon={Ruler} label="Altura" value={height} />
-            <InfoItem icon={Weight} label="Peso" value={weight} />
+            <InfoItem icon={Ruler} label="Altura" value={renderValue(height)} />
+            <InfoItem icon={Weight} label="Peso" value={renderValue(weight)} />
             <InfoItem
               icon={Droplet}
               label="Grupo Sanguíneo"
-              value={bloodType}
+              value={renderValue(bloodType)}
             />
-            <BloodPressure status={bloodPressure} />
+            <BloodPressure status={renderValue(bloodPressure)} />
           </div>
 
           <div className="flex flex-col justify-between gap-5">
             <InfoItem
               icon={Heart}
               label="Donador"
-              value={<StatusBadge value={isDonor} />}
+              value={
+                isDonor !== undefined ? <StatusBadge value={isDonor} /> : 'N/A'
+              }
             />
             <InfoItem
               icon={AlertTriangle}
               label="Alergias"
-              value={<StatusBadge value={hasAllergies} invertColors={true} />}
+              value={
+                hasAllergies !== undefined ? (
+                  <StatusBadge value={hasAllergies} invertColors={true} />
+                ) : (
+                  'N/A'
+                )
+              }
             />
             <InfoItem
               icon={Activity}
               label="Enfermedades Crónicas"
               value={
-                <StatusBadge value={hasChronicDiseases} invertColors={true} />
+                hasChronicDiseases !== undefined ? (
+                  <StatusBadge value={hasChronicDiseases} invertColors={true} />
+                ) : (
+                  'N/A'
+                )
               }
             />
-
             <InfoItem
               icon={Bike}
               label="Estilo de Vida Saludable"
-              value={<StatusBadge value={hasHealthyLifestyle} />}
+              value={
+                hasHealthyLifestyle !== undefined ? (
+                  <StatusBadge value={hasHealthyLifestyle} />
+                ) : (
+                  'N/A'
+                )
+              }
             />
           </div>
         </div>

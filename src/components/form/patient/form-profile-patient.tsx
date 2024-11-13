@@ -55,30 +55,66 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function EditProfileForm() {
+interface Props {
+  firstName?: string;
+  lastName?: string;
+  birthDate?: Date;
+  genre?: 'male' | 'female' | 'other';
+  aboutMe?: string;
+  phone?: string;
+  email?: string;
+  location?: string;
+  avatar?: string | null;
+  height?: string;
+  weight?: string;
+  bloodType?: string;
+  bloodPressure?: string;
+  isDonor?: boolean;
+  hasAllergies?: boolean;
+  hasChronicDiseases?: boolean;
+  hasHealthyLifestyle?: boolean;
+}
+
+export default function EditProfileForm({
+  firstName,
+  lastName,
+  birthDate,
+  genre,
+  aboutMe,
+  phone,
+  email,
+  location,
+  height,
+  weight,
+  bloodType,
+  bloodPressure,
+  isDonor,
+  hasAllergies,
+  hasChronicDiseases,
+  hasHealthyLifestyle,
+}: Props) {
   const [state, formAction] = useFormState(edithProfilePatientAction, null);
   const [fileName, setFileName] = useState<string | null>(null);
   const form = useForm<EditProfileFormType>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
-      firstName: 'blanca',
-      lastName: 'barreto',
-      birthDate: new Date('1986-02-03'),
-      genre: 'female',
-      aboutMe:
-        'Comprometida con el seguimiento de mi bienestar y la consulta de información médica en tiempo real, facilitando la comunicación y el intercambio de información con profesionales de la salud. Mi objetivo es gestionar de manera proactiva mi salud y mantener un registro actualizado para una mejor atención médica.',
-      phone: '+54-3718-441861',
-      email: 'barrett@hotmail.com',
-      location: 'Corrientes, Corrientes',
+      firstName,
+      lastName,
+      birthDate,
+      genre,
+      aboutMe,
+      phone,
+      email,
+      location,
       avatar: undefined,
-      height: '175 cm',
-      weight: '70 kg',
-      bloodType: 'O+',
-      bloodPressure: 'normal',
-      isDonor: true,
-      hasAllergies: false,
-      hasChronicDiseases: false,
-      hasHealthyLifestyle: true,
+      height,
+      weight,
+      bloodType,
+      bloodPressure,
+      isDonor,
+      hasAllergies,
+      hasChronicDiseases,
+      hasHealthyLifestyle,
     },
   });
 

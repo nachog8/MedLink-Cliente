@@ -15,11 +15,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+
 import { Button } from '@/components/ui/button';
+import FileUploadDialog from '@/components/buttons/button-upload-files';
 import { Image as ImageIcon } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import FileUploadDialog from '@/components/buttons/button-upload-files';
 
 type Document = {
   name: string;
@@ -69,7 +70,7 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-4">
-        <ScrollArea className="h-[250px] pr-4">
+        <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {documents.map((doc, index) => (
               <div
@@ -131,7 +132,7 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
           </div>
         </ScrollArea>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="mt-6">
         <FileUploadDialog />
       </CardFooter>
     </Card>
