@@ -1,31 +1,63 @@
-"use client";
-import { Footer } from "../../components/footer/Footer"
-import Navbar from "../../components/navbar/navbar"
-import { Mapbox } from "../../components/mapbox/Mapbox"
-import { FormComponent } from "../../components/form/Form-contact"
+import { ContactInfo } from '@/components/contact/contact-info';
 
-export default function Contact() {
-    return <>
-        <div className="text-black max-w-[1295px] m-auto mt-16 bg-[#fff] max-xl:w-[95%]">
-            <div className="relative">
-                <img src="/images/contact-img.svg" alt="services" />
-                <h2 className="text-[#1745E8] absolute right-[5%] top-[40%] text-4xl font-semibold leading-normal max-md:top-[20%] max-md:text-2xl">Contáctanos</h2>
-            </div>
-            <div className="mt-8 mb-8 flex max-md:flex-wrap gap-8">
-                <div className="flex flex-col justify-between gap-4 w-3/4 max-md:w-full p-4 max-md:p-2">
-                    <div className="">
-                        <h2 className="text-2xl font-semibold text-[#101828]">Ponte en contacto</h2>
-                        <p className="text-[#667085]">A nuestro equipo le encantaría conocerte.</p>
-                    </div>
-                    <div>
-                    <FormComponent/>
-                    </div>
-                </div>
-                <div className="w-full p-2 ">
-                    <Mapbox height={100} ubication={[-34.5750938, -58.4240719]}  direction={"Sanatorio de la Trinidad -Palermo"}></Mapbox>
-                </div>
-            </div>
-        </div>
-        <Footer/>
-    </>
+import { FormContact } from '@/components/form/form-contact';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import Image from 'next/image';
+
+export default function Page() {
+  return (
+    <div className="container m-auto mt-16 bg-[#fff] font-poppins max-xl:w-[95%]">
+      <div className="flex flex-col items-center justify-center gap-6 rounded-xl bg-sky-400 p-10 lg:flex-row lg:justify-around">
+        <ContactInfo
+          icon={Phone}
+          title="Teléfono"
+          description="Estamos disponibles para ayudarte."
+          contactText="+1-2345-2345"
+        />
+        <ContactInfo
+          icon={Mail}
+          title="Correo"
+          description="También podes comunicarte con nosotros a través de nuestro correo"
+          contactText="medlink-contact@info.com"
+        />
+        <ContactInfo
+          icon={MapPin}
+          title="Ubicación"
+          description="Si nos necesitas nos podes encontrar en nuestra sucursal."
+          contactText="Junin 1250 2do Piso, Oficina 1, 3400 Corrientes"
+        />
+      </div>
+      <section className="my-8">
+        <Card className="mx-auto max-w-xl">
+          <picture>
+            <Image
+              src={'/images/doctors/doctors-form-contact.png'}
+              width={1230}
+              height={871}
+              alt="contact-image-form"
+              className="transition-all hover:scale-105"
+            />
+          </picture>
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl lg:text-4xl">
+              Ponte en contacto
+            </CardTitle>
+            <CardDescription>
+              A nuestro equipo le encantaría conocerte.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormContact />
+          </CardContent>
+        </Card>
+      </section>
+    </div>
+  );
 }
