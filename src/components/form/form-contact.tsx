@@ -1,120 +1,218 @@
 'use client';
 
-import 'react-phone-number-input/style.css';
-
-import Image from 'next/image';
-import PhoneInput from 'react-phone-number-input';
-import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 
-//TODO: FORM CONTACT YA EXISTE EN EL FOOTER CAMBIAR NOMBRE PARA QUE SEA MAS ORIENTATIVO DE DONDE ES EL FORM
-// EL FORMULARIO DEBE SER HECHO CON SHADCN Y DEBE TENER SU SCHEMA DE ZOD CON CONTROL DE ACTIONS CON EL TOAST DE AVISO DE CONFIRMACION
-export function FormContact() {
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useToast } from '@/components/ui/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: 'El nombre debe tener al menos 2 caracteres.',
+  }),
+  lastName: z.string().min(2, {
+    message: 'El apellido debe tener al menos 2 caracteres.',
+  }),
+  email: z.string().email({
+    message: 'Por favor, introduce un email válido.',
+  }),
+  phone: z.string().min(10, {
+    message: 'El número de teléfono debe tener al menos 10 dígitos.',
+  }),
+  comment: z.string().min(10, {
+    message: 'El comentario debe tener al menos 10 caracteres.',
+  }),
+  privacyPolicy: z.boolean().refine((value) => value === true, {
+    message: 'Debes aceptar la política de privacidad.',
+  }),
+});
+
+export function ContactForm() {
   const router = useRouter();
-  const [value, setValue] = useState<string | undefined>(undefined);
-  const [openCart, setOpenCart] = useState(false);
+  const { toast } = useToast();
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      comment: '',
+      privacyPolicy: false,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setOpenDialog(true);
+    toast({
+      title: 'Formulario enviado',
+      description: 'Gracias por ponerte en contacto con nosotros.',
+    });
+  }
 
   return (
-    <form
-      className="flex flex-col gap-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setOpenCart(true);
-      }}
-    >
-      <div className="flex justify-between gap-2">
-        <div>
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Maria"
-            className="block w-full rounded-lg border-[1px] border-[#BCC1CD] p-2"
-            required
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Maria" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Apellido</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Gomez" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="maria@gmail.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div>
-          <label htmlFor="lastName">Apellido</label>
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            placeholder="Gomez"
-            className="block w-full rounded-lg border-[1px] border-[#BCC1CD] p-2"
-            required
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Número celular</FormLabel>
+                <FormControl>
+                  <Input
+                    type="tel"
+                    placeholder="Enter phone number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-      </div>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Maria@gmail.com"
-          className="block w-full rounded-lg border-[1px] border-[#BCC1CD] p-2"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="tlf">Número celular</label>
-        <PhoneInput
-          placeholder="Enter phone number"
-          value={value}
-          onChange={setValue}
-          className="block w-full rounded-lg border-[1px] border-[#BCC1CD] p-2"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="comentario">Comentario</label>
-        <textarea
-          id="comentario"
-          placeholder="Dejanos tu comentario"
-          className="block h-[120px] max-h-[120px] w-full rounded-lg border-[1px] border-[#BCC1CD] p-2"
-          required
-        />
-      </div>
-      <div className="flex items-center gap-2">
-        <input type="checkbox" id="checkbox" required />
-        <label htmlFor="checkbox" className="block">
-          Estoy de acuerdo con la política de privacidad
-        </label>
-      </div>
-      <div>
-        <button
-          type="submit"
-          className="h-[48px] w-full rounded-lg border-[#950dfc] bg-gradient-to-t from-[#124ccc] to-[#06207C] font-bold text-white hover:opacity-90 max-md:h-[40px]"
-        >
-          Enviar
-        </button>
-      </div>
-      {openCart && (
-        <div className="fixed inset-0 z-10 flex items-center justify-center backdrop-blur-2xl">
-          <div className="relative flex h-[90%] w-[90%] flex-col items-center gap-8 rounded-lg bg-white p-4 text-center">
-            <button
-              onClick={() => {
-                setOpenCart(false);
-                router.refresh();
-              }}
-              className="absolute right-[2%] top-[2%]"
-            >
-              <Image src="/close.svg" alt="close" width={40} height={40} />
-            </button>
-            <div>
-              <Image src="/check.svg" alt="check" width={100} height={100} />
-            </div>
-            <h2 className="text-2xl font-semibold">
+          <FormField
+            control={form.control}
+            name="comment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Comentario</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Dejanos tu comentario" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="privacyPolicy"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    Estoy de acuerdo con la política de privacidad
+                  </FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full bg-gradient-to-t from-[#124ccc] to-[#06207C]"
+          >
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Enviando...
+              </>
+            ) : (
+              'Enviar'
+            )}
+          </Button>
+        </form>
+      </Form>
+
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
               Gracias por ponerte en contacto con nosotros
-            </h2>
-            <p>
+            </DialogTitle>
+            <DialogDescription>
               Tu opinión es muy valiosa para nosotros y nos esforzaremos por
               responderte lo más pronto posible
-            </p>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center">
+            <Image src="/check.svg" alt="check" width={100} height={100} />
           </div>
-        </div>
-      )}
-    </form>
+          <Button
+            onClick={() => {
+              setOpenDialog(false);
+              router.refresh();
+            }}
+          >
+            Cerrar
+          </Button>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
