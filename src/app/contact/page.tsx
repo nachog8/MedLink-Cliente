@@ -1,6 +1,6 @@
 import { ContactInfo } from '@/components/contact/contact-info';
+import { ContactForm } from '@/components/form/form-contact';
 
-import { FormContact } from '@/components/form/form-contact';
 import {
   Card,
   CardContent,
@@ -13,8 +13,8 @@ import Image from 'next/image';
 
 export default function Page() {
   return (
-    <div className="container m-auto mt-16 bg-[#fff] font-poppins max-xl:w-[95%]">
-      <div className="flex flex-col items-center justify-center gap-6 rounded-xl bg-sky-400 p-10 lg:flex-row lg:justify-around">
+    <div className="container m-auto mt-16 space-y-5 font-poppins max-xl:w-[95%] lg:grid lg:grid-cols-2 lg:space-y-0">
+      <section className="flex flex-col items-center justify-center gap-6 rounded-xl bg-sky-400 p-10">
         <ContactInfo
           icon={Phone}
           title="Teléfono"
@@ -33,8 +33,8 @@ export default function Page() {
           description="Si nos necesitas nos podes encontrar en nuestra sucursal."
           contactText="Junin 1250 2do Piso, Oficina 1, 3400 Corrientes"
         />
-      </div>
-      <section className="my-8">
+      </section>
+      <section>
         <Card className="mx-auto max-w-xl">
           <picture>
             <Image
@@ -54,7 +54,7 @@ export default function Page() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <FormContact />
+            <ContactForm />
           </CardContent>
         </Card>
       </section>

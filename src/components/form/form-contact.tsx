@@ -4,9 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { Loader2 } from 'lucide-react';
+
+import { CheckCircle2, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,14 +19,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/components/ui/use-toast';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
+import { Card, CardContent } from '../ui/card';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -51,8 +44,6 @@ const formSchema = z.object({
 });
 
 export function ContactForm() {
-  const router = useRouter();
-  const { toast } = useToast();
   const [openDialog, setOpenDialog] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,16 +60,12 @@ export function ContactForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setOpenDialog(true);
-    toast({
-      title: 'Formulario enviado',
-      description: 'Gracias por ponerte en contacto con nosotros.',
-    });
   }
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -173,10 +160,7 @@ export function ContactForm() {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="w-full bg-gradient-to-t from-[#124ccc] to-[#06207C]"
-          >
+          <Button type="submit" className="w-full">
             {form.formState.isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -191,26 +175,27 @@ export function ContactForm() {
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Gracias por ponerte en contacto con nosotros
-            </DialogTitle>
-            <DialogDescription>
-              Tu opinión es muy valiosa para nosotros y nos esforzaremos por
-              responderte lo más pronto posible
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-center">
-            <Image src="/check.svg" alt="check" width={100} height={100} />
-          </div>
-          <Button
-            onClick={() => {
-              setOpenDialog(false);
-              router.refresh();
-            }}
-          >
-            Cerrar
-          </Button>
+          <Card className="m-4">
+            <CardContent>
+              <div className="space-y-4 py-4">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                  <div className="rounded-full bg-green-100 p-3">
+                    <CheckCircle2 className="h-10 w-10 text-green-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="font-semibold">Mensaje Enviado</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Nos pondremos en contacto con uds en la brevedad. Este
+                      atento a su correo.
+                    </p>
+                  </div>
+                  <DialogClose asChild>
+                    <Button>Cerrar</Button>
+                  </DialogClose>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </DialogContent>
       </Dialog>
     </>
