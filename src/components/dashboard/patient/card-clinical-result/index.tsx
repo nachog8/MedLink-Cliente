@@ -42,7 +42,6 @@ export function ClinicalSummary({
   hasChronicDiseases,
   hasHealthyLifestyle,
 }: ClinicalSummaryProps) {
-  console.log(bloodPressure);
   return (
     <Card>
       <CardHeader>

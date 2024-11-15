@@ -21,15 +21,20 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function AllergyForm() {
+type AllergyFormProps = {
+  initialValues?: Partial<AllergieFormType>;
+};
+
+export default function AllergyForm({ initialValues }: AllergyFormProps) {
   const [state, formAction] = useFormState(allergiePatientAction, null);
+
   const form = useForm<AllergieFormType>({
     resolver: zodResolver(allergieSchema),
     defaultValues: {
-      foodAllergy: undefined,
-      insectAllergy: undefined,
-      medicineAllergy: undefined,
-      otherAllergies: undefined,
+      foodAllergy: initialValues?.foodAllergy || undefined,
+      insectAllergy: initialValues?.insectAllergy || undefined,
+      medicineAllergy: initialValues?.medicineAllergy || undefined,
+      otherAllergies: initialValues?.otherAllergies || undefined,
     },
   });
 
@@ -54,10 +59,10 @@ export default function AllergyForm() {
 
   const handleNoToAll = () => {
     form.reset({
-      foodAllergy: 'no',
-      insectAllergy: 'no',
-      medicineAllergy: 'no',
-      otherAllergies: 'no',
+      foodAllergy: false,
+      insectAllergy: false,
+      medicineAllergy: false,
+      otherAllergies: false,
     });
   };
 
@@ -65,46 +70,44 @@ export default function AllergyForm() {
     form.reset();
   };
 
-  const renderField = (field: keyof AllergieFormType, label: string) => (
-    <>
-      <FormField
-        control={form.control}
-        name={field}
-        render={({ field }) => (
-          <FormItem className="flex items-center justify-between">
-            <FormLabel className="font-semibold">{label}</FormLabel>
-            <FormControl>
-              <RadioGroup
-                onValueChange={field.onChange}
-                value={field.value || ''}
-                className="flex gap-5"
-              >
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <RadioGroupItem value="si" />
-                  </FormControl>
-                  <FormLabel className="font-normal">Sí</FormLabel>
-                </FormItem>
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <RadioGroupItem value="no" />
-                  </FormControl>
-                  <FormLabel>No</FormLabel>
-                </FormItem>
-              </RadioGroup>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </>
+  const renderField = (fieldName: keyof AllergieFormType, label: string) => (
+    <FormField
+      control={form.control}
+      name={fieldName}
+      render={({ field }) => (
+        <FormItem className="flex items-center justify-between">
+          <FormLabel className="font-semibold">{label}</FormLabel>
+          <FormControl>
+            <RadioGroup
+              onValueChange={(value) => field.onChange(value === 'true')}
+              value={field.value === undefined ? '' : String(field.value)}
+              className="flex gap-5"
+            >
+              <FormItem className="flex items-center space-x-3 space-y-0">
+                <FormControl>
+                  <RadioGroupItem value="true" />
+                </FormControl>
+                <FormLabel className="font-normal">Sí</FormLabel>
+              </FormItem>
+              <FormItem className="flex items-center space-x-3 space-y-0">
+                <FormControl>
+                  <RadioGroupItem value="false" />
+                </FormControl>
+                <FormLabel>No</FormLabel>
+              </FormItem>
+            </RadioGroup>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-5">
         {renderField('foodAllergy', 'Alergia a alimentos')}
-        {form.watch('foodAllergy') === 'si' && (
+        {form.watch('foodAllergy') && (
           <FormField
             control={form.control}
             name="foodAllergyDetails"
@@ -123,7 +126,7 @@ export default function AllergyForm() {
         )}
         <Separator />
         {renderField('insectAllergy', 'Alergia a insectos')}
-        {form.watch('insectAllergy') === 'si' && (
+        {form.watch('insectAllergy') && (
           <FormField
             control={form.control}
             name="insectAllergyDetails"
@@ -142,7 +145,7 @@ export default function AllergyForm() {
         )}
         <Separator />
         {renderField('medicineAllergy', 'Alergia a medicamentos')}
-        {form.watch('medicineAllergy') === 'si' && (
+        {form.watch('medicineAllergy') && (
           <FormField
             control={form.control}
             name="medicineAllergyDetails"
@@ -161,7 +164,7 @@ export default function AllergyForm() {
         )}
         <Separator />
         {renderField('otherAllergies', 'Otras alergias')}
-        {form.watch('otherAllergies') === 'si' && (
+        {form.watch('otherAllergies') && (
           <FormField
             control={form.control}
             name="otherAllergiesDetails"

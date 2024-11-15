@@ -21,6 +21,7 @@ import EditProfileForm from '@/components/form/patient/form-profile-patient';
 import { PasswordChangeForm } from '@/components/form/patient/form-update-password';
 import { PersonalInfoCard } from '../../dashboard-shared/personal-information';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { formatDate } from '@/lib/date-formatter';
 
 interface Props {
   firstName?: string;
@@ -57,6 +58,7 @@ export const CardProfile = ({
   phone,
   clinical,
 }: Props) => {
+  const formattedDate = formatDate(dateOfBirth);
   return (
     <Card className="w-full max-w-[500px] overflow-hidden">
       <CardHeader className="flex justify-center pb-0 pt-6">
@@ -79,12 +81,12 @@ export const CardProfile = ({
         </section>
 
         <PersonalInfoCard
-          birthDate={dateOfBirth || ''}
-          gender={gender || ''}
-          location={location || ''}
-          phone={phone || ''}
-          email={email || ''}
-          age={age?.toLocaleString() || ''}
+          birthDate={formattedDate}
+          gender={gender || '-'}
+          location={location || '-'}
+          phone={phone || '-'}
+          email={email || '-'}
+          age={age?.toLocaleString() || '-'}
         />
         <ClinicalSummary
           height={clinical?.height}
@@ -118,7 +120,7 @@ export const CardProfile = ({
               <EditProfileForm
                 firstName={firstName}
                 lastName={lastName}
-                birthDate={new Date(dateOfBirth)}
+                birthDate={new Date(formattedDate)}
                 genre={gender as 'MALE' | 'FEMALE' | 'OTHER'}
                 aboutMe={bio}
                 phone={phone}

@@ -24,7 +24,13 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function FamilyInheritanceForm() {
+type FamilyInheritanceFormProps = {
+  initialValues?: Partial<FamilyInheritanceFormType>;
+};
+
+export default function FamilyInheritanceForm({
+  initialValues,
+}: FamilyInheritanceFormProps) {
   const [state, formAction] = useFormState(
     familyInheritancePatientAction,
     null
@@ -32,12 +38,12 @@ export default function FamilyInheritanceForm() {
   const form = useForm<FamilyInheritanceFormType>({
     resolver: zodResolver(familyInheritanceSchema),
     defaultValues: {
-      diabetes: undefined,
-      heartDiseases: undefined,
-      hypertension: undefined,
-      thyroidDiseases: undefined,
-      chronicKidneyDisease: undefined,
-      other: undefined,
+      diabetes: initialValues?.diabetes || undefined,
+      heartDiseases: initialValues?.heartDiseases || undefined,
+      hypertension: initialValues?.hypertension || undefined,
+      thyroidDiseases: initialValues?.thyroidDiseases || undefined,
+      chronicKidneyDisease: initialValues?.chronicKidneyDisease || undefined,
+      other: initialValues?.other || undefined,
     },
   });
   useEffect(() => {
@@ -61,17 +67,24 @@ export default function FamilyInheritanceForm() {
   }, [state]);
   const handleNoToAll = () => {
     form.reset({
-      diabetes: 'no',
-      heartDiseases: 'no',
-      hypertension: 'no',
-      thyroidDiseases: 'no',
-      chronicKidneyDisease: 'no',
-      other: 'no',
+      diabetes: false,
+      heartDiseases: false,
+      hypertension: false,
+      thyroidDiseases: false,
+      chronicKidneyDisease: false,
+      other: false,
     });
   };
 
   const handleClearAll = () => {
-    form.reset();
+    form.reset({
+      diabetes: undefined,
+      heartDiseases: undefined,
+      hypertension: undefined,
+      thyroidDiseases: undefined,
+      chronicKidneyDisease: undefined,
+      other: undefined,
+    });
   };
 
   const renderField = (
@@ -86,19 +99,19 @@ export default function FamilyInheritanceForm() {
           <FormLabel className="font-semibold">{label}</FormLabel>
           <FormControl>
             <RadioGroup
-              onValueChange={field.onChange}
-              value={field.value || ''}
+              onValueChange={(value) => field.onChange(value === 'true')}
+              value={field.value === undefined ? '' : String(field.value)}
               className="flex gap-5"
             >
               <FormItem className="flex items-center space-x-3 space-y-0">
                 <FormControl>
-                  <RadioGroupItem value="si" />
+                  <RadioGroupItem value="true" />
                 </FormControl>
                 <FormLabel className="font-normal">Sí</FormLabel>
               </FormItem>
               <FormItem className="flex items-center space-x-3 space-y-0">
                 <FormControl>
-                  <RadioGroupItem value="no" />
+                  <RadioGroupItem value="false" />
                 </FormControl>
                 <FormLabel className="font-normal">No</FormLabel>
               </FormItem>
@@ -114,7 +127,7 @@ export default function FamilyInheritanceForm() {
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-5">
         {renderField('diabetes', 'Diabetes')}
-        {form.watch('diabetes') === 'si' && (
+        {form.watch('diabetes') && (
           <FormField
             control={form.control}
             name="diabetesDetails"
@@ -131,7 +144,7 @@ export default function FamilyInheritanceForm() {
 
         <Separator />
         {renderField('heartDiseases', 'Cardiopatías')}
-        {form.watch('heartDiseases') === 'si' && (
+        {form.watch('heartDiseases') && (
           <FormField
             control={form.control}
             name="heartDiseasesDetails"
@@ -151,7 +164,7 @@ export default function FamilyInheritanceForm() {
         <Separator />
 
         {renderField('hypertension', 'Hipertensión arterial')}
-        {form.watch('hypertension') === 'si' && (
+        {form.watch('hypertension') && (
           <FormField
             control={form.control}
             name="hypertensionDetails"
@@ -171,7 +184,7 @@ export default function FamilyInheritanceForm() {
         <Separator />
 
         {renderField('thyroidDiseases', 'Enfermedades tiroideas')}
-        {form.watch('thyroidDiseases') === 'si' && (
+        {form.watch('thyroidDiseases') && (
           <FormField
             control={form.control}
             name="thyroidDiseasesDetails"
@@ -191,7 +204,7 @@ export default function FamilyInheritanceForm() {
         <Separator />
 
         {renderField('chronicKidneyDisease', 'Enfermedad renal crónica')}
-        {form.watch('chronicKidneyDisease') === 'si' && (
+        {form.watch('chronicKidneyDisease') && (
           <FormField
             control={form.control}
             name="chronicKidneyDiseaseDetails"
@@ -211,7 +224,7 @@ export default function FamilyInheritanceForm() {
         <Separator />
 
         {renderField('other', 'Otros')}
-        {form.watch('other') === 'si' && (
+        {form.watch('other') && (
           <FormField
             control={form.control}
             name="otherDetails"

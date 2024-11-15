@@ -15,7 +15,7 @@ interface InfoRowProps {
   value: string;
 }
 
-function InfoRow({ label, value = 'N/A' }: InfoRowProps) {
+function InfoRow({ label, value }: InfoRowProps) {
   return (
     <div className="flex flex-col space-y-1.5">
       <div className="flex items-center justify-between py-2">
@@ -44,6 +44,7 @@ export function PersonalInfoCard({
   email,
   age,
 }: PersonalInfoCardProps) {
+  const genderTranslate = translateGender(gender);
   return (
     <Card className="w-full shadow-sm">
       <CardHeader>
@@ -57,7 +58,7 @@ export function PersonalInfoCard({
         <Separator />
         <InfoRow label="Fecha de nacimiento" value={birthDate} />
         <InfoRow label="Edad" value={age} />
-        <InfoRow label="Género" value={translateGender(gender)} />
+        <InfoRow label="Género" value={genderTranslate} />
         <InfoRow label="Locación" value={location} />
         <InfoRow label="Teléfono" value={phone} />
         <InfoRow label="Email" value={email} />

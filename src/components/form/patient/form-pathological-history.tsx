@@ -23,26 +23,33 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
+type PathologicalFormProps = {
+  initialValues?: Partial<PathologicalFormType>;
+};
 
-export default function PathologicalForm() {
+export default function PathologicalForm({
+  initialValues,
+}: PathologicalFormProps) {
   const [state, formAction] = useFormState(pathologicalPatientAction, null);
   const form = useForm<PathologicalFormType>({
     resolver: zodResolver(pathologicalSchema),
     defaultValues: {
-      hospitalization: undefined,
-      diabetes: undefined,
-      thyroidDiseases: undefined,
-      hypertension: undefined,
-      heartDiseases: undefined,
-      trauma: undefined,
-      cancer: undefined,
-      tuberculosis: undefined,
-      transfusions: undefined,
-      respiratoryDiseases: undefined,
-      gastrointestinalDiseases: undefined,
-      sexuallyTransmittedDiseases: undefined,
-      chronicKidneyDisease: undefined,
-      other: undefined,
+      hospitalization: initialValues?.hospitalization || undefined,
+      diabetes: initialValues?.diabetes || undefined,
+      thyroidDiseases: initialValues?.thyroidDiseases || undefined,
+      hypertension: initialValues?.hypertension || undefined,
+      heartDiseases: initialValues?.heartDiseases || undefined,
+      trauma: initialValues?.trauma || undefined,
+      cancer: initialValues?.cancer || undefined,
+      tuberculosis: initialValues?.tuberculosis || undefined,
+      transfusions: initialValues?.transfusions || undefined,
+      respiratoryDiseases: initialValues?.respiratoryDiseases || undefined,
+      gastrointestinalDiseases:
+        initialValues?.gastrointestinalDiseases || undefined,
+      sexuallyTransmittedDiseases:
+        initialValues?.sexuallyTransmittedDiseases || undefined,
+      chronicKidneyDisease: initialValues?.chronicKidneyDisease || undefined,
+      other: initialValues?.other || undefined,
     },
   });
   useEffect(() => {
@@ -65,20 +72,20 @@ export default function PathologicalForm() {
   }, [state]);
   const handleNoToAll = () => {
     form.reset({
-      hospitalization: 'no',
-      diabetes: 'no',
-      thyroidDiseases: 'no',
-      hypertension: 'no',
-      heartDiseases: 'no',
-      trauma: 'no',
-      cancer: 'no',
-      tuberculosis: 'no',
-      transfusions: 'no',
-      respiratoryDiseases: 'no',
-      gastrointestinalDiseases: 'no',
-      sexuallyTransmittedDiseases: 'no',
-      chronicKidneyDisease: 'no',
-      other: 'no',
+      hospitalization: false,
+      diabetes: false,
+      thyroidDiseases: false,
+      hypertension: false,
+      heartDiseases: false,
+      trauma: false,
+      cancer: false,
+      tuberculosis: false,
+      transfusions: false,
+      respiratoryDiseases: false,
+      gastrointestinalDiseases: false,
+      sexuallyTransmittedDiseases: false,
+      chronicKidneyDisease: false,
+      other: false,
     });
   };
 
@@ -95,19 +102,19 @@ export default function PathologicalForm() {
           <FormLabel className="font-semibold">{label}</FormLabel>
           <FormControl>
             <RadioGroup
-              onValueChange={field.onChange}
-              value={field.value || ''}
+              onValueChange={(value) => field.onChange(value === 'true')}
+              value={field.value === undefined ? '' : String(field.value)}
               className="flex gap-5"
             >
               <FormItem className="flex items-center space-x-3 space-y-0">
                 <FormControl>
-                  <RadioGroupItem value="si" />
+                  <RadioGroupItem value="true" />
                 </FormControl>
                 <FormLabel className="font-normal">Sí</FormLabel>
               </FormItem>
               <FormItem className="flex items-center space-x-3 space-y-0">
                 <FormControl>
-                  <RadioGroupItem value="no" />
+                  <RadioGroupItem value="false" />
                 </FormControl>
                 <FormLabel className="font-normal">No</FormLabel>
               </FormItem>
@@ -123,7 +130,7 @@ export default function PathologicalForm() {
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-5">
         {renderField('hospitalization', 'Hospitalización previa')}
-        {form.watch('hospitalization') === 'si' && (
+        {form.watch('hospitalization') && (
           <FormField
             control={form.control}
             name="hospitalizationDetails"
@@ -142,7 +149,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('diabetes', 'Diabetes')}
-        {form.watch('diabetes') === 'si' && (
+        {form.watch('diabetes') && (
           <FormField
             control={form.control}
             name="diabetesDetails"
@@ -158,7 +165,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('thyroidDiseases', 'Enfermedades tiroideas')}
-        {form.watch('thyroidDiseases') === 'si' && (
+        {form.watch('thyroidDiseases') && (
           <FormField
             control={form.control}
             name="thyroidDiseasesDetails"
@@ -177,7 +184,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('hypertension', 'Hipertensión arterial')}
-        {form.watch('hypertension') === 'si' && (
+        {form.watch('hypertension') && (
           <FormField
             control={form.control}
             name="hypertensionDetails"
@@ -196,7 +203,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('heartDiseases', 'Cardiopatías')}
-        {form.watch('heartDiseases') === 'si' && (
+        {form.watch('heartDiseases') && (
           <FormField
             control={form.control}
             name="heartDiseasesDetails"
@@ -215,7 +222,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('trauma', 'Traumatismo')}
-        {form.watch('trauma') === 'si' && (
+        {form.watch('trauma') && (
           <FormField
             control={form.control}
             name="traumaDetails"
@@ -234,7 +241,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('cancer', 'Cáncer')}
-        {form.watch('cancer') === 'si' && (
+        {form.watch('cancer') && (
           <FormField
             control={form.control}
             name="cancerDetails"
@@ -250,7 +257,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('tuberculosis', 'Tuberculosis')}
-        {form.watch('tuberculosis') === 'si' && (
+        {form.watch('tuberculosis') && (
           <FormField
             control={form.control}
             name="tuberculosisDetails"
@@ -269,7 +276,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('transfusions', 'Transfusiones')}
-        {form.watch('transfusions') === 'si' && (
+        {form.watch('transfusions') && (
           <FormField
             control={form.control}
             name="transfusionsDetails"
@@ -288,7 +295,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('respiratoryDiseases', 'Patologías respiratorias')}
-        {form.watch('respiratoryDiseases') === 'si' && (
+        {form.watch('respiratoryDiseases') && (
           <FormField
             control={form.control}
             name="respiratoryDiseasesDetails"
@@ -310,7 +317,7 @@ export default function PathologicalForm() {
           'gastrointestinalDiseases',
           'Patologías gastrointestinales'
         )}
-        {form.watch('gastrointestinalDiseases') === 'si' && (
+        {form.watch('gastrointestinalDiseases') && (
           <FormField
             control={form.control}
             name="gastrointestinalDiseasesDetails"
@@ -332,7 +339,7 @@ export default function PathologicalForm() {
           'sexuallyTransmittedDiseases',
           'Enfermedades de transmisión sexual'
         )}
-        {form.watch('sexuallyTransmittedDiseases') === 'si' && (
+        {form.watch('sexuallyTransmittedDiseases') && (
           <FormField
             control={form.control}
             name="sexuallyTransmittedDiseasesDetails"
@@ -351,7 +358,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('chronicKidneyDisease', 'Enfermedad renal crónica')}
-        {form.watch('chronicKidneyDisease') === 'si' && (
+        {form.watch('chronicKidneyDisease') && (
           <FormField
             control={form.control}
             name="chronicKidneyDiseaseDetails"
@@ -370,7 +377,7 @@ export default function PathologicalForm() {
         )}
         <Separator />
         {renderField('other', 'Otros')}
-        {form.watch('other') === 'si' && (
+        {form.watch('other') && (
           <FormField
             control={form.control}
             name="otherDetails"

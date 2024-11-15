@@ -50,30 +50,30 @@ export const editProfileSchema = z.object({
 export type EditProfileFormType = z.infer<typeof editProfileSchema>;
 
 export const allergieSchema = z.object({
-  foodAllergy: z.enum(['si', 'no']).optional(),
+  foodAllergy: z.boolean().optional(),
   foodAllergyDetails: z.string().optional(),
-  insectAllergy: z.enum(['si', 'no']).optional(),
+  insectAllergy: z.boolean().optional(),
   insectAllergyDetails: z.string().optional(),
-  medicineAllergy: z.enum(['si', 'no']).optional(),
+  medicineAllergy: z.boolean().optional(),
   medicineAllergyDetails: z.string().optional(),
-  otherAllergies: z.enum(['si', 'no']).optional(),
+  otherAllergies: z.boolean().optional(),
   otherAllergiesDetails: z.string().optional(),
 });
 
 export type AllergieFormType = z.infer<typeof allergieSchema>;
 
 export const familyInheritanceSchema = z.object({
-  diabetes: z.enum(['si', 'no']).optional(),
+  diabetes: z.boolean().optional(),
   diabetesDetails: z.string().optional(),
-  heartDiseases: z.enum(['si', 'no']).optional(),
+  heartDiseases: z.boolean().optional(),
   heartDiseasesDetails: z.string().optional(),
-  hypertension: z.enum(['si', 'no']).optional(),
+  hypertension: z.boolean().optional(),
   hypertensionDetails: z.string().optional(),
-  thyroidDiseases: z.enum(['si', 'no']).optional(),
+  thyroidDiseases: z.boolean().optional(),
   thyroidDiseasesDetails: z.string().optional(),
-  chronicKidneyDisease: z.enum(['si', 'no']).optional(),
+  chronicKidneyDisease: z.boolean().optional(),
   chronicKidneyDiseaseDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
+  other: z.boolean().optional(),
   otherDetails: z.string().optional(),
 });
 
@@ -97,33 +97,33 @@ export const noPathologicalSchema = z.object({
 export type NoPathologicalFormType = z.infer<typeof noPathologicalSchema>;
 
 export const pathologicalSchema = z.object({
-  hospitalization: z.enum(['si', 'no']).optional(),
+  hospitalization: z.boolean().optional(),
   hospitalizationDetails: z.string().optional(),
-  diabetes: z.enum(['si', 'no']).optional(),
+  diabetes: z.boolean().optional(),
   diabetesDetails: z.string().optional(),
-  thyroidDiseases: z.enum(['si', 'no']).optional(),
+  thyroidDiseases: z.boolean().optional(),
   thyroidDiseasesDetails: z.string().optional(),
-  hypertension: z.enum(['si', 'no']).optional(),
+  hypertension: z.boolean().optional(),
   hypertensionDetails: z.string().optional(),
-  heartDiseases: z.enum(['si', 'no']).optional(),
+  heartDiseases: z.boolean().optional(),
   heartDiseasesDetails: z.string().optional(),
-  trauma: z.enum(['si', 'no']).optional(),
+  trauma: z.boolean().optional(),
   traumaDetails: z.string().optional(),
-  cancer: z.enum(['si', 'no']).optional(),
+  cancer: z.boolean().optional(),
   cancerDetails: z.string().optional(),
-  tuberculosis: z.enum(['si', 'no']).optional(),
+  tuberculosis: z.boolean().optional(),
   tuberculosisDetails: z.string().optional(),
-  transfusions: z.enum(['si', 'no']).optional(),
+  transfusions: z.boolean().optional(),
   transfusionsDetails: z.string().optional(),
-  respiratoryDiseases: z.enum(['si', 'no']).optional(),
+  respiratoryDiseases: z.boolean().optional(),
   respiratoryDiseasesDetails: z.string().optional(),
-  gastrointestinalDiseases: z.enum(['si', 'no']).optional(),
+  gastrointestinalDiseases: z.boolean().optional(),
   gastrointestinalDiseasesDetails: z.string().optional(),
-  sexuallyTransmittedDiseases: z.enum(['si', 'no']).optional(),
+  sexuallyTransmittedDiseases: z.boolean().optional(),
   sexuallyTransmittedDiseasesDetails: z.string().optional(),
-  chronicKidneyDisease: z.enum(['si', 'no']).optional(),
+  chronicKidneyDisease: z.boolean().optional(),
   chronicKidneyDiseaseDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
+  other: z.boolean().optional(),
   otherDetails: z.string().optional(),
 });
 

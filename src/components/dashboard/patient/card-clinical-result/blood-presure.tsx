@@ -28,7 +28,7 @@ export function BloodPressure({ status }: BloodPressureProps) {
   };
 
   const getDisplayStatus = (status: string | null): string => {
-    if (!status) return 'N/A';
+    if (!status) return '-';
     switch (status) {
       case BloodPressureTrend.NORMAL:
         return 'NORMAL';
