@@ -16,10 +16,8 @@ export const authService = {
   async register(userData: RegisterProfessional | Register) {
     try {
       const response = await api.post('/auth/register', userData);
-
       return response.data;
     } catch (error) {
-      console.log((error as Error).message);
       throw (error as Error).message;
     }
   },

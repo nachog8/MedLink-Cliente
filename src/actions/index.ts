@@ -68,14 +68,16 @@ export async function registerPatientAction(
   }
 
   const { confirmPassword, ...newPatient } = validatedFields.data;
-
+  console.log(newPatient);
   try {
     const resp = await register(newPatient);
+
     return {
       data: resp,
       success: true,
     };
   } catch (error) {
+    console.log(error);
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {
