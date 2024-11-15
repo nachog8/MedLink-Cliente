@@ -21,7 +21,7 @@ export default async function Page({ params }: Props) {
   }
 
   const { payload: data } = await getPatient(params.id, token.value);
-
+  //
   return (
     <main className="container mx-auto space-y-5 py-20 font-poppins">
       <div className="grid justify-items-center gap-5 lg:grid-cols-3 lg:justify-items-start">
