@@ -1,4 +1,9 @@
 import {
+  AllergieFormType,
+  FamilyInheritanceFormType,
+  PathologicalFormType,
+} from '@/schemas/schemas-profile';
+import {
   Card,
   CardContent,
   CardDescription,
@@ -14,8 +19,21 @@ import { LayoutContentTab } from './layout-content-tab';
 import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
 import PathologicalForm from '@/components/form/patient/form-pathological-history';
 import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
+import { fieldTranslationMap } from '@/data/dashboard-pacient';
+import { translateData } from '@/lib/translate-data';
 
-export default function ClinicalHistoryCard() {
+// import { AllergyForm } from '@/components/form/patient/form-allergie-prueba';
+
+interface Props {
+  allergiesData: AllergieFormType;
+  pathologicalData: PathologicalFormType;
+  familyInheritance: FamilyInheritanceFormType;
+}
+export default function ClinicalHistoryCard({
+  allergiesData,
+  familyInheritance,
+  pathologicalData,
+}: Props) {
   return (
     <Card className="h-full w-full">
       <CardHeader>
@@ -66,35 +84,37 @@ export default function ClinicalHistoryCard() {
 
           <TabsContent value={'allergies'}>
             <LayoutContentTab
-              items={[]}
-              description="Registra aquí tus alergias conocidas, como a medicamentos, alimentos o productos químicos. Mantener esta información actualizada es clave para evitar reacciones adversas y asegurar un cuidado seguro en caso de emergencias."
+              items={translateData(allergiesData, fieldTranslationMap)}
               title="Antecedentes de Alergias"
-              form_dialog_information={<AllergyForm />}
+              form_dialog_information={
+                <AllergyForm initialValues={allergiesData} />
+              }
               title_dialog_information="Alergias"
             />
           </TabsContent>
           <TabsContent value={'pathological'}>
             <LayoutContentTab
-              items={[]}
-              description="Registra aquí tus enfermedades previas o condiciones de salud diagnosticadas, como hipertensión, diabetes o asma. Esta información es esencial para un seguimiento médico adecuado."
+              items={translateData(pathologicalData, fieldTranslationMap)}
               title="Antecedentes Patologicos"
-              form_dialog_information={<PathologicalForm />}
+              form_dialog_information={
+                <PathologicalForm initialValues={pathologicalData} />
+              }
               title_dialog_information="Enfermedades Patologicas"
             />
           </TabsContent>
           <TabsContent value={'no-pathological'}>
+            {/* TODO: FALTA AQUI PONER LOS DATOS */}
             <LayoutContentTab
-              items={[]}
-              description="Incluye información sobre tus hábitos diarios que impactan tu salud, como alimentación, ejercicio, consumo de tabaco o alcohol, y estilo de vida general."
+              items={translateData(allergiesData, fieldTranslationMap)}
               title="Antecedentes No Patologicos"
               form_dialog_information={<NoPathologicalForm />}
               title_dialog_information="Enfermedades No Patologicas"
             />
           </TabsContent>
           <TabsContent value={'vaccination schedule'}>
+            {/* TODO: FALTA AQUI PONER LOS DATOS */}
             <LayoutContentTab
               items={[]}
-              description="Mantén un registro de tus vacunas recibidas, fechas y refuerzos. Un esquema de vacunación actualizado es clave para prevenir enfermedades y fortalecer tu sistema inmunológico."
               title="Esquema de Vacunación"
               form_dialog_information={<VaccinationScheduleForm />}
               title_dialog_information="Esquema de Vacunación"
@@ -102,10 +122,11 @@ export default function ClinicalHistoryCard() {
           </TabsContent>
           <TabsContent value={'family inheritance'}>
             <LayoutContentTab
-              items={[]}
-              description="Registra condiciones de salud presentes en tu familia, como enfermedades cardíacas o diabetes. Estos antecedentes ayudan a comprender factores de riesgo y a tomar precauciones."
+              items={translateData(familyInheritance, fieldTranslationMap)}
               title="Antecedentes Heredo Familiar"
-              form_dialog_information={<FamilyInheritanceForm />}
+              form_dialog_information={
+                <FamilyInheritanceForm initialValues={familyInheritance} />
+              }
               title_dialog_information="Enfermedades Hereditarias"
             />
           </TabsContent>

@@ -6,7 +6,7 @@ interface DataItemProps {
   value: React.ReactNode;
 }
 
-export function InfoItem({ icon: Icon, label, value = 'N/A' }: DataItemProps) {
+export function InfoItem({ icon: Icon, label, value = '-' }: DataItemProps) {
   return (
     <div className="flex items-center gap-4">
       <div className="rounded-full bg-primary/10 p-2">

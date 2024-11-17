@@ -7,6 +7,6 @@ export function translateGender(gender: string) {
     case 'OTHER':
       return 'Otro';
     default:
-      return undefined;
+      return "-";
   }
 }

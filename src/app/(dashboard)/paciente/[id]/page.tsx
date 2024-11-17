@@ -28,7 +28,7 @@ export default async function Page({ params }: Props) {
         <CardProfile
           firstName={data.firstName}
           lastName={data.lastName}
-          age={calculateAge(data.dateOfBirth)}
+          age={+calculateAge(data.dateOfBirth)}
           location={data.location}
           bio={data.aboutMe}
           avatarUrl={data.avatar}
@@ -39,7 +39,11 @@ export default async function Page({ params }: Props) {
           clinical={data.clinicalData}
         />
         <div className="grid w-full gap-5 lg:col-span-2">
-          <ClinicalHistoryCard />
+          <ClinicalHistoryCard
+            allergiesData={data.allergiesData}
+            familyInheritance={data.familyInheritance}
+            pathologicalData={data.pathologicalData}
+          />
           <MedicalDocList documents={documents} />
         </div>
       </div>
