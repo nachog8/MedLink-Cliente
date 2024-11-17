@@ -6,15 +6,15 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { allergiePatientAction } from '@/actions/patient-actions';
+import { buildFormInitialValues } from '@/lib/build-form-initial-values';
+import { renderField } from '../render-field';
 import { toast } from '@/hooks/use-toast';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,17 +25,22 @@ type AllergyFormProps = {
   initialValues?: Partial<AllergieFormType>;
 };
 
+const allergyTypes = [
+  { name: 'foodAllergy', label: '¿Tienes alergia a alimentos?' },
+  { name: 'insectAllergy', label: '¿Tienes alergia a insectos?' },
+  { name: 'medicineAllergy', label: '¿Tienes alergia a medicamentos?' },
+  { name: 'otherAllergies', label: '¿Tienes otras alergias?' },
+] as const;
+
 export default function AllergyForm({ initialValues }: AllergyFormProps) {
   const [state, formAction] = useFormState(allergiePatientAction, null);
 
   const form = useForm<AllergieFormType>({
     resolver: zodResolver(allergieSchema),
-    defaultValues: {
-      foodAllergy: initialValues?.foodAllergy || undefined,
-      insectAllergy: initialValues?.insectAllergy || undefined,
-      medicineAllergy: initialValues?.medicineAllergy || undefined,
-      otherAllergies: initialValues?.otherAllergies || undefined,
-    },
+    defaultValues: buildFormInitialValues<AllergieFormType>(
+      [...allergyTypes],
+      initialValues
+    ),
   });
 
   useEffect(() => {
@@ -58,136 +63,46 @@ export default function AllergyForm({ initialValues }: AllergyFormProps) {
   }, [state]);
 
   const handleNoToAll = () => {
-    form.reset({
-      foodAllergy: false,
-      insectAllergy: false,
-      medicineAllergy: false,
-      otherAllergies: false,
-    });
+    form.reset(
+      Object.fromEntries(
+        allergyTypes.map(({ name }) => [name, 'false'])
+      ) as Partial<AllergieFormType>
+    );
   };
-
-  const handleClearAll = () => {
-    form.reset();
-  };
-
-  const renderField = (fieldName: keyof AllergieFormType, label: string) => (
-    <FormField
-      control={form.control}
-      name={fieldName}
-      render={({ field }) => (
-        <FormItem className="flex items-center justify-between">
-          <FormLabel className="font-semibold">{label}</FormLabel>
-          <FormControl>
-            <RadioGroup
-              onValueChange={(value) => field.onChange(value === 'true')}
-              value={field.value === undefined ? '' : String(field.value)}
-              className="flex gap-5"
-            >
-              <FormItem className="flex items-center space-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="true" />
-                </FormControl>
-                <FormLabel className="font-normal">Sí</FormLabel>
-              </FormItem>
-              <FormItem className="flex items-center space-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="false" />
-                </FormControl>
-                <FormLabel>No</FormLabel>
-              </FormItem>
-            </RadioGroup>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
 
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-5">
-        {renderField('foodAllergy', 'Alergia a alimentos')}
-        {form.watch('foodAllergy') && (
-          <FormField
-            control={form.control}
-            name="foodAllergyDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre alergia a alimentos"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+        {allergyTypes.map(({ name, label }) => (
+          <div key={name}>
+            {renderField({
+              control: form.control,
+              fieldName: name,
+              label: label,
+            })}
+            {form.watch(name) && (
+              <FormField
+                control={form.control}
+                name={`${name}Details` as keyof AllergieFormType}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        placeholder={`Detalles sobre ${label.toLowerCase().replace('¿Tienes ', '').replace('?', '')}`}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             )}
-          />
-        )}
-        <Separator />
-        {renderField('insectAllergy', 'Alergia a insectos')}
-        {form.watch('insectAllergy') && (
-          <FormField
-            control={form.control}
-            name="insectAllergyDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre alergia a insectos"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-        {renderField('medicineAllergy', 'Alergia a medicamentos')}
-        {form.watch('medicineAllergy') && (
-          <FormField
-            control={form.control}
-            name="medicineAllergyDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre alergia a medicamentos"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-        {renderField('otherAllergies', 'Otras alergias')}
-        {form.watch('otherAllergies') && (
-          <FormField
-            control={form.control}
-            name="otherAllergiesDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre otras alergias"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
+            <Separator className="my-2" />
+          </div>
+        ))}
         <div className="flex justify-evenly py-2">
           <Button type="button" variant="outline" onClick={handleNoToAll}>
             No a todo
-          </Button>
-          <Button type="button" variant="outline" onClick={handleClearAll}>
-            Limpiar todo
           </Button>
           <Button type="submit">Guardar</Button>
         </div>

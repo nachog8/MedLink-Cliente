@@ -1,6 +1,14 @@
 'use server';
 
+const convertToBoolean = (value: string | undefined) => {
+  if (!value) return;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return value;
+};
+
 import {
+  FormSchema,
   allergieSchema,
   editProfileSchema,
   familyInheritanceSchema,
@@ -30,10 +38,10 @@ export async function edithProfilePatientAction(
     weight: data.weight,
     bloodType: data.bloodType,
     bloodPressure: data.bloodPressure,
-    isDonor: data.isDonor === "true",
-    hasAllergies: data.hasAllergies === "true",
-    hasChronicDiseases: data.hasChronicDiseases === "true",
-    hasHealthyLifestyle: data.hasHealthyLifestyle === "true"
+    isDonor: data.isDonor === 'true',
+    hasAllergies: data.hasAllergies === 'true',
+    hasChronicDiseases: data.hasChronicDiseases === 'true',
+    hasHealthyLifestyle: data.hasHealthyLifestyle === 'true',
   };
 
   const validatedFields = editProfileSchema.safeParse(editProfileData);
@@ -47,14 +55,13 @@ export async function edithProfilePatientAction(
     return { error: errorDetails };
   }
 
-    const formattedData = {
+  const formattedData = {
     ...validatedFields.data,
     birthDate: validatedFields.data.birthDate
-      ? validatedFields.data.birthDate.toISOString().split("T")[0]
+      ? validatedFields.data.birthDate.toISOString().split('T')[0]
       : undefined,
   };
 
-console.log(formattedData);
   try {
     return {
       success: true,
@@ -108,13 +115,13 @@ export async function allergiePatientAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-  console.log('aqui muestro data ni bien entra', data);
+
   const allergieData = {
     foodAllergy: data.foodAllergy,
     foodAllergyDetails: data.foodAllergyDetails,
     insectAllergy: data.insectAllergy,
     insectAllergyDetails: data.insectAllergyDetails,
-    medicineAllergy: data.mediceAllergy,
+    medicineAllergy: data.medicineAllergy,
     medicineAllergyDetails: data.medicineAllergyDetails,
     otherAllergies: data.otherAllergies,
     otherAllergiesDetails: data.otherAllergiesDetails,
@@ -130,7 +137,14 @@ export async function allergiePatientAction(
 
     return { error: errorDetails };
   }
-  console.log('datos enviados', validatedFields.data);
+  const finalData = {
+    ...validatedFields.data,
+    foodAllergy: convertToBoolean(validatedFields.data.foodAllergy),
+    insectAllergy: convertToBoolean(validatedFields.data.insectAllergy),
+    medicineAllergy: convertToBoolean(validatedFields.data.medicineAllergy),
+    otherAllergies: convertToBoolean(validatedFields.data.otherAllergies),
+  };
+
   try {
     return {
       success: true,
@@ -190,6 +204,31 @@ export async function pathologicalPatientAction(
 
     return { error: errorDetails };
   }
+  const finalData = {
+    ...validatedFields.data,
+    hospitalization: convertToBoolean(validatedFields.data.hospitalization),
+    diabetes: convertToBoolean(validatedFields.data.diabetes),
+    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
+    hypertension: convertToBoolean(validatedFields.data.hypertension),
+    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
+    trauma: convertToBoolean(validatedFields.data.trauma),
+    cancer: convertToBoolean(validatedFields.data.cancer),
+    tuberculosis: convertToBoolean(validatedFields.data.tuberculosis),
+    transfusions: convertToBoolean(validatedFields.data.transfusions),
+    respiratoryDiseases: convertToBoolean(
+      validatedFields.data.respiratoryDiseases
+    ),
+    gastrointestinalDiseases: convertToBoolean(
+      validatedFields.data.gastrointestinalDiseases
+    ),
+    sexuallyTransmittedDiseases: convertToBoolean(
+      validatedFields.data.sexuallyTransmittedDiseases
+    ),
+    chronicKidneyDisease: convertToBoolean(
+      validatedFields.data.chronicKidneyDisease
+    ),
+    other: convertToBoolean(validatedFields.data.other),
+  };
 
   try {
     return {
@@ -281,6 +320,17 @@ export async function familyInheritancePatientAction(
     return { error: errorDetails };
   }
 
+  const finalData = {
+    ...validatedFields.data,
+    diabetes: convertToBoolean(validatedFields.data.diabetes),
+    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
+    hypertension: convertToBoolean(validatedFields.data.hypertension),
+    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
+    chronicKidneyDisease: convertToBoolean(
+      validatedFields.data.chronicKidneyDisease
+    ),
+    other: convertToBoolean(validatedFields.data.other),
+  };
   try {
     return {
       success: true,

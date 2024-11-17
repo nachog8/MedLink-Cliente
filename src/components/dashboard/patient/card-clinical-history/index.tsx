@@ -1,4 +1,9 @@
 import {
+  AllergieFormType,
+  FamilyInheritanceFormType,
+  PathologicalFormType,
+} from '@/schemas/schemas-profile';
+import {
   Card,
   CardContent,
   CardDescription,
@@ -14,13 +19,11 @@ import { LayoutContentTab } from './layout-content-tab';
 import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
 import PathologicalForm from '@/components/form/patient/form-pathological-history';
 import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
-import {
-  AllergieFormType,
-  FamilyInheritanceFormType,
-  PathologicalFormType,
-} from '@/schemas/schemas-profile';
-import { translateData } from '@/lib/translate-data';
 import { fieldTranslationMap } from '@/data/dashboard-pacient';
+import { translateData } from '@/lib/translate-data';
+
+// import { AllergyForm } from '@/components/form/patient/form-allergie-prueba';
+
 interface Props {
   allergiesData: AllergieFormType;
   pathologicalData: PathologicalFormType;

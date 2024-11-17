@@ -9,15 +9,15 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { buildFormInitialValues } from '@/lib/build-form-initial-values';
 import { familyInheritancePatientAction } from '@/actions/patient-actions';
+import { renderField } from '../render-field';
 import { toast } from '@/hooks/use-toast';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,6 +27,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 type FamilyInheritanceFormProps = {
   initialValues?: Partial<FamilyInheritanceFormType>;
 };
+const familyInheritanceTypes = [
+  { name: 'diabetes', label: '¿Tienes antecedentes familiares de diabetes?' },
+  {
+    name: 'heartDiseases',
+    label: '¿Tienes antecedentes familiares de enfermedades del corazón?',
+  },
+  {
+    name: 'hypertension',
+    label: '¿Tienes antecedentes familiares de hipertensión?',
+  },
+  {
+    name: 'chronicKidneyDisease',
+    label: '¿Tienes antecedentes familiares de enfermedad renal crónica?',
+  },
+  { name: 'other', label: '¿Tienes otros antecedentes familiares de salud?' },
+] as const;
 
 export default function FamilyInheritanceForm({
   initialValues,
@@ -37,15 +53,12 @@ export default function FamilyInheritanceForm({
   );
   const form = useForm<FamilyInheritanceFormType>({
     resolver: zodResolver(familyInheritanceSchema),
-    defaultValues: {
-      diabetes: initialValues?.diabetes || undefined,
-      heartDiseases: initialValues?.heartDiseases || undefined,
-      hypertension: initialValues?.hypertension || undefined,
-      thyroidDiseases: initialValues?.thyroidDiseases || undefined,
-      chronicKidneyDisease: initialValues?.chronicKidneyDisease || undefined,
-      other: initialValues?.other || undefined,
-    },
+    defaultValues: buildFormInitialValues<FamilyInheritanceFormType>(
+      [...familyInheritanceTypes],
+      initialValues
+    ),
   });
+
   useEffect(() => {
     if (state?.success) {
       toast({
@@ -65,191 +78,52 @@ export default function FamilyInheritanceForm({
       });
     }
   }, [state]);
+
   const handleNoToAll = () => {
-    form.reset({
-      diabetes: false,
-      heartDiseases: false,
-      hypertension: false,
-      thyroidDiseases: false,
-      chronicKidneyDisease: false,
-      other: false,
-    });
+    form.reset(
+      Object.fromEntries(
+        familyInheritanceTypes.map(({ name }) => [name, 'false'])
+      ) as Partial<FamilyInheritanceFormType>
+    );
   };
-
-  const handleClearAll = () => {
-    form.reset({
-      diabetes: undefined,
-      heartDiseases: undefined,
-      hypertension: undefined,
-      thyroidDiseases: undefined,
-      chronicKidneyDisease: undefined,
-      other: undefined,
-    });
-  };
-
-  const renderField = (
-    field: keyof FamilyInheritanceFormType,
-    label: string
-  ) => (
-    <FormField
-      control={form.control}
-      name={field}
-      render={({ field }) => (
-        <FormItem className="flex items-center justify-between">
-          <FormLabel className="font-semibold">{label}</FormLabel>
-          <FormControl>
-            <RadioGroup
-              onValueChange={(value) => field.onChange(value === 'true')}
-              value={field.value === undefined ? '' : String(field.value)}
-              className="flex gap-5"
-            >
-              <FormItem className="flex items-center space-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="true" />
-                </FormControl>
-                <FormLabel className="font-normal">Sí</FormLabel>
-              </FormItem>
-              <FormItem className="flex items-center space-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="false" />
-                </FormControl>
-                <FormLabel className="font-normal">No</FormLabel>
-              </FormItem>
-            </RadioGroup>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
 
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-5">
-        {renderField('diabetes', 'Diabetes')}
-        {form.watch('diabetes') && (
-          <FormField
-            control={form.control}
-            name="diabetesDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea placeholder="Detalles sobre diabetes" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+        {familyInheritanceTypes.map(({ name, label }) => (
+          <div key={name}>
+            {renderField({
+              control: form.control,
+              fieldName: name,
+              label: label,
+            })}
+            {form.watch(name) && (
+              <FormField
+                control={form.control}
+                name={`${name}Details` as keyof FamilyInheritanceFormType}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        placeholder={`Detalles sobre ${label.toLowerCase().replace('¿Tienes ', '').replace('?', '')}`}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             )}
-          />
-        )}
-
-        <Separator />
-        {renderField('heartDiseases', 'Cardiopatías')}
-        {form.watch('heartDiseases') && (
-          <FormField
-            control={form.control}
-            name="heartDiseasesDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre cardiopatías"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-
-        {renderField('hypertension', 'Hipertensión arterial')}
-        {form.watch('hypertension') && (
-          <FormField
-            control={form.control}
-            name="hypertensionDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre hipertensión arterial"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-
-        {renderField('thyroidDiseases', 'Enfermedades tiroideas')}
-        {form.watch('thyroidDiseases') && (
-          <FormField
-            control={form.control}
-            name="thyroidDiseasesDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre enfermedades tiroideas"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-
-        {renderField('chronicKidneyDisease', 'Enfermedad renal crónica')}
-        {form.watch('chronicKidneyDisease') && (
-          <FormField
-            control={form.control}
-            name="chronicKidneyDiseaseDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre enfermedad renal crónica"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-
-        {renderField('other', 'Otros')}
-        {form.watch('other') && (
-          <FormField
-            control={form.control}
-            name="otherDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre otros antecedentes"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+            <Separator className="my-2" />
+          </div>
+        ))}
         <Separator />
 
         <div className="flex justify-evenly py-2">
           <Button type="button" onClick={handleNoToAll} variant="outline">
             No a todos
           </Button>
-          <Button type="button" onClick={handleClearAll} variant="outline">
-            Limpiar todos
-          </Button>
+
           <Button type="submit">Guardar</Button>
         </div>
       </form>

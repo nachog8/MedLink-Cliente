@@ -50,30 +50,30 @@ export const editProfileSchema = z.object({
 export type EditProfileFormType = z.infer<typeof editProfileSchema>;
 
 export const allergieSchema = z.object({
-  foodAllergy: z.boolean().optional(),
+  foodAllergy: z.string().optional(),
   foodAllergyDetails: z.string().optional(),
-  insectAllergy: z.boolean().optional(),
+  insectAllergy: z.string().optional(),
   insectAllergyDetails: z.string().optional(),
-  medicineAllergy: z.boolean().optional(),
+  medicineAllergy: z.string().optional(),
   medicineAllergyDetails: z.string().optional(),
-  otherAllergies: z.boolean().optional(),
+  otherAllergies: z.string().optional(),
   otherAllergiesDetails: z.string().optional(),
 });
 
 export type AllergieFormType = z.infer<typeof allergieSchema>;
 
 export const familyInheritanceSchema = z.object({
-  diabetes: z.boolean().optional(),
+  diabetes: z.string().optional(),
   diabetesDetails: z.string().optional(),
-  heartDiseases: z.boolean().optional(),
+  heartDiseases: z.string().optional(),
   heartDiseasesDetails: z.string().optional(),
-  hypertension: z.boolean().optional(),
+  hypertension: z.string().optional(),
   hypertensionDetails: z.string().optional(),
-  thyroidDiseases: z.boolean().optional(),
+  thyroidDiseases: z.string().optional(),
   thyroidDiseasesDetails: z.string().optional(),
-  chronicKidneyDisease: z.boolean().optional(),
+  chronicKidneyDisease: z.string().optional(),
   chronicKidneyDiseaseDetails: z.string().optional(),
-  other: z.boolean().optional(),
+  other: z.string().optional(),
   otherDetails: z.string().optional(),
 });
 
@@ -97,33 +97,33 @@ export const noPathologicalSchema = z.object({
 export type NoPathologicalFormType = z.infer<typeof noPathologicalSchema>;
 
 export const pathologicalSchema = z.object({
-  hospitalization: z.boolean().optional(),
+  hospitalization: z.string().optional(),
   hospitalizationDetails: z.string().optional(),
-  diabetes: z.boolean().optional(),
+  diabetes: z.string().optional(),
   diabetesDetails: z.string().optional(),
-  thyroidDiseases: z.boolean().optional(),
+  thyroidDiseases: z.string().optional(),
   thyroidDiseasesDetails: z.string().optional(),
-  hypertension: z.boolean().optional(),
+  hypertension: z.string().optional(),
   hypertensionDetails: z.string().optional(),
-  heartDiseases: z.boolean().optional(),
+  heartDiseases: z.string().optional(),
   heartDiseasesDetails: z.string().optional(),
-  trauma: z.boolean().optional(),
+  trauma: z.string().optional(),
   traumaDetails: z.string().optional(),
-  cancer: z.boolean().optional(),
+  cancer: z.string().optional(),
   cancerDetails: z.string().optional(),
-  tuberculosis: z.boolean().optional(),
+  tuberculosis: z.string().optional(),
   tuberculosisDetails: z.string().optional(),
-  transfusions: z.boolean().optional(),
+  transfusions: z.string().optional(),
   transfusionsDetails: z.string().optional(),
-  respiratoryDiseases: z.boolean().optional(),
+  respiratoryDiseases: z.string().optional(),
   respiratoryDiseasesDetails: z.string().optional(),
-  gastrointestinalDiseases: z.boolean().optional(),
+  gastrointestinalDiseases: z.string().optional(),
   gastrointestinalDiseasesDetails: z.string().optional(),
-  sexuallyTransmittedDiseases: z.boolean().optional(),
+  sexuallyTransmittedDiseases: z.string().optional(),
   sexuallyTransmittedDiseasesDetails: z.string().optional(),
-  chronicKidneyDisease: z.boolean().optional(),
+  chronicKidneyDisease: z.string().optional(),
   chronicKidneyDiseaseDetails: z.string().optional(),
-  other: z.boolean().optional(),
+  other: z.string().optional(),
   otherDetails: z.string().optional(),
 });
 
