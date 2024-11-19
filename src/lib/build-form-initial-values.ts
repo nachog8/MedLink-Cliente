@@ -5,7 +5,7 @@ export const buildFormInitialValues = <T>(
   const defaultValues: Partial<T> = {};
 
   config.forEach(({ name }) => {
-    defaultValues[name] = initialValues?.[name] || (undefined as T[keyof T]);
+    defaultValues[name] = initialValues?.[name] ?? (undefined as T[keyof T]);
     defaultValues[`${String(name)}Details` as keyof T] = (initialValues?.[
       `${String(name)}Details` as keyof T
     ] || '') as T[keyof T];

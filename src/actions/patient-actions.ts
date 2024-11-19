@@ -1,14 +1,6 @@
 'use server';
 
-const convertToBoolean = (value: string | undefined) => {
-  if (!value) return;
-  if (value === 'true') return true;
-  if (value === 'false') return false;
-  return value;
-};
-
 import {
-  FormSchema,
   allergieSchema,
   editProfileSchema,
   familyInheritanceSchema,
@@ -18,6 +10,26 @@ import {
   vaccinationSchema,
 } from '@/schemas/schemas-profile';
 
+import { convertToBoolean } from '@/lib/convert-boolean';
+import { cookies } from 'next/headers';
+import { patientService } from '@/services/patient-service';
+
+//Funciones de las Cookies
+export const getCookie = (name: string) => {
+  const cookieStore = cookies();
+
+  return cookieStore.get(name)?.value || '';
+};
+
+//Funciones de Service
+const {
+  updateAllergies,
+  updateFamilyInheritance,
+  updatePathological,
+  updateProfilePatient,
+} = patientService;
+
+// Funcioens de actualizacion
 export async function edithProfilePatientAction(
   prevState: any,
   formData: FormData
@@ -27,17 +39,17 @@ export async function edithProfilePatientAction(
   const editProfileData = {
     firstName: data.firstName,
     lastName: data.lastName,
-    birthDate: new Date(data.birthDate),
-    genre: data.genre,
+    dateOfBirth: data.dateOfBirth,
+    gender: data.gender,
     aboutMe: data.aboutMe,
     phone: data.phone,
     email: data.email,
     location: data.location,
     avatar: data.avatar,
-    height: data.height,
-    weight: data.weight,
+    height: +data.height,
+    weight: +data.weight,
     bloodType: data.bloodType,
-    bloodPressure: data.bloodPressure,
+    bloodPressureTrend: data.bloodPressureTrend,
     isDonor: data.isDonor === 'true',
     hasAllergies: data.hasAllergies === 'true',
     hasChronicDiseases: data.hasChronicDiseases === 'true',
@@ -54,17 +66,14 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-
-  const formattedData = {
-    ...validatedFields.data,
-    birthDate: validatedFields.data.birthDate
-      ? validatedFields.data.birthDate.toISOString().split('T')[0]
-      : undefined,
-  };
-
+  console.log(validatedFields.data);
   try {
+    const response = await updateProfilePatient(
+      validatedFields.data,
+      await getCookie('token')
+    );
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -134,7 +143,6 @@ export async function allergiePatientAction(
       field: err.path[0],
       message: err.message,
     }));
-
     return { error: errorDetails };
   }
   const finalData = {
@@ -146,8 +154,9 @@ export async function allergiePatientAction(
   };
 
   try {
+    const response = await updateAllergies(finalData, await getCookie('token'));
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -231,8 +240,12 @@ export async function pathologicalPatientAction(
   };
 
   try {
+    const response = await updatePathological(
+      finalData,
+      await getCookie('token')
+    );
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -332,6 +345,10 @@ export async function familyInheritancePatientAction(
     other: convertToBoolean(validatedFields.data.other),
   };
   try {
+    const response = await updateFamilyInheritance(
+      finalData,
+      await getCookie('token')
+    );
     return {
       success: true,
     };

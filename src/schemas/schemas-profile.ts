@@ -1,46 +1,22 @@
 import { z } from 'zod';
 
 export const editProfileSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, { message: 'El nombre debe tener al menos 2 caracteres.' })
-    .optional(),
-  lastName: z
-    .string()
-    .min(2, { message: 'El apellido debe tener al menos 2 caracteres.' })
-    .optional(),
-  birthDate: z.date().optional(),
-  genre: z.enum(['MALE', 'FEMALE', 'OTHER']).optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  gender: z.string().optional(),
   aboutMe: z
     .string()
-    .max(500, { message: 'La descripción no debe exceder 500 caracteres.' })
+    .max(200, { message: 'La descripción no debe exceder 500 caracteres.' })
     .optional(),
-  phone: z
-    .string()
-    .regex(/^\+?[0-9\s-()]+$/, {
-      message: 'Formato de número de teléfono no válido.',
-    })
-    .optional(),
-  email: z.string().email({ message: 'Correo electrónico no válido.' }), // Campo requerido
+  phone: z.string().optional(),
+  email: z.string().email({ message: 'Correo electrónico no válido.' }),
   location: z.string().optional(),
-  avatar: z
-    .instanceof(File)
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: 'El avatar debe ser menor a 5MB.',
-    })
-    .refine(
-      (file) =>
-        ['image/jpeg', 'image/png', 'image/gif', null].includes(file.type),
-      {
-        message:
-          'El avatar debe ser un archivo de imagen válido (JPEG, PNG, GIF).',
-      }
-    )
-    .optional(),
-  height: z.string().optional(),
-  weight: z.string().optional(),
+  avatar: z.instanceof(File).optional(),
+  height: z.number().optional(),
+  weight: z.number().optional(),
   bloodType: z.string().optional(),
-  bloodPressure: z.string().optional(),
+  bloodPressureTrend: z.string().optional(),
   isDonor: z.boolean().optional(),
   hasAllergies: z.boolean().optional(),
   hasChronicDiseases: z.boolean().optional(),
@@ -148,54 +124,55 @@ export type SecurityFormType = z.infer<typeof securitySchema>;
 
 export const vaccinationSchema = z.object({
   atBirth: z.object({
-    bcg: z.boolean().default(false),
-    hepatitisB1: z.boolean().default(false),
+    bcg: z.string().optional(),
+    hepatitisB1: z.string().optional(),
   }),
   twoMonths: z.object({
-    pentavalent1: z.boolean().default(false),
-    hepatitisB2: z.boolean().default(false),
-    rotavirus1: z.boolean().default(false),
-    pneumococcal1: z.boolean().default(false),
+    pentavalent1: z.string().optional(),
+    hepatitisB2: z.string().optional(),
+    rotavirus1: z.string().optional(),
+    pneumococcal1: z.string().optional(),
   }),
   fourMonths: z.object({
-    pentavalent2: z.boolean().default(false),
-    rotavirus2: z.boolean().default(false),
-    pneumococcal2: z.boolean().default(false),
+    pentavalent2: z.string().optional(),
+    rotavirus2: z.string().optional(),
+    pneumococcal2: z.string().optional(),
   }),
   sixMonths: z.object({
-    pentavalent3: z.boolean().default(false),
-    hepatitisB3: z.boolean().default(false),
-    rotavirus3: z.boolean().default(false),
-    influenza1: z.boolean().default(false),
+    pentavalent3: z.string().optional(),
+    hepatitisB3: z.string().optional(),
+    rotavirus3: z.string().optional(),
+    influenza1: z.string().optional(),
   }),
   sevenMonths: z.object({
-    influenza2: z.boolean().default(false),
+    influenza2: z.string().optional(),
   }),
   twelveMonths: z.object({
-    srp1: z.boolean().default(false),
-    pneumococcal3: z.boolean().default(false),
+    srp1: z.string().optional(),
+    pneumococcal3: z.string().optional(),
   }),
   eighteenMonths: z.object({
-    pentavalent4: z.boolean().default(false),
+    pentavalent4: z.string().optional(),
   }),
   twoYears: z.object({
-    influenzaAnnual1: z.boolean().default(false),
+    influenzaAnnual1: z.string().optional(),
   }),
   threeYears: z.object({
-    influenzaAnnual2: z.boolean().default(false),
+    influenzaAnnual2: z.string().optional(),
   }),
   fourYears: z.object({
-    dpt: z.boolean().default(false),
-    influenzaAnnual3: z.boolean().default(false),
+    dpt: z.string().optional(),
+    influenzaAnnual3: z.string().optional(),
   }),
   fiveYears: z.object({
-    influenzaAnnual4: z.boolean().default(false),
-    vopOpv: z.boolean().default(false),
+    influenzaAnnual4: z.string().optional(),
+    vopOpv: z.string().optional(),
   }),
   elevenYears: z.object({
-    vph: z.boolean().default(false),
+    vph: z.string().optional(),
   }),
-  otherVaccines: z.enum(['si', 'no']).optional(),
+  other: z.string().optional(),
+  otherDetails: z.string().optional(),
 });
 
 export type VaccinationFormType = z.infer<typeof vaccinationSchema>;

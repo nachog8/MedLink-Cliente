@@ -4,7 +4,7 @@
  * @returns {string | number} La edad calculada o "-" si la fecha no es válida.
  */
 export function calculateAge(birthDate: string | undefined): string | number {
-  if (!birthDate) {
+  if (!birthDate || birthDate.trim() === '') {
     return '-';
   }
 

@@ -22,17 +22,24 @@ import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-
 import { fieldTranslationMap } from '@/data/dashboard-pacient';
 import { translateData } from '@/lib/translate-data';
 
-// import { AllergyForm } from '@/components/form/patient/form-allergie-prueba';
+// import {
+//   NoPathologicalFormType,
+//   VaccinationFormType,
+// } from '../../../../schemas/schemas-profile';
 
 interface Props {
   allergiesData: AllergieFormType;
   pathologicalData: PathologicalFormType;
-  familyInheritance: FamilyInheritanceFormType;
+  familyInheritanceData: FamilyInheritanceFormType;
+  // noPathologicalData: NoPathologicalFormType;
+  // vaccinationData: VaccinationFormType;
 }
 export default function ClinicalHistoryCard({
   allergiesData,
-  familyInheritance,
+  familyInheritanceData,
   pathologicalData,
+  // noPathologicalData,
+  // vaccinationData,
 }: Props) {
   return (
     <Card className="h-full w-full">
@@ -105,7 +112,7 @@ export default function ClinicalHistoryCard({
           <TabsContent value={'no-pathological'}>
             {/* TODO: FALTA AQUI PONER LOS DATOS */}
             <LayoutContentTab
-              items={translateData(allergiesData, fieldTranslationMap)}
+              items={{}}
               title="Antecedentes No Patologicos"
               form_dialog_information={<NoPathologicalForm />}
               title_dialog_information="Enfermedades No Patologicas"
@@ -114,7 +121,7 @@ export default function ClinicalHistoryCard({
           <TabsContent value={'vaccination schedule'}>
             {/* TODO: FALTA AQUI PONER LOS DATOS */}
             <LayoutContentTab
-              items={[]}
+              items={{}}
               title="Esquema de Vacunación"
               form_dialog_information={<VaccinationScheduleForm />}
               title_dialog_information="Esquema de Vacunación"
@@ -122,10 +129,10 @@ export default function ClinicalHistoryCard({
           </TabsContent>
           <TabsContent value={'family inheritance'}>
             <LayoutContentTab
-              items={translateData(familyInheritance, fieldTranslationMap)}
+              items={translateData(familyInheritanceData, fieldTranslationMap)}
               title="Antecedentes Heredo Familiar"
               form_dialog_information={
-                <FamilyInheritanceForm initialValues={familyInheritance} />
+                <FamilyInheritanceForm initialValues={familyInheritanceData} />
               }
               title_dialog_information="Enfermedades Hereditarias"
             />

@@ -1,13 +1,11 @@
 'use client';
-import { es } from 'date-fns/locale';
+
 import {
   Bike,
-  Calendar as CalendarIcon,
   CircleAlert,
   Droplet,
   Heart,
   HeartHandshake,
-  Image as ImageIcon,
   Mail,
   MapPin,
   Phone,
@@ -29,11 +27,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -43,32 +36,33 @@ import {
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import ImageUpload from '@/components/buttons/button-image-upload';
 import { Input } from '@/components/ui/input';
+import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { edithProfilePatientAction } from '@/actions/patient-actions';
-import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Props {
   firstName?: string;
   lastName?: string;
-  birthDate?: Date;
-  genre?: 'MALE' | 'FEMALE' | 'OTHER';
+  dateOfBirth?: string;
+  gender?: 'MALE' | 'FEMALE' | 'OTHER';
   aboutMe?: string;
   phone?: string;
   email?: string;
   location?: string;
-  avatar?: string | null;
-  height?: string;
-  weight?: string;
+  avatar?: string;
+  height?: number;
+  weight?: number;
   bloodType?: string;
-  bloodPressure?: string;
+  bloodPressureTrend?: string;
   isDonor?: boolean;
   hasAllergies?: boolean;
   hasChronicDiseases?: boolean;
@@ -78,8 +72,8 @@ interface Props {
 export default function EditProfileForm({
   firstName,
   lastName,
-  birthDate,
-  genre,
+  dateOfBirth,
+  gender,
   aboutMe,
   phone,
   email,
@@ -87,21 +81,22 @@ export default function EditProfileForm({
   height,
   weight,
   bloodType,
-  bloodPressure,
+  bloodPressureTrend,
   isDonor,
   hasAllergies,
   hasChronicDiseases,
   hasHealthyLifestyle,
 }: Props) {
   const [state, formAction] = useFormState(edithProfilePatientAction, null);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const router = useRouter();
   const form = useForm<EditProfileFormType>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
       firstName,
       lastName,
-      birthDate,
-      genre,
+      dateOfBirth,
+      gender,
       aboutMe,
       phone,
       email,
@@ -110,7 +105,7 @@ export default function EditProfileForm({
       height,
       weight,
       bloodType,
-      bloodPressure,
+      bloodPressureTrend,
       isDonor,
       hasAllergies,
       hasChronicDiseases,
@@ -120,10 +115,8 @@ export default function EditProfileForm({
 
   useEffect(() => {
     if (state?.success) {
-      toast({
-        title: 'Edicion de Perfil Exitoso!!',
-        description: 'Tu perfil ya fue editado. Gracias!!',
-      });
+      setIsSubmitted(true);
+      router.refresh();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
@@ -135,11 +128,12 @@ export default function EditProfileForm({
         variant: 'destructive',
       });
     }
-  }, [state]);
-
+  }, [state, router]);
+  if (isSubmitted) return <MessageSuccesfull />;
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-5 px-3">
+        <ImageUpload form={form} name="avatar" />
         <FormField
           control={form.control}
           name="firstName"
@@ -178,76 +172,60 @@ export default function EditProfileForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="birthDate"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Fecha de Nacimiento</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={'outline'}
-                      className={cn(
-                        'w-[240px] pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground'
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, 'PPP', { locale: es })
-                      ) : (
-                        <span>Elige una fecha</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date('1900-01-01')
-                    }
-                    initialFocus
-                    locale={es}
-                    formatters={{
-                      formatWeekdayName: (day) =>
-                        format(day, 'EEEEE', { locale: es }).toUpperCase(),
-                      formatCaption: (date) =>
-                        format(date, 'LLLL yyyy', { locale: es }),
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="genre"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Genre</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+
+        <div className="grid grid-cols-2 items-center gap-5">
+          <FormField
+            control={form.control}
+            name="dateOfBirth"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Fecha de Nacimiento</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a genre" />
-                  </SelectTrigger>
+                  <div className="relative">
+                    <Input
+                      type="date"
+                      {...field}
+                      value={field.value}
+                      placeholder="DD-MM-YYYY"
+                      className={cn(
+                        'w-auto',
+                        form.formState.errors.dateOfBirth && 'border-red-500'
+                      )}
+                    />
+                  </div>
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="MALE">Masculino</SelectItem>
-                  <SelectItem value="FEMALE">Femenino</SelectItem>
-                  <SelectItem value="OTHER">Otro</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Género</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  name={field.name}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona tu género" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="MALE">Masculino</SelectItem>
+                    <SelectItem value="FEMALE">Femenino</SelectItem>
+                    <SelectItem value="OTHER">Otro</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
           name="aboutMe"
@@ -320,55 +298,6 @@ export default function EditProfileForm({
         />
         <FormField
           control={form.control}
-          name="avatar"
-          render={({ field: { value, onChange, ...field } }) => (
-            <FormItem>
-              <FormLabel>Imagen de Avatar</FormLabel>
-              <FormControl>
-                <div className="flex items-center space-x-4">
-                  <div className="relative">
-                    <Input
-                      {...field}
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        if (file) {
-                          onChange(file);
-                          setFileName(file.name);
-                        }
-                      }}
-                      className="hidden"
-                      id="avatar-upload"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="pl-10"
-                      onClick={() =>
-                        document.getElementById('avatar-upload')?.click()
-                      }
-                    >
-                      Seleccionar Archivo
-                    </Button>
-                    <ImageIcon
-                      className="absolute left-3 top-1/2 -translate-y-1/2"
-                      size={18}
-                    />
-                  </div>
-                  {fileName && (
-                    <span className="text-sm text-muted-foreground">
-                      {fileName}
-                    </span>
-                  )}
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="height"
           render={({ field }) => (
             <FormItem>
@@ -426,14 +355,14 @@ export default function EditProfileForm({
         />
         <FormField
           control={form.control}
-          name="bloodPressure"
+          name="bloodPressureTrend"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tendencia de Presión Arterial</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                value={field.value}
                 {...field}
+                name={field.name}
               >
                 <FormControl>
                   <SelectTrigger className="relative pl-10">
@@ -470,6 +399,7 @@ export default function EditProfileForm({
               </div>
               <FormControl>
                 <Switch
+                  name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
@@ -493,6 +423,7 @@ export default function EditProfileForm({
               </div>
               <FormControl>
                 <Switch
+                  name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
@@ -516,6 +447,7 @@ export default function EditProfileForm({
               </div>
               <FormControl>
                 <Switch
+                  name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
@@ -539,6 +471,7 @@ export default function EditProfileForm({
               </div>
               <FormControl>
                 <Switch
+                  name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
@@ -546,40 +479,6 @@ export default function EditProfileForm({
             </FormItem>
           )}
         />
-        {/* Campos ocultos para enviar datos en el submit */}
-        <input
-          type="hidden"
-          name="bloodPressure"
-          value={form.watch('bloodPressure') || ''}
-        />
-        <input
-          type="hidden"
-          name="isDonor"
-          value={form.watch('isDonor') ? 'true' : 'false'}
-        />
-        <input
-          type="hidden"
-          name="hasAllergies"
-          value={form.watch('hasAllergies') ? 'true' : 'false'}
-        />
-        <input
-          type="hidden"
-          name="hasChronicDiseases"
-          value={form.watch('hasChronicDiseases') ? 'true' : 'false'}
-        />
-        <input
-          type="hidden"
-          name="hasHealthyLifestyle"
-          value={form.watch('hasHealthyLifestyle') ? 'true' : 'false'}
-        />
-        <input
-          type="hidden"
-          name="birthDate"
-          value={
-            form.watch('birthDate') ? form.watch('birthDate').toISOString() : ''
-          }
-        />
-        <input type="hidden" name="genre" value={form.watch('genre') || ''} />
 
         <Button type="submit">Actualizar Perfil</Button>
       </form>

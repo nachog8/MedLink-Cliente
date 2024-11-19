@@ -35,7 +35,7 @@ export const renderField = <T,>({
         <FormControl>
           <RadioGroup
             onValueChange={(value) => field.onChange(value === 'true')}
-            value={field.value === undefined ? '' : String(field.value)}
+            value={String(field.value)}
             className="flex gap-5"
             name={fieldName as string}
           >
