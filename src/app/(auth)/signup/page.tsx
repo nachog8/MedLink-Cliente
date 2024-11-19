@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/card';
 
 import { ForgotPassword } from '@/components/user-auth/forgot-my-password';
-import FormSignUp from '@/components/form/form-signup';
+import FormSignUp from '@/components/form/auth/form-signup';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';

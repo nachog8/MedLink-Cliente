@@ -1,9 +1,10 @@
 import { Stethoscope, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import FormSignInPatient from '@/components/form/form-signin-patient';
-import FormSignProfessional from '@/components/form/form-signin-professional';
+import FormSignInPatient from '@/components/form/auth/form-signin-patient';
+
 import { TabSplitContainer } from '@/components/user-auth/tab-split-container';
+import FormSignProfessional from '@/components/form/auth/form-signin-professional';
 
 export default function Page() {
   return (

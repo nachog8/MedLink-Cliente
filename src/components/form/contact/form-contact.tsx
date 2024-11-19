@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent } from '../../ui/card';
 
 const formSchema = z.object({
   name: z.string().min(2, {

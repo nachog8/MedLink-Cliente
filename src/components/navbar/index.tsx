@@ -6,7 +6,7 @@ import { links } from '../../data/links';
 
 export default function Navbar() {
   return (
-    <header className="font-poppins sticky top-0 z-50 w-full border-b bg-white">
+    <header className="sticky top-0 z-50 w-full border-b bg-white font-poppins">
       <div className="container mx-auto flex h-16 w-full items-center justify-between px-5">
         <MenuNavButton />
 
@@ -20,12 +20,12 @@ export default function Navbar() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
+        <nav className="hidden items-center gap-6 text-sm font-medium lg:flex">
           {links.map((link, i) => (
             <Link
               key={i}
               href={link.path}
-              className={`relative capitalize text-gray-500 transition-colors duration-300 hover:text-[#0234a1] dark:text-gray-400 dark:hover:text-[#0234a1] md:text-lg`}
+              className={`relative capitalize text-gray-500 transition-colors duration-300 hover:text-[#0234a1] dark:text-gray-400 dark:hover:text-[#0234a1]`}
               prefetch={false}
             >
               {link.name}

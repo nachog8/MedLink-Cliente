@@ -11,7 +11,7 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
-import { links } from '../../data/links';
+import { links } from '@/data/links';
 
 export const MenuNavButton = () => {
   return (
@@ -26,11 +26,10 @@ export const MenuNavButton = () => {
           <div className="flex items-center justify-center gap-5">
             <Image
               alt="logo-app"
-              src={'/images/icons/Logo.svg'}
-              width={60}
-              height={60}
+              src={'/images/logo/MEDLINK_LOGO-01.png'}
+              width={100}
+              height={100}
             />
-            <p className="font-bold">MedLink</p>
           </div>
         </SheetTitle>
         <SheetDescription />

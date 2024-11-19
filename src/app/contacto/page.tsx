@@ -1,5 +1,5 @@
 import { ContactInfo } from '@/components/contact/contact-info';
-import { ContactForm } from '@/components/form/form-contact';
+import { ContactForm } from '@/components/form/contact/form-contact';
 
 import {
   Card,

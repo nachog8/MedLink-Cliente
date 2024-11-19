@@ -8,7 +8,7 @@ import {
 
 import Image from 'next/image';
 import { LockKeyholeOpen } from 'lucide-react';
-import { ResetPasswordForm } from '@/components/form/form-reset-password';
+import { ResetPasswordForm } from '@/components/form/auth/form-reset-password';
 import { Separator } from '@/components/ui/separator';
 
 export default function Page() {
