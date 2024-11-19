@@ -6,39 +6,51 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { ButtonForm } from '@/components/buttons/button-submit-form';
+import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { allergiePatientAction } from '@/actions/patient-actions';
+import { buildFormInitialValues } from '@/lib/build-form-initial-values';
+import { renderField } from '../render-field';
 import { toast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function AllergyForm() {
+type AllergyFormProps = {
+  initialValues?: Partial<AllergieFormType>;
+};
+
+const allergyTypes = [
+  { name: 'foodAllergy', label: '¿Tienes alergia a alimentos?' },
+  { name: 'insectAllergy', label: '¿Tienes alergia a insectos?' },
+  { name: 'medicineAllergy', label: '¿Tienes alergia a medicamentos?' },
+  { name: 'otherAllergies', label: '¿Tienes otras alergias?' },
+] as const;
+
+export default function AllergyForm({ initialValues }: AllergyFormProps) {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [state, formAction] = useFormState(allergiePatientAction, null);
+  const router = useRouter();
   const form = useForm<AllergieFormType>({
     resolver: zodResolver(allergieSchema),
-    defaultValues: {
-      foodAllergy: undefined,
-      insectAllergy: undefined,
-      medicineAllergy: undefined,
-      otherAllergies: undefined,
-    },
+    defaultValues: buildFormInitialValues<AllergieFormType>(
+      [...allergyTypes],
+      initialValues
+    ),
   });
 
   useEffect(() => {
     if (state?.success) {
-      toast({
-        title: 'Datos sobre ALERGIA actualizado con Exitoso!!',
-        description: 'El campo ya fue editado. Gracias!!',
-      });
+      setIsSubmitted(true);
+      router.refresh();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
@@ -50,143 +62,54 @@ export default function AllergyForm() {
         variant: 'destructive',
       });
     }
-  }, [state]);
+  }, [state, router]);
 
   const handleNoToAll = () => {
-    form.reset({
-      foodAllergy: 'no',
-      insectAllergy: 'no',
-      medicineAllergy: 'no',
-      otherAllergies: 'no',
-    });
+    form.reset(
+      Object.fromEntries(
+        allergyTypes.map(({ name }) => [name, false])
+      ) as Partial<AllergieFormType>
+    );
   };
 
-  const handleClearAll = () => {
-    form.reset();
-  };
-
-  const renderField = (field: keyof AllergieFormType, label: string) => (
-    <>
-      <FormField
-        control={form.control}
-        name={field}
-        render={({ field }) => (
-          <FormItem className="flex items-center justify-between">
-            <FormLabel className="font-semibold">{label}</FormLabel>
-            <FormControl>
-              <RadioGroup
-                onValueChange={field.onChange}
-                value={field.value || ''}
-                className="flex gap-5"
-              >
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <RadioGroupItem value="si" />
-                  </FormControl>
-                  <FormLabel className="font-normal">Sí</FormLabel>
-                </FormItem>
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <RadioGroupItem value="no" />
-                  </FormControl>
-                  <FormLabel>No</FormLabel>
-                </FormItem>
-              </RadioGroup>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </>
-  );
+  if (isSubmitted) return <MessageSuccesfull />;
 
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-2 p-5">
-        {renderField('foodAllergy', 'Alergia a alimentos')}
-        {form.watch('foodAllergy') === 'si' && (
-          <FormField
-            control={form.control}
-            name="foodAllergyDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre alergia a alimentos"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+        {allergyTypes.map(({ name, label }) => (
+          <div key={name} className="space-y-4">
+            {renderField({
+              control: form.control,
+              fieldName: name,
+              label: label,
+            })}
+            {form.watch(name) && (
+              <FormField
+                control={form.control}
+                name={`${name}Details` as keyof AllergieFormType}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        placeholder={`Detalles sobre ${label.toLowerCase().replace('¿Tienes ', '').replace('?', '')}`}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             )}
-          />
-        )}
-        <Separator />
-        {renderField('insectAllergy', 'Alergia a insectos')}
-        {form.watch('insectAllergy') === 'si' && (
-          <FormField
-            control={form.control}
-            name="insectAllergyDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre alergia a insectos"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-        {renderField('medicineAllergy', 'Alergia a medicamentos')}
-        {form.watch('medicineAllergy') === 'si' && (
-          <FormField
-            control={form.control}
-            name="medicineAllergyDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre alergia a medicamentos"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
-        {renderField('otherAllergies', 'Otras alergias')}
-        {form.watch('otherAllergies') === 'si' && (
-          <FormField
-            control={form.control}
-            name="otherAllergiesDetails"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Detalles sobre otras alergias"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Separator />
+            <Separator className="my-2" />
+          </div>
+        ))}
         <div className="flex justify-evenly py-2">
           <Button type="button" variant="outline" onClick={handleNoToAll}>
             No a todo
           </Button>
-          <Button type="button" variant="outline" onClick={handleClearAll}>
-            Limpiar todo
-          </Button>
-          <Button type="submit">Guardar</Button>
+
+          <ButtonForm text="Guardar" />
         </div>
       </form>
     </Form>

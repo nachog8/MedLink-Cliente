@@ -21,16 +21,14 @@ import { Button } from '@/components/ui/button';
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-interface StatusItem {
-  title: string;
-  status: boolean;
-  description?: string;
+interface ItemsDetails {
+  [key: string]: boolean | string | undefined;
 }
 
 interface StatusCardProps {
-  items: StatusItem[];
+  items: ItemsDetails;
   title: string;
-  description: string;
+  description?: string;
   form_dialog_information: JSX.Element;
   title_dialog_information?: string;
   description_dialog_information?: string;
@@ -44,6 +42,14 @@ export function LayoutContentTab({
   description_dialog_information,
   title_dialog_information,
 }: StatusCardProps) {
+  const parsedItems = Object.keys(items)
+    .filter((key) => !key.endsWith('Details'))
+    .map((key) => ({
+      title: key,
+      status: items[key] as boolean,
+      description: items[`${key}Details`] as string,
+    }));
+
   return (
     <Card>
       <CardHeader>
@@ -51,7 +57,7 @@ export function LayoutContentTab({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        {!items || items.length === 0 ? (
+        {!parsedItems || parsedItems.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-8">
               <AlertCircle className="mb-4 h-16 w-16 text-muted-foreground" />
@@ -61,31 +67,27 @@ export function LayoutContentTab({
             </CardContent>
           </Card>
         ) : (
-          <ScrollArea className="h-52 w-full">
+          <ScrollArea className="h-72 w-full">
             <Table>
               <TableBody>
-                {items.map((item, index) => (
+                {parsedItems.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell className="font-medium">{item.title}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {item.status ? (
-                          <div className="flex items-center text-green-600">
-                            <Check className="h-4 w-4" />
-                            {item.description && (
-                              <span className="ml-2 text-sm">
-                                {item.description}
-                              </span>
-                            )}
+                          <div className="flex items-center">
+                            <Check className="h-4 w-4 text-destructive" />
+
+                            <span className="ml-2 w-3/4 text-sm">
+                              {item.description}
+                            </span>
                           </div>
                         ) : (
-                          <div className="flex items-center text-destructive">
+                          <div className="flex items-center text-green-500">
                             <X className="h-4 w-4" />
-                            {item.description && (
-                              <span className="ml-2 text-sm">
-                                {item.description}
-                              </span>
-                            )}
+
+                            <span className="ml-2 text-sm">No Posee</span>
                           </div>
                         )}
                       </div>

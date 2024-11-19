@@ -26,7 +26,7 @@ export function StatusBadge({
 
   return (
     <Badge className={cn('mt-1 text-white', getColorClass())}>
-      {value === undefined ? 'N/A' : value ? labels.true : labels.false}
+      {value === undefined ? '-' : value ? labels.true : labels.false}
     </Badge>
   );
 }

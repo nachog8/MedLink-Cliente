@@ -21,11 +21,12 @@ import EditProfileForm from '@/components/form/patient/form-profile-patient';
 import { PasswordChangeForm } from '@/components/form/patient/form-update-password';
 import { PersonalInfoCard } from '../../dashboard-shared/personal-information';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { formatDate } from '@/lib/date-formatter';
 
 interface Props {
   firstName?: string;
   lastName?: string;
-  age?: number;
+  age?: number | string;
   location?: string;
   bio?: string;
   avatarUrl?: string;
@@ -57,6 +58,8 @@ export const CardProfile = ({
   phone,
   clinical,
 }: Props) => {
+  const formattedDate = formatDate(dateOfBirth);
+
   return (
     <Card className="w-full max-w-[500px] overflow-hidden">
       <CardHeader className="flex justify-center pb-0 pt-6">
@@ -79,12 +82,12 @@ export const CardProfile = ({
         </section>
 
         <PersonalInfoCard
-          birthDate={dateOfBirth || ''}
-          gender={gender || ''}
-          location={location || ''}
-          phone={phone || ''}
-          email={email || ''}
-          age={age?.toLocaleString() || ''}
+          birthDate={formattedDate}
+          gender={gender || '-'}
+          location={location || '-'}
+          phone={phone || '-'}
+          email={email || '-'}
+          age={age?.toLocaleString() || '-'}
         />
         <ClinicalSummary
           height={clinical?.height}
@@ -106,7 +109,7 @@ export const CardProfile = ({
               Editar Perfil
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-md rounded-lg lg:max-w-2xl">
             <DialogHeader>
               <DialogTitle className="flex justify-center text-2xl">
                 <Pencil className="mr-2 h-6 w-6" />
@@ -118,17 +121,17 @@ export const CardProfile = ({
               <EditProfileForm
                 firstName={firstName}
                 lastName={lastName}
-                birthDate={new Date(dateOfBirth)}
-                genre={gender as 'MALE' | 'FEMALE' | 'OTHER'}
+                dateOfBirth={formattedDate}
+                gender={gender as 'MALE' | 'FEMALE' | 'OTHER'}
                 aboutMe={bio}
                 phone={phone}
                 email={email}
                 location={location}
                 avatar={avatarUrl}
-                height={`${clinical?.height}`}
-                weight={`${clinical?.weight}`}
+                height={clinical?.height}
+                weight={clinical?.weight}
                 bloodType={clinical?.bloodType}
-                bloodPressure={clinical?.bloodPressureTrend}
+                bloodPressureTrend={clinical?.bloodPressureTrend}
                 isDonor={clinical?.isDonor}
                 hasAllergies={clinical?.hasAllergies}
                 hasChronicDiseases={clinical?.hasChronicDiseases}

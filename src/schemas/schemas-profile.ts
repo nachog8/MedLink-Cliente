@@ -1,46 +1,22 @@
 import { z } from 'zod';
 
 export const editProfileSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, { message: 'El nombre debe tener al menos 2 caracteres.' })
-    .optional(),
-  lastName: z
-    .string()
-    .min(2, { message: 'El apellido debe tener al menos 2 caracteres.' })
-    .optional(),
-  birthDate: z.date().optional(),
-  genre: z.enum(['MALE', 'FEMALE', 'OTHER']).optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  gender: z.string().optional(),
   aboutMe: z
     .string()
-    .max(500, { message: 'La descripción no debe exceder 500 caracteres.' })
+    .max(200, { message: 'La descripción no debe exceder 500 caracteres.' })
     .optional(),
-  phone: z
-    .string()
-    .regex(/^\+?[0-9\s-()]+$/, {
-      message: 'Formato de número de teléfono no válido.',
-    })
-    .optional(),
-  email: z.string().email({ message: 'Correo electrónico no válido.' }), // Campo requerido
+  phone: z.string().optional(),
+  email: z.string().email({ message: 'Correo electrónico no válido.' }),
   location: z.string().optional(),
-  avatar: z
-    .instanceof(File)
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: 'El avatar debe ser menor a 5MB.',
-    })
-    .refine(
-      (file) =>
-        ['image/jpeg', 'image/png', 'image/gif', null].includes(file.type),
-      {
-        message:
-          'El avatar debe ser un archivo de imagen válido (JPEG, PNG, GIF).',
-      }
-    )
-    .optional(),
-  height: z.string().optional(),
-  weight: z.string().optional(),
+  avatar: z.instanceof(File).optional(),
+  height: z.number().optional(),
+  weight: z.number().optional(),
   bloodType: z.string().optional(),
-  bloodPressure: z.string().optional(),
+  bloodPressureTrend: z.string().optional(),
   isDonor: z.boolean().optional(),
   hasAllergies: z.boolean().optional(),
   hasChronicDiseases: z.boolean().optional(),
@@ -50,30 +26,30 @@ export const editProfileSchema = z.object({
 export type EditProfileFormType = z.infer<typeof editProfileSchema>;
 
 export const allergieSchema = z.object({
-  foodAllergy: z.enum(['si', 'no']).optional(),
+  foodAllergy: z.string().optional(),
   foodAllergyDetails: z.string().optional(),
-  insectAllergy: z.enum(['si', 'no']).optional(),
+  insectAllergy: z.string().optional(),
   insectAllergyDetails: z.string().optional(),
-  medicineAllergy: z.enum(['si', 'no']).optional(),
+  medicineAllergy: z.string().optional(),
   medicineAllergyDetails: z.string().optional(),
-  otherAllergies: z.enum(['si', 'no']).optional(),
+  otherAllergies: z.string().optional(),
   otherAllergiesDetails: z.string().optional(),
 });
 
 export type AllergieFormType = z.infer<typeof allergieSchema>;
 
 export const familyInheritanceSchema = z.object({
-  diabetes: z.enum(['si', 'no']).optional(),
+  diabetes: z.string().optional(),
   diabetesDetails: z.string().optional(),
-  heartDiseases: z.enum(['si', 'no']).optional(),
+  heartDiseases: z.string().optional(),
   heartDiseasesDetails: z.string().optional(),
-  hypertension: z.enum(['si', 'no']).optional(),
+  hypertension: z.string().optional(),
   hypertensionDetails: z.string().optional(),
-  thyroidDiseases: z.enum(['si', 'no']).optional(),
+  thyroidDiseases: z.string().optional(),
   thyroidDiseasesDetails: z.string().optional(),
-  chronicKidneyDisease: z.enum(['si', 'no']).optional(),
+  chronicKidneyDisease: z.string().optional(),
   chronicKidneyDiseaseDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
+  other: z.string().optional(),
   otherDetails: z.string().optional(),
 });
 
@@ -97,33 +73,33 @@ export const noPathologicalSchema = z.object({
 export type NoPathologicalFormType = z.infer<typeof noPathologicalSchema>;
 
 export const pathologicalSchema = z.object({
-  hospitalization: z.enum(['si', 'no']).optional(),
+  hospitalization: z.string().optional(),
   hospitalizationDetails: z.string().optional(),
-  diabetes: z.enum(['si', 'no']).optional(),
+  diabetes: z.string().optional(),
   diabetesDetails: z.string().optional(),
-  thyroidDiseases: z.enum(['si', 'no']).optional(),
+  thyroidDiseases: z.string().optional(),
   thyroidDiseasesDetails: z.string().optional(),
-  hypertension: z.enum(['si', 'no']).optional(),
+  hypertension: z.string().optional(),
   hypertensionDetails: z.string().optional(),
-  heartDiseases: z.enum(['si', 'no']).optional(),
+  heartDiseases: z.string().optional(),
   heartDiseasesDetails: z.string().optional(),
-  trauma: z.enum(['si', 'no']).optional(),
+  trauma: z.string().optional(),
   traumaDetails: z.string().optional(),
-  cancer: z.enum(['si', 'no']).optional(),
+  cancer: z.string().optional(),
   cancerDetails: z.string().optional(),
-  tuberculosis: z.enum(['si', 'no']).optional(),
+  tuberculosis: z.string().optional(),
   tuberculosisDetails: z.string().optional(),
-  transfusions: z.enum(['si', 'no']).optional(),
+  transfusions: z.string().optional(),
   transfusionsDetails: z.string().optional(),
-  respiratoryDiseases: z.enum(['si', 'no']).optional(),
+  respiratoryDiseases: z.string().optional(),
   respiratoryDiseasesDetails: z.string().optional(),
-  gastrointestinalDiseases: z.enum(['si', 'no']).optional(),
+  gastrointestinalDiseases: z.string().optional(),
   gastrointestinalDiseasesDetails: z.string().optional(),
-  sexuallyTransmittedDiseases: z.enum(['si', 'no']).optional(),
+  sexuallyTransmittedDiseases: z.string().optional(),
   sexuallyTransmittedDiseasesDetails: z.string().optional(),
-  chronicKidneyDisease: z.enum(['si', 'no']).optional(),
+  chronicKidneyDisease: z.string().optional(),
   chronicKidneyDiseaseDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
+  other: z.string().optional(),
   otherDetails: z.string().optional(),
 });
 
@@ -148,54 +124,55 @@ export type SecurityFormType = z.infer<typeof securitySchema>;
 
 export const vaccinationSchema = z.object({
   atBirth: z.object({
-    bcg: z.boolean().default(false),
-    hepatitisB1: z.boolean().default(false),
+    bcg: z.string().optional(),
+    hepatitisB1: z.string().optional(),
   }),
   twoMonths: z.object({
-    pentavalent1: z.boolean().default(false),
-    hepatitisB2: z.boolean().default(false),
-    rotavirus1: z.boolean().default(false),
-    pneumococcal1: z.boolean().default(false),
+    pentavalent1: z.string().optional(),
+    hepatitisB2: z.string().optional(),
+    rotavirus1: z.string().optional(),
+    pneumococcal1: z.string().optional(),
   }),
   fourMonths: z.object({
-    pentavalent2: z.boolean().default(false),
-    rotavirus2: z.boolean().default(false),
-    pneumococcal2: z.boolean().default(false),
+    pentavalent2: z.string().optional(),
+    rotavirus2: z.string().optional(),
+    pneumococcal2: z.string().optional(),
   }),
   sixMonths: z.object({
-    pentavalent3: z.boolean().default(false),
-    hepatitisB3: z.boolean().default(false),
-    rotavirus3: z.boolean().default(false),
-    influenza1: z.boolean().default(false),
+    pentavalent3: z.string().optional(),
+    hepatitisB3: z.string().optional(),
+    rotavirus3: z.string().optional(),
+    influenza1: z.string().optional(),
   }),
   sevenMonths: z.object({
-    influenza2: z.boolean().default(false),
+    influenza2: z.string().optional(),
   }),
   twelveMonths: z.object({
-    srp1: z.boolean().default(false),
-    pneumococcal3: z.boolean().default(false),
+    srp1: z.string().optional(),
+    pneumococcal3: z.string().optional(),
   }),
   eighteenMonths: z.object({
-    pentavalent4: z.boolean().default(false),
+    pentavalent4: z.string().optional(),
   }),
   twoYears: z.object({
-    influenzaAnnual1: z.boolean().default(false),
+    influenzaAnnual1: z.string().optional(),
   }),
   threeYears: z.object({
-    influenzaAnnual2: z.boolean().default(false),
+    influenzaAnnual2: z.string().optional(),
   }),
   fourYears: z.object({
-    dpt: z.boolean().default(false),
-    influenzaAnnual3: z.boolean().default(false),
+    dpt: z.string().optional(),
+    influenzaAnnual3: z.string().optional(),
   }),
   fiveYears: z.object({
-    influenzaAnnual4: z.boolean().default(false),
-    vopOpv: z.boolean().default(false),
+    influenzaAnnual4: z.string().optional(),
+    vopOpv: z.string().optional(),
   }),
   elevenYears: z.object({
-    vph: z.boolean().default(false),
+    vph: z.string().optional(),
   }),
-  otherVaccines: z.enum(['si', 'no']).optional(),
+  other: z.string().optional(),
+  otherDetails: z.string().optional(),
 });
 
 export type VaccinationFormType = z.infer<typeof vaccinationSchema>;

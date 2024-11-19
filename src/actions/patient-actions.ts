@@ -10,6 +10,26 @@ import {
   vaccinationSchema,
 } from '@/schemas/schemas-profile';
 
+import { convertToBoolean } from '@/lib/convert-boolean';
+import { cookies } from 'next/headers';
+import { patientService } from '@/services/patient-service';
+
+//Funciones de las Cookies
+export const getCookie = (name: string) => {
+  const cookieStore = cookies();
+
+  return cookieStore.get(name)?.value || '';
+};
+
+//Funciones de Service
+const {
+  updateAllergies,
+  updateFamilyInheritance,
+  updatePathological,
+  updateProfilePatient,
+} = patientService;
+
+// Funcioens de actualizacion
 export async function edithProfilePatientAction(
   prevState: any,
   formData: FormData
@@ -19,21 +39,21 @@ export async function edithProfilePatientAction(
   const editProfileData = {
     firstName: data.firstName,
     lastName: data.lastName,
-    birthDate: new Date(data.birthDate),
-    genre: data.genre,
+    dateOfBirth: data.dateOfBirth,
+    gender: data.gender,
     aboutMe: data.aboutMe,
     phone: data.phone,
     email: data.email,
     location: data.location,
     avatar: data.avatar,
-    height: data.height,
-    weight: data.weight,
+    height: +data.height,
+    weight: +data.weight,
     bloodType: data.bloodType,
-    bloodPressure: data.bloodPressure,
-    isDonor: data.isDonor === "true",
-    hasAllergies: data.hasAllergies === "true",
-    hasChronicDiseases: data.hasChronicDiseases === "true",
-    hasHealthyLifestyle: data.hasHealthyLifestyle === "true"
+    bloodPressureTrend: data.bloodPressureTrend,
+    isDonor: data.isDonor === 'true',
+    hasAllergies: data.hasAllergies === 'true',
+    hasChronicDiseases: data.hasChronicDiseases === 'true',
+    hasHealthyLifestyle: data.hasHealthyLifestyle === 'true',
   };
 
   const validatedFields = editProfileSchema.safeParse(editProfileData);
@@ -46,18 +66,14 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-
-    const formattedData = {
-    ...validatedFields.data,
-    birthDate: validatedFields.data.birthDate
-      ? validatedFields.data.birthDate.toISOString().split("T")[0]
-      : undefined,
-  };
-
-console.log(formattedData);
+  console.log(validatedFields.data);
   try {
+    const response = await updateProfilePatient(
+      validatedFields.data,
+      await getCookie('token')
+    );
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -108,13 +124,13 @@ export async function allergiePatientAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-  console.log('aqui muestro data ni bien entra', data);
+
   const allergieData = {
     foodAllergy: data.foodAllergy,
     foodAllergyDetails: data.foodAllergyDetails,
     insectAllergy: data.insectAllergy,
     insectAllergyDetails: data.insectAllergyDetails,
-    medicineAllergy: data.mediceAllergy,
+    medicineAllergy: data.medicineAllergy,
     medicineAllergyDetails: data.medicineAllergyDetails,
     otherAllergies: data.otherAllergies,
     otherAllergiesDetails: data.otherAllergiesDetails,
@@ -127,13 +143,20 @@ export async function allergiePatientAction(
       field: err.path[0],
       message: err.message,
     }));
-
     return { error: errorDetails };
   }
-  console.log('datos enviados', validatedFields.data);
+  const finalData = {
+    ...validatedFields.data,
+    foodAllergy: convertToBoolean(validatedFields.data.foodAllergy),
+    insectAllergy: convertToBoolean(validatedFields.data.insectAllergy),
+    medicineAllergy: convertToBoolean(validatedFields.data.medicineAllergy),
+    otherAllergies: convertToBoolean(validatedFields.data.otherAllergies),
+  };
+
   try {
+    const response = await updateAllergies(finalData, await getCookie('token'));
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -190,10 +213,39 @@ export async function pathologicalPatientAction(
 
     return { error: errorDetails };
   }
+  const finalData = {
+    ...validatedFields.data,
+    hospitalization: convertToBoolean(validatedFields.data.hospitalization),
+    diabetes: convertToBoolean(validatedFields.data.diabetes),
+    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
+    hypertension: convertToBoolean(validatedFields.data.hypertension),
+    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
+    trauma: convertToBoolean(validatedFields.data.trauma),
+    cancer: convertToBoolean(validatedFields.data.cancer),
+    tuberculosis: convertToBoolean(validatedFields.data.tuberculosis),
+    transfusions: convertToBoolean(validatedFields.data.transfusions),
+    respiratoryDiseases: convertToBoolean(
+      validatedFields.data.respiratoryDiseases
+    ),
+    gastrointestinalDiseases: convertToBoolean(
+      validatedFields.data.gastrointestinalDiseases
+    ),
+    sexuallyTransmittedDiseases: convertToBoolean(
+      validatedFields.data.sexuallyTransmittedDiseases
+    ),
+    chronicKidneyDisease: convertToBoolean(
+      validatedFields.data.chronicKidneyDisease
+    ),
+    other: convertToBoolean(validatedFields.data.other),
+  };
 
   try {
+    const response = await updatePathological(
+      finalData,
+      await getCookie('token')
+    );
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -281,7 +333,22 @@ export async function familyInheritancePatientAction(
     return { error: errorDetails };
   }
 
+  const finalData = {
+    ...validatedFields.data,
+    diabetes: convertToBoolean(validatedFields.data.diabetes),
+    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
+    hypertension: convertToBoolean(validatedFields.data.hypertension),
+    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
+    chronicKidneyDisease: convertToBoolean(
+      validatedFields.data.chronicKidneyDisease
+    ),
+    other: convertToBoolean(validatedFields.data.other),
+  };
   try {
+    const response = await updateFamilyInheritance(
+      finalData,
+      await getCookie('token')
+    );
     return {
       success: true,
     };
