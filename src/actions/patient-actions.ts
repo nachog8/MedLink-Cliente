@@ -27,6 +27,7 @@ const {
   updateFamilyInheritance,
   updatePathological,
   updateProfilePatient,
+  updateNoPathological
 } = patientService;
 
 // Funcioens de actualizacion
@@ -286,10 +287,23 @@ export async function noPathologicalPatientAction(
 
     return { error: errorDetails };
   }
+ const finalData = {
+    ...validatedFields.data,
+    physicalActivity: convertToBoolean(validatedFields.data.physicalActivity),
+    smoking: convertToBoolean(validatedFields.data.smoking),
+    alcoholism: convertToBoolean(validatedFields.data.alcoholism),
+    otherSubstances: convertToBoolean(validatedFields.data.otherSubstances),
+    recentVaccination: convertToBoolean(validatedFields.data.recentVaccination),
+    other: convertToBoolean(validatedFields.data.other),
+  };
 
   try {
+    const response = await updateNoPathological(
+      finalData,
+      await getCookie('token')
+    );
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -298,6 +312,7 @@ export async function noPathologicalPatientAction(
     return { error: 'An unexpected error occurred' };
   }
 }
+
 
 export async function familyInheritancePatientAction(
   prevState: any,

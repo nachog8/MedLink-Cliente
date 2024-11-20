@@ -131,3 +131,41 @@ export const pathologicalTypes = [
   { name: 'chronicKidneyDisease', label: 'Enfermedad renal crónica' },
   { name: 'other', label: 'Otros' },
 ] as const;
+
+export const noPathologicalTypes = [
+  { name: 'physicalActivity', label: 'Hospitalización Previa' },
+  { name: 'smoking', label: 'Diabetes' },
+  { name: 'alcoholism', label: 'Enfermedades Tiroideas' },
+  { name: 'otherSubstances', label: 'Hipertensión Arterial' },
+  { name: 'recentVaccination', label: 'Cardiopatías' },
+   { name: 'other', label: 'Cardiopatías' },
+
+] as const;
+
+export const vaccinationScheduleLabels = [
+  { name: 'atBirth.hepatitisB1', label: 'Hepatitis B (al nacer)' },
+  { name: 'atBirth.bcg', label: 'BCG (al nacer)' },
+  { name: 'twoMonths.pentavalent1', label: 'Pentavalente 1 (2 meses)' },
+  { name: 'twoMonths.hepatitisB2', label: 'Hepatitis B 2 (2 meses)' },
+  { name: 'twoMonths.rotavirus1', label: 'Rotavirus 1 (2 meses)' },
+  { name: 'twoMonths.pneumococcal1', label: 'Neumococo 1 (2 meses)' },
+  { name: 'fourMonths.pentavalent2', label: 'Pentavalente 2 (4 meses)' },
+  { name: 'fourMonths.rotavirus2', label: 'Rotavirus 2 (4 meses)' },
+  { name: 'fourMonths.pneumococcal2', label: 'Neumococo 2 (4 meses)' },
+  { name: 'sixMonths.pentavalent3', label: 'Pentavalente 3 (6 meses)' },
+  { name: 'sixMonths.hepatitisB3', label: 'Hepatitis B 3 (6 meses)' },
+  { name: 'sixMonths.rotavirus3', label: 'Rotavirus 3 (6 meses)' },
+  { name: 'sixMonths.influenza1', label: 'Influenza 1 (6 meses)' },
+  { name: 'sevenMonths.influenza2', label: 'Influenza 2 (7 meses)' },
+  { name: 'twelveMonths.srp1', label: 'SRP 1 (12 meses)' },
+  { name: 'twelveMonths.pneumococcal3', label: 'Neumococo 3 (12 meses)' },
+  { name: 'eighteenMonths.pentavalent4', label: 'Pentavalente 4 (18 meses)' },
+  { name: 'twoYears.influenzaAnnual1', label: 'Influenza anual 1 (2 años)' },
+  { name: 'threeYears.influenzaAnnual2', label: 'Influenza anual 2 (3 años)' },
+  { name: 'fourYears.dpt', label: 'DPT (4 años)' },
+  { name: 'fourYears.influenzaAnnual3', label: 'Influenza anual 3 (4 años)' },
+  { name: 'fiveYears.influenzaAnnual4', label: 'Influenza anual 4 (5 años)' },
+  { name: 'fiveYears.vopOpv', label: 'VOP/OPV (5 años)' },
+  { name: 'elevenYears.vph', label: 'VPH (11 años)' },
+  { name: 'otherVaccines', label: 'Otras vacunas' },
+];
