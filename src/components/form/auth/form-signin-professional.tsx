@@ -24,7 +24,7 @@ import { Button } from '@/components/ui/button';
 import { ButtonSubmit } from '@/components/buttons/button-submit';
 import { Input } from '@/components/ui/input';
 import { registerProfessionalAction } from '@/actions';
-import { specialties } from '@/data/specialties';
+import { specialties } from '@/data/form-options';
 import { toast } from '@/hooks/use-toast';
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';

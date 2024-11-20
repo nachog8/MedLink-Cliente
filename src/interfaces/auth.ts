@@ -7,20 +7,34 @@ export interface RegisterProfessional extends Register {
   specialty: string;
   registrationNumber: string;
 }
+
+export enum BloodTypes {
+  A_POSITIVE = 'A+',
+  A_NEGATIVE = 'A-',
+  B_POSITIVE = 'B+',
+  B_NEGATIVE = 'B-',
+  AB_POSITIVE = 'AB+',
+  AB_NEGATIVE = 'AB-',
+  O_POSITIVE = 'O+',
+  O_NEGATIVE = 'O-',
+}
+
+export enum Genders {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
+}
+
 export enum BloodPressureTrend {
   NORMAL = 'NORMAL',
   RISING = 'RISING',
   FALLING = 'FALLING',
 }
-export enum Gender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  OTHER = 'OTHER',
-}
+
 export interface ClinicalData {
   height: number;
   weight: number;
-  bloodType: string;
+  bloodType: BloodTypes;
   bloodPressureTrend: BloodPressureTrend;
   isDonor: boolean;
   hasAllergies: boolean;
@@ -32,7 +46,7 @@ export interface UserPatient {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  gender: Gender;
+  gender: Genders;
   aboutMe: string;
   email: string;
   avatar: string;

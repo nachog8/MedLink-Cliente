@@ -17,31 +17,21 @@ import {
 } from '@/components/ui/card';
 
 import { BloodPressure } from './blood-presure';
+import { ClinicalData } from '@/interfaces/auth';
 import { InfoItem } from './info-item';
 import { Separator } from '@/components/ui/separator';
 import { StatusBadge } from './status-badge';
-
-interface ClinicalSummaryProps {
-  height?: number;
-  weight?: number;
-  bloodType?: string;
-  bloodPressure?: string;
-  isDonor?: boolean;
-  hasAllergies?: boolean;
-  hasChronicDiseases?: boolean;
-  hasHealthyLifestyle?: boolean;
-}
 
 export function ClinicalSummary({
   height,
   weight,
   bloodType,
-  bloodPressure,
+  bloodPressureTrend,
   isDonor,
   hasAllergies,
   hasChronicDiseases,
   hasHealthyLifestyle,
-}: ClinicalSummaryProps) {
+}: Partial<ClinicalData>) {
   return (
     <Card>
       <CardHeader>
@@ -64,7 +54,7 @@ export function ClinicalSummary({
               label="Grupo Sanguíneo"
               value={bloodType}
             />
-            <BloodPressure status={bloodPressure} />
+            <BloodPressure status={bloodPressureTrend} />
           </div>
 
           <div className="flex flex-col justify-between gap-5">

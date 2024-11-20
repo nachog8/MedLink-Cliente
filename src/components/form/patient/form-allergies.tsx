@@ -16,8 +16,9 @@ import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { allergiePatientAction } from '@/actions/patient-actions';
+import { allergyTypes } from '@/data/form-options';
 import { buildFormInitialValues } from '@/lib/build-form-initial-values';
-import { renderField } from '../render-field';
+import { renderField } from '../fields/render-field';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
@@ -27,13 +28,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 type AllergyFormProps = {
   initialValues?: Partial<AllergieFormType>;
 };
-
-const allergyTypes = [
-  { name: 'foodAllergy', label: '¿Tienes alergia a alimentos?' },
-  { name: 'insectAllergy', label: '¿Tienes alergia a insectos?' },
-  { name: 'medicineAllergy', label: '¿Tienes alergia a medicamentos?' },
-  { name: 'otherAllergies', label: '¿Tienes otras alergias?' },
-] as const;
 
 export default function AllergyForm({ initialValues }: AllergyFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);

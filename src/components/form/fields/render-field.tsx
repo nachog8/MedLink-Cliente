@@ -4,8 +4,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+} from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { Control } from 'react-hook-form';
 import React from 'react';

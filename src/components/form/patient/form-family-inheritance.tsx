@@ -20,7 +20,8 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { buildFormInitialValues } from '@/lib/build-form-initial-values';
 import { familyInheritancePatientAction } from '@/actions/patient-actions';
-import { renderField } from '../render-field';
+import { familyInheritanceTypes } from '@/data/form-options';
+import { renderField } from '../fields/render-field';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
@@ -30,22 +31,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 type FamilyInheritanceFormProps = {
   initialValues?: Partial<FamilyInheritanceFormType>;
 };
-const familyInheritanceTypes = [
-  { name: 'diabetes', label: '¿Tienes antecedentes familiares de diabetes?' },
-  {
-    name: 'heartDiseases',
-    label: '¿Tienes antecedentes familiares de enfermedades del corazón?',
-  },
-  {
-    name: 'hypertension',
-    label: '¿Tienes antecedentes familiares de hipertensión?',
-  },
-  {
-    name: 'chronicKidneyDisease',
-    label: '¿Tienes antecedentes familiares de enfermedad renal crónica?',
-  },
-  { name: 'other', label: '¿Tienes otros antecedentes familiares de salud?' },
-] as const;
 
 export default function FamilyInheritanceForm({
   initialValues,

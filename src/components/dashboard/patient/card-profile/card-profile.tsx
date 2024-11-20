@@ -8,7 +8,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,64 +20,62 @@ import EditProfileForm from '@/components/form/patient/form-profile-patient';
 import { PasswordChangeForm } from '@/components/form/patient/form-update-password';
 import { PersonalInfoCard } from '../../dashboard-shared/personal-information';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { UserPatient } from '@/interfaces/auth';
+import { calculateAge } from '@/lib/calculate-age';
 import { formatDate } from '@/lib/date-formatter';
 
-interface Props {
-  firstName?: string;
-  lastName?: string;
-  age?: number | string;
-  location?: string;
-  bio?: string;
-  avatarUrl?: string;
-  gender?: string;
-  phone?: string;
-  email?: string;
-  dateOfBirth?: string;
-  clinical?: {
-    height?: number;
-    weight?: number;
-    bloodType?: string;
-    bloodPressureTrend?: string;
-    isDonor?: boolean;
-    hasAllergies?: boolean;
-    hasChronicDiseases?: boolean;
-    hasHealthyLifestyle?: boolean;
-  };
-}
 export const CardProfile = ({
   firstName,
   lastName,
-  age,
   location,
-  bio,
-  avatarUrl,
+  aboutMe,
+  avatar,
   dateOfBirth,
   email,
   gender,
   phone,
-  clinical,
-}: Props) => {
+  clinicalData,
+}: Partial<UserPatient>) => {
   const formattedDate = formatDate(dateOfBirth);
-
+  const fullName = `${firstName} ${lastName}`.trim();
+  const renderDialog = (
+    triggerLabel: string,
+    icon: React.ReactNode,
+    content: React.ReactNode
+  ) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          {icon}
+          {triggerLabel}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-md rounded-lg lg:max-w-2xl">
+        {content}
+      </DialogContent>
+    </Dialog>
+  );
   return (
     <Card className="w-full max-w-[500px] overflow-hidden">
       <CardHeader className="flex justify-center pb-0 pt-6">
         <Avatar className="mx-auto h-40 w-40 border-4 border-white shadow-lg">
-          <AvatarImage
-            src={avatarUrl || 'https://via.placeholder.com/256'}
-            alt={`${firstName}'s avatar`}
-          />
+          <AvatarImage src={avatar} alt={`${firstName}'s avatar`} />
           <AvatarFallback className="text-4xl">
             {firstName ? firstName[0] : 'N/A'}
           </AvatarFallback>
         </Avatar>
       </CardHeader>
+
       <CardContent className="space-y-5">
         <section className="space-y-5 p-3 text-center">
           <h2 className="text-2xl font-semibold capitalize text-gray-900">
-            {firstName && lastName ? firstName + ' ' + lastName : ''}
+            {fullName || 'Usuario'}
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-sm text-gray-500">{bio}</p>
+          {aboutMe && (
+            <p className="mx-auto mt-4 max-w-md text-sm text-gray-500">
+              {aboutMe}
+            </p>
+          )}
         </section>
 
         <PersonalInfoCard
@@ -87,71 +84,44 @@ export const CardProfile = ({
           location={location || '-'}
           phone={phone || '-'}
           email={email || '-'}
-          age={age?.toLocaleString() || '-'}
+          age={String(calculateAge(dateOfBirth)) || '-'}
         />
-        <ClinicalSummary
-          height={clinical?.height}
-          weight={clinical?.weight}
-          bloodType={clinical?.bloodType}
-          bloodPressure={clinical?.bloodPressureTrend}
-          isDonor={clinical?.isDonor}
-          hasAllergies={clinical?.hasAllergies}
-          hasChronicDiseases={clinical?.hasChronicDiseases}
-          hasHealthyLifestyle={clinical?.hasHealthyLifestyle}
-        />
+        <ClinicalSummary {...clinicalData} />
       </CardContent>
 
       <CardFooter className="flex items-center justify-between">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">
-              <Pencil className="h-4 w-4" />
-              Editar Perfil
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md rounded-lg lg:max-w-2xl">
+        {renderDialog(
+          'Editar Perfil',
+          <Pencil className="h-4 w-4" />,
+          <>
             <DialogHeader>
               <DialogTitle className="flex justify-center text-2xl">
                 <Pencil className="mr-2 h-6 w-6" />
                 Editar Perfil
               </DialogTitle>
-              <DialogDescription></DialogDescription>
             </DialogHeader>
             <ScrollArea className="max-h-[70vh] w-full p-3">
               <EditProfileForm
                 firstName={firstName}
                 lastName={lastName}
                 dateOfBirth={formattedDate}
-                gender={gender as 'MALE' | 'FEMALE' | 'OTHER'}
-                aboutMe={bio}
+                gender={gender}
+                aboutMe={aboutMe}
                 phone={phone}
                 email={email}
                 location={location}
-                avatar={avatarUrl}
-                height={clinical?.height}
-                weight={clinical?.weight}
-                bloodType={clinical?.bloodType}
-                bloodPressureTrend={clinical?.bloodPressureTrend}
-                isDonor={clinical?.isDonor}
-                hasAllergies={clinical?.hasAllergies}
-                hasChronicDiseases={clinical?.hasChronicDiseases}
-                hasHealthyLifestyle={clinical?.hasHealthyLifestyle}
+                avatar={avatar}
+                clinicalData={clinicalData}
               />
             </ScrollArea>
-          </DialogContent>
-        </Dialog>
+          </>
+        )}
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">
-              <Settings className="h-4 w-4" />
-              Cambiar Contraseña
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <PasswordChangeForm />
-          </DialogContent>
-        </Dialog>
+        {renderDialog(
+          'Cambiar Contraseña',
+          <Settings className="h-4 w-4" />,
+          <PasswordChangeForm />
+        )}
       </CardFooter>
     </Card>
   );

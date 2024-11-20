@@ -1,10 +1,12 @@
+import { BloodTypes, Genders } from '@/interfaces/auth';
+
 import { z } from 'zod';
 
 export const editProfileSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   dateOfBirth: z.string().optional(),
-  gender: z.string().optional(),
+  gender: z.nativeEnum(Genders).optional(),
   aboutMe: z
     .string()
     .max(200, { message: 'La descripción no debe exceder 500 caracteres.' })
@@ -15,7 +17,7 @@ export const editProfileSchema = z.object({
   avatar: z.instanceof(File).optional(),
   height: z.number().optional(),
   weight: z.number().optional(),
-  bloodType: z.string().optional(),
+  bloodType: z.nativeEnum(BloodTypes).optional(),
   bloodPressureTrend: z.string().optional(),
   isDonor: z.boolean().optional(),
   hasAllergies: z.boolean().optional(),

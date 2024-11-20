@@ -1,8 +1,3 @@
-import {
-  AllergieFormType,
-  FamilyInheritanceFormType,
-} from '@/schemas/schemas-profile';
-
 import api from '@/config/axios';
 import axios from 'axios';
 

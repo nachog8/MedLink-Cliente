@@ -19,7 +19,7 @@ import { LayoutContentTab } from './layout-content-tab';
 import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
 import PathologicalForm from '@/components/form/patient/form-pathological-history';
 import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
-import { fieldTranslationMap } from '@/data/dashboard-pacient';
+import { fieldTranslationMap } from '@/data/form-options';
 import { translateData } from '@/lib/translate-data';
 
 // import {

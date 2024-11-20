@@ -1,8 +1,6 @@
 'use client';
-import { useState } from 'react';
+
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -16,7 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { specialties } from '@/data/specialties';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { specialties } from '@/data/form-options';
+import { useState } from 'react';
 
 interface SelectSpecialtyProps {
   onSpecialtyChange: (specialty: string) => void;

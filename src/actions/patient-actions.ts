@@ -35,7 +35,7 @@ export async function edithProfilePatientAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-
+  // console.log(data);
   const editProfileData = {
     firstName: data.firstName,
     lastName: data.lastName,
@@ -50,10 +50,10 @@ export async function edithProfilePatientAction(
     weight: +data.weight,
     bloodType: data.bloodType,
     bloodPressureTrend: data.bloodPressureTrend,
-    isDonor: data.isDonor === 'true',
-    hasAllergies: data.hasAllergies === 'true',
-    hasChronicDiseases: data.hasChronicDiseases === 'true',
-    hasHealthyLifestyle: data.hasHealthyLifestyle === 'true',
+    isDonor: data.isDonor === 'on',
+    hasAllergies: data.hasAllergies === 'on',
+    hasChronicDiseases: data.hasChronicDiseases === 'on',
+    hasHealthyLifestyle: data.hasHealthyLifestyle === 'on',
   };
 
   const validatedFields = editProfileSchema.safeParse(editProfileData);
@@ -66,7 +66,7 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-  console.log(validatedFields.data);
+  // console.log(validatedFields.data);
   try {
     const response = await updateProfilePatient(
       validatedFields.data,

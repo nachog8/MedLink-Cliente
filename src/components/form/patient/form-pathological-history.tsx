@@ -20,7 +20,8 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { buildFormInitialValues } from '@/lib/build-form-initial-values';
 import { pathologicalPatientAction } from '@/actions/patient-actions';
-import { renderField } from '../render-field';
+import { pathologicalTypes } from '@/data/form-options';
+import { renderField } from '../fields/render-field';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
@@ -30,26 +31,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 type PathologicalFormProps = {
   initialValues?: Partial<PathologicalFormType>;
 };
-
-const pathologicalTypes = [
-  { name: 'hospitalization', label: 'Hospitalización Previa' },
-  { name: 'diabetes', label: 'Diabetes' },
-  { name: 'thyroidDiseases', label: 'Enfermedades Tiroideas' },
-  { name: 'hypertension', label: 'Hipertensión Arterial' },
-  { name: 'heartDiseases', label: 'Cardiopatías' },
-  { name: 'trauma', label: 'Traumatismo' },
-  { name: 'cancer', label: 'Cáncer' },
-  { name: 'tuberculosis', label: 'Tuberculosis' },
-  { name: 'transfusions', label: 'Transfusiones' },
-  { name: 'respiratoryDiseases', label: 'Patologías respiratorias' },
-  { name: 'gastrointestinalDiseases', label: 'Patologías gastrointestinales' },
-  {
-    name: 'sexuallyTransmittedDiseases',
-    label: 'Enfermedades de transmisión sexual',
-  },
-  { name: 'chronicKidneyDisease', label: 'Enfermedad renal crónica' },
-  { name: 'other', label: 'Otros' },
-] as const;
 
 export default function PathologicalForm({
   initialValues,
