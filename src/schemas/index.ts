@@ -68,14 +68,8 @@ export const professionalSchema = z
 
 export type ProfessionalFormType = z.infer<typeof professionalSchema>;
 
-//Contact Form
-export const contactSchema = z.object({
-  email: z.string().email({
-    message: 'Por favor, introduce un email válido.',
-  }),
-});
 
-export type ContactFormType = z.infer<typeof contactSchema>;
+
 
 // Forgot Password Schema
 export const forgotPasswordSchema = z.object({
@@ -99,3 +93,22 @@ export const resetPasswordSchema = z
   });
 
 export type ResetPasswordType = z.infer<typeof resetPasswordSchema>;
+
+export const contactSchema = z.object({
+  firstName: z.string().min(2, {
+    message: 'El nombre debe tener al menos 2 caracteres.',
+  }),
+  lastName: z.string().min(2, {
+    message: 'El apellido debe tener al menos 2 caracteres.',
+  }),
+  email: z.string().email({
+    message: 'Por favor, introduce un email válido.',
+  }),
+  phone: z.string().min(10, {
+    message: 'El número de teléfono debe tener al menos 10 dígitos.',
+  }),
+  comment: z.string().min(10, {
+    message: 'El comentario debe tener al menos 10 caracteres.',
+  }),
+});
+export type ContactFormType = z.infer<typeof contactSchema>;
