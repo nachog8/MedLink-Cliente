@@ -11,21 +11,22 @@ import {
   NoPathologicalFormType,
   noPathologicalSchema,
 } from '@/schemas/schemas-profile';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { ButtonForm } from '@/components/buttons/button-submit-form';
+import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { buildFormInitialValues } from '@/lib/build-form-initial-values';
 import { noPathologicalPatientAction } from '@/actions/patient-actions';
+import { noPathologicalTypes } from '@/data/form-options';
+import { renderField } from '../fields/render-field';
 import { toast } from '@/hooks/use-toast';
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { buildFormInitialValues } from '@/lib/build-form-initial-values';
-import { noPathologicalTypes } from '@/data/form-options';
-import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { useRouter } from 'next/navigation';
-import { renderField } from '../fields/render-field';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type NoPathologicalFormProps = {
   initialValues?: Partial<NoPathologicalFormType>;
@@ -106,7 +107,7 @@ export default function NoPathologicalForm({
           <Button type="button" variant="outline" onClick={handleNoToAll}>
             No a todo
           </Button>
-          <Button type="submit">Guardar</Button>
+          <ButtonForm text="Guardar" />
         </div>
       </form>
     </Form>

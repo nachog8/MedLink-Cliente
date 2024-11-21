@@ -75,9 +75,9 @@ export const patientService = {
       }
     }
   },
-   async updateNoPathological(data: any, token: string) {
+  async updateNoPathological(data: any, token: string) {
     try {
-      const response = await api.put(`/nopathological-data`, data, {
+      const response = await api.put(`/non-pathological-data`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -111,4 +111,23 @@ export const patientService = {
       }
     }
   },
+
+  // async updateVaccinationSchedulePatient(data: any, token: string) {
+  //   try {
+  //     const response = await api.put(`/vaccination-shedule`, data, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     return response.data;
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       throw new Error(`Axios error: ${error.message}`);
+  //     } else if (error instanceof Error) {
+  //       throw new Error(`Error: ${error.message}`);
+  //     } else {
+  //       throw new Error('Unknown error occurred');
+  //     }
+  //   }
+  // },
 };

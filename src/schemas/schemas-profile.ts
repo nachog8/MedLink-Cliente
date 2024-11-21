@@ -58,17 +58,17 @@ export const familyInheritanceSchema = z.object({
 export type FamilyInheritanceFormType = z.infer<typeof familyInheritanceSchema>;
 
 export const noPathologicalSchema = z.object({
-  physicalActivity: z.enum(['si', 'no']).optional(),
+  physicalActivity: z.string().optional(),
   physicalActivityDetails: z.string().optional(),
-  smoking: z.enum(['si', 'no']).optional(),
+  smoking: z.string().optional(),
   smokingDetails: z.string().optional(),
-  alcoholism: z.enum(['si', 'no']).optional(),
+  alcoholism: z.string().optional(),
   alcoholismDetails: z.string().optional(),
-  otherSubstances: z.enum(['si', 'no']).optional(),
+  otherSubstances: z.string().optional(),
   otherSubstancesDetails: z.string().optional(),
-  recentVaccination: z.enum(['si', 'no']).optional(),
+  recentVaccination: z.string().optional(),
   recentVaccinationDetails: z.string().optional(),
-  other: z.enum(['si', 'no']).optional(),
+  other: z.string().optional(),
   otherDetails: z.string().optional(),
 });
 

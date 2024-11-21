@@ -12,6 +12,7 @@ import {
 
 import { convertToBoolean } from '@/lib/convert-boolean';
 import { cookies } from 'next/headers';
+import { filterFields } from '@/lib/filter-fields';
 import { patientService } from '@/services/patient-service';
 
 //Funciones de las Cookies
@@ -27,7 +28,8 @@ const {
   updateFamilyInheritance,
   updatePathological,
   updateProfilePatient,
-  updateNoPathological
+  updateNoPathological,
+  updateVaccinationSchedulePatient,
 } = patientService;
 
 // Funcioens de actualizacion
@@ -287,7 +289,7 @@ export async function noPathologicalPatientAction(
 
     return { error: errorDetails };
   }
- const finalData = {
+  const finalData = {
     ...validatedFields.data,
     physicalActivity: convertToBoolean(validatedFields.data.physicalActivity),
     smoking: convertToBoolean(validatedFields.data.smoking),
@@ -296,7 +298,7 @@ export async function noPathologicalPatientAction(
     recentVaccination: convertToBoolean(validatedFields.data.recentVaccination),
     other: convertToBoolean(validatedFields.data.other),
   };
-
+  console.log(finalData);
   try {
     const response = await updateNoPathological(
       finalData,
@@ -312,7 +314,6 @@ export async function noPathologicalPatientAction(
     return { error: 'An unexpected error occurred' };
   }
 }
-
 
 export async function familyInheritancePatientAction(
   prevState: any,
@@ -365,7 +366,7 @@ export async function familyInheritancePatientAction(
       await getCookie('token')
     );
     return {
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -373,85 +374,97 @@ export async function familyInheritancePatientAction(
     }
     return { error: 'An unexpected error occurred' };
   }
-}
 
-export async function vaccinationPatientAction(
-  prevState: any,
-  formData: FormData
-) {
-  const data = Object.fromEntries(formData.entries());
+  // export async function vaccinationPatientAction(
+  //   prevState: any,
+  //   formData: FormData
+  // ) {
+  //   const data = Object.fromEntries(formData.entries());
+  //   console.log(data);
+  //   const vaccinationData = {
+  //     atBirth: {
+  //       bcg: data.bcg,
+  //       hepatitisB1: data.hepatitisB1,
+  //     },
+  //     twoMonths: {
+  //       pentavalent1: data.pentavalent1,
+  //       hepatitisB2: data.hepatitisB2,
+  //       rotavirus1: data.rotavirus1,
+  //       pneumococcal1: data.pneumococcal1,
+  //     },
+  //     fourMonths: {
+  //       pentavalent2: data.pentavalent2,
+  //       rotavirus2: data.rotavirus2,
+  //       pneumococcal2: data.pneumococcal2,
+  //     },
+  //     sixMonths: {
+  //       pentavalent3: data.pentavalent3,
+  //       hepatitisB3: data.hepatitisB3,
+  //       rotavirus3: data.rotavirus3,
+  //       influenza1: data.influenza1,
+  //     },
+  //     sevenMonths: {
+  //       influenza2: data.influenza2,
+  //     },
+  //     twelveMonths: {
+  //       srp1: data.srp1,
+  //       pneumococcal3: data.pneumococcal3,
+  //     },
+  //     eighteenMonths: {
+  //       pentavalent4: data.pentavalent4,
+  //     },
+  //     twoYears: {
+  //       influenzaAnnual1: data.influenzaAnnual1,
+  //     },
+  //     threeYears: {
+  //       influenzaAnnual2: data.influenzaAnnual2,
+  //     },
+  //     fourYears: {
+  //       dpt: data.dpt,
+  //       influenzaAnnual3: data.influenzaAnnual3,
+  //     },
+  //     fiveYears: {
+  //       influenzaAnnual4: data.influenzaAnnual4,
+  //       vopOpv: data.vopOpv,
+  //     },
+  //     elevenYears: {
+  //       vph: data.vph,
+  //     },
+  //     other: data.other,
+  //     otherDetails: data.otherDetails,
+  //   };
 
-  const vaccinationData = {
-    atBirth: {
-      bcg: data.bcg,
-      hepatitisB1: data.hepatitisB1,
-    },
-    twoMonths: {
-      pentavalent1: data.pentavalent1,
-      hepatitisB2: data.hepatitisB2,
-      rotavirus1: data.rotavirus1,
-      pneumococcal1: data.pneumococcal1,
-    },
-    fourMonths: {
-      pentavalent2: data.pentavalent2,
-      rotavirus2: data.rotavirus2,
-      pneumococcal2: data.pneumococcal2,
-    },
-    sixMonths: {
-      pentavalent3: data.pentavalent3,
-      hepatitisB3: data.hepatitisB3,
-      rotavirus3: data.rotavirus3,
-      influenza1: data.influenza1,
-    },
-    sevenMonths: {
-      influenza2: data.influenza2,
-    },
-    twelveMonths: {
-      srp1: data.srp1,
-      pneumococcal3: data.pneumococcal3,
-    },
-    eighteenMonths: {
-      pentavalent4: data.pentavalent4,
-    },
-    twoYears: {
-      influenzaAnnual1: data.influenzaAnnual1,
-    },
-    threeYears: {
-      influenzaAnnual2: data.influenzaAnnual2,
-    },
-    fourYears: {
-      dpt: data.dpt,
-      influenzaAnnual3: data.influenzaAnnual3,
-    },
-    fiveYears: {
-      influenzaAnnual4: data.influenzaAnnual4,
-      vopOpv: data.vopOpv,
-    },
-    elevenYears: {
-      vph: data.vph,
-    },
-    otherVaccines: data.otherVaccines,
-  };
+  //   const validatedFields = vaccinationSchema.safeParse(vaccinationData);
 
-  const validatedFields = vaccinationSchema.safeParse(vaccinationData);
+  //   if (!validatedFields.success) {
+  //     const errorDetails = validatedFields.error.errors.map((err) => ({
+  //       field: err.path[0],
+  //       message: err.message,
+  //     }));
 
-  if (!validatedFields.success) {
-    const errorDetails = validatedFields.error.errors.map((err) => ({
-      field: err.path[0],
-      message: err.message,
-    }));
+  //     return { error: errorDetails };
+  //   }
 
-    return { error: errorDetails };
-  }
+  //   const filteredData = filterFields(validatedFields.data);
+  //   const { other, ...rest } = filteredData;
 
-  try {
-    return {
-      success: true,
-    };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    }
-    return { error: 'An unexpected error occurred' };
-  }
+  //   const modifiedData = {
+  //     ...rest,
+  //     other: convertToBoolean(other),
+  //   };
+
+  //   try {
+  //     const response = await updateVaccinationSchedulePatient(
+  //       modifiedData,
+  //       await getCookie('token')
+  //     );
+  //     return {
+  //       success: response.success,
+  //     };
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       return { error: error.message };
+  //     }
+  //     return { error: 'An unexpected error occurred' };
+  //   }
 }

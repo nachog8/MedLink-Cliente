@@ -20,7 +20,7 @@ export function UserButton() {
     ? user.role === 'Patient'
       ? `/paciente/${user.id}`
       : user.role === 'Doctor'
-        ? `/professional/${user.id}`
+        ? `/profesional/${user.id}`
         : null
     : null;
 

@@ -17,7 +17,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from '@/components/ui/select';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';

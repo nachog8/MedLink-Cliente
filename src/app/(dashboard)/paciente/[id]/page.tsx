@@ -31,6 +31,7 @@ export default async function Page({ params }: Props) {
             allergiesData={data.allergiesData}
             familyInheritanceData={data.familyInheritance}
             pathologicalData={data.pathologicalData}
+            noPathologicalData={data.nonPathologicalData}
           />
           <MedicalDocList documents={documents} />
         </div>

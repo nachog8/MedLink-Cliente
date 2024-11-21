@@ -1,6 +1,7 @@
 import {
   AllergieFormType,
   FamilyInheritanceFormType,
+  NoPathologicalFormType,
   PathologicalFormType,
 } from '@/schemas/schemas-profile';
 import {
@@ -18,28 +19,20 @@ import { FileText } from 'lucide-react';
 import { LayoutContentTab } from './layout-content-tab';
 import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
 import PathologicalForm from '@/components/form/patient/form-pathological-history';
-import VaccinationScheduleForm from '@/components/form/patient/form-vaccination-schedule';
 import { fieldTranslationMap } from '@/data/form-options';
 import { translateData } from '@/lib/translate-data';
-
-// import {
-//   NoPathologicalFormType,
-//   VaccinationFormType,
-// } from '../../../../schemas/schemas-profile';
 
 interface Props {
   allergiesData: AllergieFormType;
   pathologicalData: PathologicalFormType;
   familyInheritanceData: FamilyInheritanceFormType;
-  // noPathologicalData: NoPathologicalFormType;
-  // vaccinationData: VaccinationFormType;
+  noPathologicalData: NoPathologicalFormType;
 }
 export default function ClinicalHistoryCard({
   allergiesData,
   familyInheritanceData,
   pathologicalData,
-  // noPathologicalData,
-  // vaccinationData,
+  noPathologicalData,
 }: Props) {
   return (
     <Card className="h-full w-full">
@@ -76,12 +69,6 @@ export default function ClinicalHistoryCard({
               Antecedentes No Patologicos
             </TabsTrigger>
             <TabsTrigger
-              value={'vaccination schedule'}
-              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-            >
-              Esquema de Vacunación
-            </TabsTrigger>
-            <TabsTrigger
               value={'family inheritance'}
               className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
@@ -110,23 +97,16 @@ export default function ClinicalHistoryCard({
             />
           </TabsContent>
           <TabsContent value={'no-pathological'}>
-            {/* TODO: FALTA AQUI PONER LOS DATOS */}
             <LayoutContentTab
-              items={{}}
+              items={translateData(noPathologicalData, fieldTranslationMap)}
               title="Antecedentes No Patologicos"
-              form_dialog_information={<NoPathologicalForm />}
+              form_dialog_information={
+                <NoPathologicalForm initialValues={noPathologicalData} />
+              }
               title_dialog_information="Enfermedades No Patologicas"
             />
           </TabsContent>
-          <TabsContent value={'vaccination schedule'}>
-            {/* TODO: FALTA AQUI PONER LOS DATOS */}
-            <LayoutContentTab
-              items={{}}
-              title="Esquema de Vacunación"
-              form_dialog_information={<VaccinationScheduleForm />}
-              title_dialog_information="Esquema de Vacunación"
-            />
-          </TabsContent>
+
           <TabsContent value={'family inheritance'}>
             <LayoutContentTab
               items={translateData(familyInheritanceData, fieldTranslationMap)}

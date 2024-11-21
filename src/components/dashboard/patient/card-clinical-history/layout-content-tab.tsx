@@ -79,8 +79,10 @@ export function LayoutContentTab({
                           <div className="flex items-center">
                             <Check className="h-4 w-4 text-destructive" />
 
-                            <span className="ml-2 w-3/4 text-sm">
-                              {item.description}
+                            <span className="ml-2 text-sm">
+                              {item.description
+                                ? item.description
+                                : 'No se añadió detalles'}
                             </span>
                           </div>
                         ) : (

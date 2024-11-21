@@ -13,58 +13,43 @@ import {
   VaccinationFormType,
   vaccinationSchema,
 } from '@/schemas/schemas-profile';
+import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { ButtonForm } from '@/components/buttons/button-submit-form';
+import { FieldCheckBox } from '../fields/field-checkbox';
+import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { buildFormInitialValues } from '@/lib/build-form-initial-values';
 import { toast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { vaccinationPatientAction } from '@/actions/patient-actions';
+import { vaccinationScheduleTypes } from '@/data/form-options';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function VaccinationScheduleForm() {
+type VaccinationScheduleFormProps = {
+  initialValues?: Partial<VaccinationFormType>;
+};
+
+export default function VaccinationScheduleForm({
+  initialValues,
+}: VaccinationScheduleFormProps) {
   const [state, formAction] = useFormState(vaccinationPatientAction, null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const router = useRouter();
   const form = useForm<VaccinationFormType>({
     resolver: zodResolver(vaccinationSchema),
-    defaultValues: {
-      atBirth: { bcg: false, hepatitisB1: false },
-      twoMonths: {
-        pentavalent1: false,
-        hepatitisB2: false,
-        rotavirus1: false,
-        pneumococcal1: false,
-      },
-      fourMonths: {
-        pentavalent2: false,
-        rotavirus2: false,
-        pneumococcal2: false,
-      },
-      sixMonths: {
-        pentavalent3: false,
-        hepatitisB3: false,
-        rotavirus3: false,
-        influenza1: false,
-      },
-      sevenMonths: { influenza2: false },
-      twelveMonths: { srp1: false, pneumococcal3: false },
-      eighteenMonths: { pentavalent4: false },
-      twoYears: { influenzaAnnual1: false },
-      threeYears: { influenzaAnnual2: false },
-      fourYears: { dpt: false, influenzaAnnual3: false },
-      fiveYears: { influenzaAnnual4: false, vopOpv: false },
-      elevenYears: { vph: false },
-      otherVaccines: undefined,
-    },
+    defaultValues: buildFormInitialValues<VaccinationFormType>(
+      [...vaccinationScheduleTypes],
+      initialValues
+    ),
   });
   useEffect(() => {
     if (state?.success) {
-      toast({
-        title: 'Datos sobre ESQUEMA DE VACUNACIÓN actualizado con Exitoso!!',
-        description: 'El campo ya fue editado. Gracias!!',
-      });
+      setIsSubmitted(true);
+      router.refresh();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
@@ -76,26 +61,18 @@ export default function VaccinationScheduleForm() {
         variant: 'destructive',
       });
     }
-  }, [state]);
+  }, [state, router]);
 
-  function onReset() {
-    form.reset();
-  }
+  //verificar esto
+  // const handleNoToAll = () => {
+  //   form.reset(
+  //     Object.fromEntries(
+  //       vaccinationScheduleTypes.map(({ name }) => [name, false])
+  //     ) as Partial<VaccinationFormType>
+  //   );
+  // };
 
-  const renderCheckbox = (section: string, field: string, label: string) => (
-    <FormField
-      control={form.control}
-      name={`${section}.${field}`}
-      render={({ field }) => (
-        <FormItem className="flex items-center space-x-3 space-y-0">
-          <FormControl>
-            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-          </FormControl>
-          <FormLabel className="font-normal">{label}</FormLabel>
-        </FormItem>
-      )}
-    />
-  );
+  if (isSubmitted) return <MessageSuccesfull />;
 
   const renderSection = (title: string, children: React.ReactNode) => (
     <div className="space-y-2">
@@ -112,147 +89,225 @@ export default function VaccinationScheduleForm() {
         {renderSection(
           'Nacimiento',
           <>
-            {renderCheckbox('atBirth', 'bcg', 'BCG')}
-            {renderCheckbox('atBirth', 'hepatitisB1', '1ª Hepatitis B')}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="atBirth.bcg"
+              label="Hepatitis B1"
+              name="bcg"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="atBirth.hepatitisB1"
+              label="1ª Hepatitis B"
+              name="hepatitisB1"
+            />
           </>
         )}
+
         <Separator />
 
         {renderSection(
           '2 meses',
           <>
-            {renderCheckbox(
-              'twoMonths',
-              'pentavalent1',
-              '1ª Pentavalente Acelular'
-            )}
-            {renderCheckbox('twoMonths', 'hepatitisB2', '2ª Hepatitis B')}
-            {renderCheckbox('twoMonths', 'rotavirus1', '1ª Rotavirus')}
-            {renderCheckbox('twoMonths', 'pneumococcal1', '1ª Neumococo')}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twoMonths.pentavalent1"
+              label="1ª Pentavalente Acelular"
+              name="pentavalent1"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twoMonths.hepatitisB2"
+              label="2° Hepatitis B"
+              name="hepatitisB2"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twoMonths.rotavirus1"
+              label="1ª Rotavirus"
+              name="rotavirus1"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twoMonths.pneumococcal1"
+              label="1ª Neumococo"
+              name="pneumococcal1"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '4 meses',
           <>
-            {renderCheckbox(
-              'fourMonths',
-              'pentavalent2',
-              '2ª Pentavalente Acelular'
-            )}
-            {renderCheckbox('fourMonths', 'rotavirus2', '2ª Rotavirus')}
-            {renderCheckbox('fourMonths', 'pneumococcal2', '2ª Neumococo')}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fourMonths.pentavalent2"
+              label="2ª Pentavalente Acelular"
+              name="pentavalent2"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fourMonths.rotavirus2"
+              label="2ª Rotavirus"
+              name="rotavirus2"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fourMonths.pneumococcal2"
+              label="2ª Neumococo"
+              name="pneumococcal2"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '6 meses',
           <>
-            {renderCheckbox(
-              'sixMonths',
-              'pentavalent3',
-              '3ª Pentavalente Acelular'
-            )}
-            {renderCheckbox('sixMonths', 'hepatitisB3', '3ª Hepatitis B')}
-            {renderCheckbox('sixMonths', 'rotavirus3', '3ª Rotavirus')}
-            {renderCheckbox(
-              'sixMonths',
-              'influenza1',
-              '1ª Anti influenza (en temporada de frío)'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="sixMonths.pentavalent3"
+              label="3ª Pentavalente Acelular"
+              name="pentavalent3"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="sixMonths.hepatitisB3"
+              label="3ª Hepatitis"
+              name="hepatitisB3"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="sixMonths.rotavirus3"
+              label="3ª Rotavirus"
+              name="rotavirus3"
+            />
+
+            <FieldCheckBox
+              control={form.control}
+              fieldName="sixMonths.influenza1"
+              label="1ª Anti influenza (en temporada de frío)"
+              name="influenza1"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '7 meses',
           <>
-            {renderCheckbox(
-              'sevenMonths',
-              'influenza2',
-              '2ª Anti influenza (en temporada de frío)'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="sevenMonths.influenza2"
+              label="2ª Anti influenza (en temporada de frío)"
+              name="influenza2"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '12 meses',
           <>
-            {renderCheckbox('twelveMonths', 'srp1', '1ª SRP')}
-            {renderCheckbox('twelveMonths', 'pneumococcal3', '3ª Neumococo')}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twelveMonths.srp1"
+              label="1ª SRP"
+              name="srp1"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twelveMonths.pneumococcal3"
+              label="3ª Neumococo"
+              name="pneumococcal3"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '18 meses',
           <>
-            {renderCheckbox(
-              'eighteenMonths',
-              'pentavalent4',
-              '4ª Pentavalente Acelular'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="eighteenMonths.pentavalent4"
+              label="4ª Pentavalente Acelular "
+              name="pentavalent4"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '2 años',
           <>
-            {renderCheckbox(
-              'twoYears',
-              'influenzaAnnual1',
-              'Influenza Refuerzo Anual (oct-ene)'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="twoYears.influenzaAnnual1"
+              label="Influenza Refuerzo Anual (oct-ene)"
+              name="influenzaAnnual1"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '3 años',
           <>
-            {renderCheckbox(
-              'threeYears',
-              'influenzaAnnual2',
-              'Influenza Refuerzo Anual (oct-ene)'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="threeYears.influenzaAnnual2"
+              label="Influenza Refuerzo Anual (oct-ene)"
+              name="influenzaAnnual2"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '4 años',
           <>
-            {renderCheckbox('fourYears', 'dpt', 'DPT')}
-            {renderCheckbox(
-              'fourYears',
-              'influenzaAnnual3',
-              'Influenza Refuerzo Anual (oct-ene)'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fourYears.dpt"
+              label="DPT"
+              name="dpt"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fourYears.influenzaAnnual3"
+              label="Influenza Refuerzo Anual (oct-ene)"
+              name="influenzaAnnual3"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '5 años',
           <>
-            {renderCheckbox(
-              'fiveYears',
-              'influenzaAnnual4',
-              'Influenza Refuerzo Anual (oct-ene)'
-            )}
-            {renderCheckbox(
-              'fiveYears',
-              'vopOpv',
-              'VOP/OPV (Sabin, polio oral) en 1ª y 2ª Semana Nal. de Salud (después de 2 previas de Pentavalente Acelular)'
-            )}
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fiveYears.influenzaAnnual4"
+              label="Influenza Refuerzo Anual (oct-ene)"
+              name="influenzaAnnual4"
+            />
+            <FieldCheckBox
+              control={form.control}
+              fieldName="fiveYears.vopOpv"
+              label="VOP/OPV (Sabin, polio oral) en 1ª y 2ª Semana Nal. de Salud (después de 2 previas de Pentavalente Acelular)"
+              name="vopOpv"
+            />
           </>
         )}
         <Separator />
         {renderSection(
           '11 años / 5to primaria',
-          <>{renderCheckbox('elevenYears', 'vph', 'VPH')}</>
+          <FieldCheckBox
+            control={form.control}
+            fieldName="elevenYears.vph"
+            label="VPH"
+            name="vph"
+          />
         )}
         <Separator />
         {renderSection(
           'Otras Vacunas',
           <FormField
             control={form.control}
-            name="otherVaccines"
+            name="other"
             render={({ field }) => (
               <FormItem className="flex items-center space-x-3 space-y-0">
                 <FormControl>
@@ -260,16 +315,17 @@ export default function VaccinationScheduleForm() {
                     onValueChange={field.onChange}
                     value={field.value || ''}
                     className="flex gap-4"
+                    name={field.name}
                   >
                     <FormItem className="flex items-center space-x-2">
                       <FormControl>
-                        <RadioGroupItem value="si" />
+                        <RadioGroupItem value="true" />
                       </FormControl>
                       <FormLabel className="font-normal">Sí</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-2">
                       <FormControl>
-                        <RadioGroupItem value="no" />
+                        <RadioGroupItem value="false" />
                       </FormControl>
                       <FormLabel className="font-normal">No</FormLabel>
                     </FormItem>
@@ -280,10 +336,10 @@ export default function VaccinationScheduleForm() {
             )}
           />
         )}
-        {form.watch('otherVaccines') === 'si' && (
+        {form.watch('other') === 'true' && (
           <FormField
             control={form.control}
-            name="otherVaccines"
+            name="otherDetails"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -299,10 +355,10 @@ export default function VaccinationScheduleForm() {
         )}
         <Separator />
         <div className="flex justify-evenly py-2">
-          <Button type="button" variant="outline" onClick={onReset}>
+          {/* <Button type="button" variant="outline" onClick={onReset}>
             Limpiar
-          </Button>
-          <Button type="submit">Guardar</Button>
+          </Button> */}
+          <ButtonForm text="Guardar" />
         </div>
       </form>
     </Form>
