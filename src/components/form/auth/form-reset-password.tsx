@@ -7,29 +7,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import { ResetPasswordType, resetPasswordSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { CheckCircle2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { CheckCircle2, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { resetPasswordAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams } from 'next/navigation';
+import { FieldInput } from '../fields/field-input';
+import { ButtonSubmit } from '@/components/buttons/button-submit';
 
 export const ResetPasswordForm = () => {
   const [state, formAction] = useFormState(resetPasswordAction, null);
+  const { token } = useParams();
   const [isSuccess, setIsSuccess] = useState(false);
   const form = useForm<ResetPasswordType>({
     resolver: zodResolver(resetPasswordSchema),
@@ -91,36 +87,25 @@ export const ResetPasswordForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Agregamos la apertura de Form aquí */}
         <Form {...form}>
-          <form action={formAction} className="space-y-5">
-            <FormField
+          <form action={formAction}>
+            <FieldInput<ResetPasswordType>
               control={form.control}
-              name="newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nueva Contraseña</FormLabel>
-                  <FormControl>
-                    <Input type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName="newPassword"
+              label="Nueva Contraseña"
+              icon={<Lock />}
             />
-            <FormField
+            <FieldInput<ResetPasswordType>
               control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirmar Nueva Contraseña</FormLabel>
-                  <FormControl>
-                    <Input type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName="confirmPassword"
+              label="Confirmar Contraseña"
+              icon={<Lock />}
             />
+            {/* Input falso para mandar el token junto con el valor de la contraseña */}
+            <input type="hidden" name="token" value={token} />
             <div className="grid md:justify-items-end">
-              <Button type="submit">Cambiar Contraseña</Button>
+              <ButtonSubmit text="Cambiar contraseña" />
             </div>
           </form>
         </Form>

@@ -11,7 +11,7 @@ import {
 import { AxiosError } from 'axios';
 import { authService } from '@/services/auth-service';
 
-const { register, login, forgotPassword } = authService;
+const { register, login, forgotPassword, resetPassword } = authService;
 
 export async function loginAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
@@ -68,7 +68,6 @@ export async function registerPatientAction(
   }
 
   const { confirmPassword, ...newPatient } = validatedFields.data;
-  console.log(newPatient);
   try {
     const resp = await register(newPatient);
 
@@ -77,7 +76,7 @@ export async function registerPatientAction(
       success: true,
     };
   } catch (error) {
-    console.log(error);
+   
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {
@@ -91,7 +90,6 @@ export async function registerProfessionalAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-  console.log(data);
   const professionalData = {
     specialization: data.specialization,
     email: data.email,
@@ -115,7 +113,7 @@ export async function registerProfessionalAction(
     ...validatedFields.data,
     licenseNumber: Number(validatedFields.data.licenseNumber),
   };
-  console.log('Data a enviar:', newProfessional);
+ 
   try {
     const resp = await register(newProfessional);
     return {
@@ -157,7 +155,7 @@ export async function forgotPasswordAction(prevState: any, formData: FormData) {
       },
     };
   } catch (error) {
-    console.log(error);
+  
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {
@@ -169,6 +167,9 @@ export async function forgotPasswordAction(prevState: any, formData: FormData) {
 
 export async function resetPasswordAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
+
+  const token = data.token as string
+
   const resetPasswordData = {
     newPassword: data.newPassword,
     confirmPassword: data.confirmPassword,
@@ -186,16 +187,12 @@ export async function resetPasswordAction(prevState: any, formData: FormData) {
 
   const { confirmPassword, ...newPassword } = validatedFields.data;
   try {
-    // const resp = await forgotPassword(validatedFields.data);
+    const response = await resetPassword(token, newPassword);
     return {
-      // success: resp.success,
-      // payload: {
-      //   message: resp.payload.message,
-      // },
-      success: true,
+      success: response.success,
     };
   } catch (error) {
-    console.log(error);
+
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {
