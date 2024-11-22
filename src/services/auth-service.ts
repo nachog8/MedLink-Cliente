@@ -31,44 +31,20 @@ export const authService = {
     }
   },
 
-  //   async logout() {
-  //     try {
-  //       await api.post('/auth/logout');
-  //     } catch (error) {
-  //       throw (error as Error).message;
-  //     }
-  //   },
+    async resetPassword(token:string, newPassword:{newPassword:string}) {
+      try {
+        const response = await api.post('/auth/reset-password', {
+          newPassword
+        },  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+        return response.data;
+      } catch (error) {
+          throw (error as Error).message;
+      }
+    },
 
-  //   async resetPassword(token, newPassword) {
-  //     try {
-  //       const response = await api.post('/auth/reset-password', {
-  //         token,
-  //         newPassword
-  //       });
-  //       return response.data;
-  //     } catch (error) {
-  //         throw (error as Error).message;
-  //     }
-  //   },
 
-  //   async verifyEmail(token) {
-  //     try {
-  //       const response = await api.post('/auth/verify-email', { token });
-  //       return response.data;
-  //     } catch (error) {
-  //         throw (error as Error).message;
-  //     }
-  //   },
-
-  //   async refreshToken() {
-  //     try {
-  //       const response = await api.post('/auth/refresh-token');
-  //       if (response.data.token) {
-  //         localStorage.setItem('token', response.data.token);
-  //       }
-  //       return response.data;
-  //     } catch (error) {
-  //         throw (error as Error).message;
-  //     }
-  //   }
 };

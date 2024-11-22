@@ -7,12 +7,11 @@ import {
   noPathologicalSchema,
   pathologicalSchema,
   securitySchema,
-  vaccinationSchema,
+ 
 } from '@/schemas/schemas-profile';
 
 import { convertToBoolean } from '@/lib/convert-boolean';
 import { cookies } from 'next/headers';
-import { filterFields } from '@/lib/filter-fields';
 import { patientService } from '@/services/patient-service';
 
 //Funciones de las Cookies
@@ -29,7 +28,6 @@ const {
   updatePathological,
   updateProfilePatient,
   updateNoPathological,
-  updateVaccinationSchedulePatient,
 } = patientService;
 
 // Funcioens de actualizacion
@@ -38,7 +36,7 @@ export async function edithProfilePatientAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
-  // console.log(data);
+ 
   const editProfileData = {
     firstName: data.firstName,
     lastName: data.lastName,
@@ -69,7 +67,7 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-  // console.log(validatedFields.data);
+  
   try {
     const response = await updateProfilePatient(
       validatedFields.data,
@@ -86,41 +84,41 @@ export async function edithProfilePatientAction(
   }
 }
 
-export async function updatePasswordPatientAction(
-  prevState: any,
-  formData: FormData
-) {
-  const data = Object.fromEntries(formData.entries());
+// export async function updatePasswordPatientAction(
+//   prevState: any,
+//   formData: FormData
+// ) {
+//   const data = Object.fromEntries(formData.entries());
 
-  const updatePasswordData = {
-    currentPassword: data.currentPassword,
-    newPassword: data.password,
-    confirmPassword: data.confirmPassword,
-  };
+//   const updatePasswordData = {
+//     currentPassword: data.currentPassword,
+//     newPassword: data.password,
+//     confirmPassword: data.confirmPassword,
+//   };
 
-  const validatedFields = securitySchema.safeParse(updatePasswordData);
+//   const validatedFields = securitySchema.safeParse(updatePasswordData);
 
-  if (!validatedFields.success) {
-    const errorDetails = validatedFields.error.errors.map((err) => ({
-      field: err.path[0],
-      message: err.message,
-    }));
+//   if (!validatedFields.success) {
+//     const errorDetails = validatedFields.error.errors.map((err) => ({
+//       field: err.path[0],
+//       message: err.message,
+//     }));
 
-    return { error: errorDetails };
-  }
-  //Mandar updatePassword
-  const { confirmPassword, ...updatePassword } = validatedFields.data;
-  try {
-    return {
-      success: true,
-    };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    }
-    return { error: 'An unexpected error occurred' };
-  }
-}
+//     return { error: errorDetails };
+//   }
+//   //Mandar updatePassword
+//   const { confirmPassword, ...updatePassword } = validatedFields.data;
+//   try {
+//     return {
+//       success: true,
+//     };
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       return { error: error.message };
+//     }
+//     return { error: 'An unexpected error occurred' };
+//   }
+// }
 
 export async function allergiePatientAction(
   prevState: any,
@@ -374,97 +372,4 @@ export async function familyInheritancePatientAction(
     }
     return { error: 'An unexpected error occurred' };
   }
-
-  // export async function vaccinationPatientAction(
-  //   prevState: any,
-  //   formData: FormData
-  // ) {
-  //   const data = Object.fromEntries(formData.entries());
-  //   console.log(data);
-  //   const vaccinationData = {
-  //     atBirth: {
-  //       bcg: data.bcg,
-  //       hepatitisB1: data.hepatitisB1,
-  //     },
-  //     twoMonths: {
-  //       pentavalent1: data.pentavalent1,
-  //       hepatitisB2: data.hepatitisB2,
-  //       rotavirus1: data.rotavirus1,
-  //       pneumococcal1: data.pneumococcal1,
-  //     },
-  //     fourMonths: {
-  //       pentavalent2: data.pentavalent2,
-  //       rotavirus2: data.rotavirus2,
-  //       pneumococcal2: data.pneumococcal2,
-  //     },
-  //     sixMonths: {
-  //       pentavalent3: data.pentavalent3,
-  //       hepatitisB3: data.hepatitisB3,
-  //       rotavirus3: data.rotavirus3,
-  //       influenza1: data.influenza1,
-  //     },
-  //     sevenMonths: {
-  //       influenza2: data.influenza2,
-  //     },
-  //     twelveMonths: {
-  //       srp1: data.srp1,
-  //       pneumococcal3: data.pneumococcal3,
-  //     },
-  //     eighteenMonths: {
-  //       pentavalent4: data.pentavalent4,
-  //     },
-  //     twoYears: {
-  //       influenzaAnnual1: data.influenzaAnnual1,
-  //     },
-  //     threeYears: {
-  //       influenzaAnnual2: data.influenzaAnnual2,
-  //     },
-  //     fourYears: {
-  //       dpt: data.dpt,
-  //       influenzaAnnual3: data.influenzaAnnual3,
-  //     },
-  //     fiveYears: {
-  //       influenzaAnnual4: data.influenzaAnnual4,
-  //       vopOpv: data.vopOpv,
-  //     },
-  //     elevenYears: {
-  //       vph: data.vph,
-  //     },
-  //     other: data.other,
-  //     otherDetails: data.otherDetails,
-  //   };
-
-  //   const validatedFields = vaccinationSchema.safeParse(vaccinationData);
-
-  //   if (!validatedFields.success) {
-  //     const errorDetails = validatedFields.error.errors.map((err) => ({
-  //       field: err.path[0],
-  //       message: err.message,
-  //     }));
-
-  //     return { error: errorDetails };
-  //   }
-
-  //   const filteredData = filterFields(validatedFields.data);
-  //   const { other, ...rest } = filteredData;
-
-  //   const modifiedData = {
-  //     ...rest,
-  //     other: convertToBoolean(other),
-  //   };
-
-  //   try {
-  //     const response = await updateVaccinationSchedulePatient(
-  //       modifiedData,
-  //       await getCookie('token')
-  //     );
-  //     return {
-  //       success: response.success,
-  //     };
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       return { error: error.message };
-  //     }
-  //     return { error: 'An unexpected error occurred' };
-  //   }
 }
