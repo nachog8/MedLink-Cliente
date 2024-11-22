@@ -1,35 +1,81 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
+import { ButtonCustomDialog } from '@/components/buttons/button-custom-dialog';
+import { InformationNotAvailable } from '@/components/other/information-not-available';
+import { MedicationForm } from '@/components/form/patient/form-medication';
 import { Pill } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { medications } from '@/data/dashboard-pacient';
+import { formatDate } from '@/lib/date-formatter';
 
-export default function MedicationActiveCard() {
+interface Medication {
+  medication: string;
+  dosage: string;
+  frequency: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+interface Props {
+  medications: Medication[];
+}
+
+export default function MedicationCard({ medications }: Props) {
+  const hasMedications = medications && medications.length > 0;
+
   return (
     <Card>
-      <CardHeader className="rounded-t-lg border-b bg-white pb-4">
-        <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-800">
+      <CardHeader className="rounded-t-lg border-b pb-4">
+        <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
           <Pill className="h-5 w-5 text-green-500" />
           Medicamentos Activos
         </CardTitle>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="p-4">
-        <ScrollArea className="h-[250px] pr-4">
-          <div className="space-y-3">
-            {medications.map((medication, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white p-3 shadow-sm transition-colors hover:bg-gray-50"
-              >
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
-                  <Pill className="h-4 w-4 text-green-600" />
+        {!hasMedications ? (
+          <>
+            <InformationNotAvailable />
+          </>
+        ) : (
+          <ScrollArea className="h-[350px] pr-4">
+            <div className="space-y-3">
+              {medications.map((medication, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white p-3 shadow-sm transition-colors hover:bg-gray-50"
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                    <Pill className="h-4 w-4 text-green-600" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-medium text-gray-700">
+                      {medication.medication}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {medication.dosage} - {medication.frequency}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {`Desde ${formatDate(medication.startDate)} - Hasta ${formatDate(medication.endDate)}`}
+                    </span>
+                  </div>
                 </div>
-                <span className="font-medium text-gray-700">{medication}</span>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea>
+        )}
       </CardContent>
+      <CardFooter className="mt-6">
+        <ButtonCustomDialog buttonText="Añadir Medicamentos">
+          <MedicationForm />
+        </ButtonCustomDialog>
+      </CardFooter>
     </Card>
   );
 }

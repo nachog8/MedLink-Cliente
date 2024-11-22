@@ -4,10 +4,10 @@ import {
   allergieSchema,
   editProfileSchema,
   familyInheritanceSchema,
+  medicationSchema,
   noPathologicalSchema,
   pathologicalSchema,
   securitySchema,
- 
 } from '@/schemas/schemas-profile';
 
 import { convertToBoolean } from '@/lib/convert-boolean';
@@ -28,6 +28,7 @@ const {
   updatePathological,
   updateProfilePatient,
   updateNoPathological,
+  addMedicationPatient,
 } = patientService;
 
 // Funcioens de actualizacion
@@ -36,26 +37,23 @@ export async function edithProfilePatientAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData.entries());
- 
-  const editProfileData = {
-    firstName: data.firstName,
-    lastName: data.lastName,
-    dateOfBirth: data.dateOfBirth,
-    gender: data.gender,
-    aboutMe: data.aboutMe,
-    phone: data.phone,
-    email: data.email,
-    location: data.location,
-    avatar: data.avatar,
-    height: +data.height,
-    weight: +data.weight,
-    bloodType: data.bloodType,
-    bloodPressureTrend: data.bloodPressureTrend,
-    isDonor: data.isDonor === 'on',
-    hasAllergies: data.hasAllergies === 'on',
-    hasChronicDiseases: data.hasChronicDiseases === 'on',
-    hasHealthyLifestyle: data.hasHealthyLifestyle === 'on',
-  };
+
+  const editProfileData = Object.entries(data).reduce(
+    (acc, [key, value]) => {
+      if (key === 'avatar') return acc;
+      if (value !== '' && value !== undefined) {
+        if (key === 'height' || key === 'weight') {
+          acc[key] = Number(value) || null;
+        } else if (value === 'on') {
+          acc[key] = true;
+        } else {
+          acc[key] = value;
+        }
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   const validatedFields = editProfileSchema.safeParse(editProfileData);
 
@@ -67,7 +65,6 @@ export async function edithProfilePatientAction(
 
     return { error: errorDetails };
   }
-  
   try {
     const response = await updateProfilePatient(
       validatedFields.data,
@@ -84,41 +81,41 @@ export async function edithProfilePatientAction(
   }
 }
 
-// export async function updatePasswordPatientAction(
-//   prevState: any,
-//   formData: FormData
-// ) {
-//   const data = Object.fromEntries(formData.entries());
+export async function updatePasswordPatientAction(
+  prevState: any,
+  formData: FormData
+) {
+  const data = Object.fromEntries(formData.entries());
 
-//   const updatePasswordData = {
-//     currentPassword: data.currentPassword,
-//     newPassword: data.password,
-//     confirmPassword: data.confirmPassword,
-//   };
+  const updatePasswordData = {
+    currentPassword: data.currentPassword,
+    newPassword: data.password,
+    confirmPassword: data.confirmPassword,
+  };
 
-//   const validatedFields = securitySchema.safeParse(updatePasswordData);
+  const validatedFields = securitySchema.safeParse(updatePasswordData);
 
-//   if (!validatedFields.success) {
-//     const errorDetails = validatedFields.error.errors.map((err) => ({
-//       field: err.path[0],
-//       message: err.message,
-//     }));
+  if (!validatedFields.success) {
+    const errorDetails = validatedFields.error.errors.map((err) => ({
+      field: err.path[0],
+      message: err.message,
+    }));
 
-//     return { error: errorDetails };
-//   }
-//   //Mandar updatePassword
-//   const { confirmPassword, ...updatePassword } = validatedFields.data;
-//   try {
-//     return {
-//       success: true,
-//     };
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       return { error: error.message };
-//     }
-//     return { error: 'An unexpected error occurred' };
-//   }
-// }
+    return { error: errorDetails };
+  }
+  //Mandar updatePassword
+  const { confirmPassword, ...updatePassword } = validatedFields.data;
+  try {
+    return {
+      success: true,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'An unexpected error occurred' };
+  }
+}
 
 export async function allergiePatientAction(
   prevState: any,
@@ -126,16 +123,18 @@ export async function allergiePatientAction(
 ) {
   const data = Object.fromEntries(formData.entries());
 
-  const allergieData = {
-    foodAllergy: data.foodAllergy,
-    foodAllergyDetails: data.foodAllergyDetails,
-    insectAllergy: data.insectAllergy,
-    insectAllergyDetails: data.insectAllergyDetails,
-    medicineAllergy: data.medicineAllergy,
-    medicineAllergyDetails: data.medicineAllergyDetails,
-    otherAllergies: data.otherAllergies,
-    otherAllergiesDetails: data.otherAllergiesDetails,
-  };
+  const allergieData = Object.keys(data).reduce(
+    (acc, key) => {
+      if (key.endsWith('Details')) {
+        const mainField = key.replace('Details', '');
+        acc[key] = data[mainField] === 'false' ? '' : data[key];
+      } else {
+        acc[key] = data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   const validatedFields = allergieSchema.safeParse(allergieData);
 
@@ -146,13 +145,17 @@ export async function allergiePatientAction(
     }));
     return { error: errorDetails };
   }
-  const finalData = {
-    ...validatedFields.data,
-    foodAllergy: convertToBoolean(validatedFields.data.foodAllergy),
-    insectAllergy: convertToBoolean(validatedFields.data.insectAllergy),
-    medicineAllergy: convertToBoolean(validatedFields.data.medicineAllergy),
-    otherAllergies: convertToBoolean(validatedFields.data.otherAllergies),
-  };
+  const finalData = Object.keys(validatedFields.data).reduce(
+    (acc, key) => {
+      if (!key.endsWith('Details')) {
+        acc[key] = convertToBoolean(validatedFields.data[key]);
+      } else {
+        acc[key] = validatedFields.data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   try {
     const response = await updateAllergies(finalData, await getCookie('token'));
@@ -173,36 +176,18 @@ export async function pathologicalPatientAction(
 ) {
   const data = Object.fromEntries(formData.entries());
 
-  const pathologicalData = {
-    hospitalization: data.hospitalization,
-    hospitalizationDetails: data.hospitalizationDetails,
-    diabetes: data.diabetes,
-    diabetesDetails: data.diabetesDetails,
-    thyroidDiseases: data.thyroidDiseases,
-    thyroidDiseasesDetails: data.thyroidDiseasesDetails,
-    hypertension: data.hypertension,
-    hypertensionDetails: data.hypertensionDetails,
-    heartDiseases: data.heartDiseases,
-    heartDiseasesDetails: data.heartDiseasesDetails,
-    trauma: data.trauma,
-    traumaDetails: data.traumaDetails,
-    cancer: data.cancer,
-    cancerDetails: data.cancerDetails,
-    tuberculosis: data.tuberculosis,
-    tuberculosisDetails: data.tuberculosisDetails,
-    transfusions: data.transfusions,
-    transfusionsDetails: data.transfusions,
-    respiratoryDiseases: data.respiratoryDiseases,
-    respiratoryDiseasesDetails: data.respiratoryDiseasesDetails,
-    gastrointestinalDiseases: data.gastrointestinalDiseases,
-    gastrointestinalDiseasesDetails: data.gastrointestinalDiseasesDetails,
-    sexuallyTransmittedDiseases: data.sexuallyTransmittedDiseases,
-    sexuallyTransmittedDiseasesDetails: data.sexuallyTransmittedDiseasesDetails,
-    chronicKidneyDisease: data.chronicKidneyDisease,
-    chronicKidneyDiseaseDetails: data.chronicKidneyDiseaseDetails,
-    other: data.other,
-    otherDetails: data.otherDetails,
-  };
+  const pathologicalData = Object.keys(data).reduce(
+    (acc, key) => {
+      if (key.endsWith('Details')) {
+        const mainField = key.replace('Details', '');
+        acc[key] = data[mainField] === 'false' ? '' : data[key];
+      } else {
+        acc[key] = data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   const validatedFields = pathologicalSchema.safeParse(pathologicalData);
 
@@ -214,31 +199,17 @@ export async function pathologicalPatientAction(
 
     return { error: errorDetails };
   }
-  const finalData = {
-    ...validatedFields.data,
-    hospitalization: convertToBoolean(validatedFields.data.hospitalization),
-    diabetes: convertToBoolean(validatedFields.data.diabetes),
-    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
-    hypertension: convertToBoolean(validatedFields.data.hypertension),
-    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
-    trauma: convertToBoolean(validatedFields.data.trauma),
-    cancer: convertToBoolean(validatedFields.data.cancer),
-    tuberculosis: convertToBoolean(validatedFields.data.tuberculosis),
-    transfusions: convertToBoolean(validatedFields.data.transfusions),
-    respiratoryDiseases: convertToBoolean(
-      validatedFields.data.respiratoryDiseases
-    ),
-    gastrointestinalDiseases: convertToBoolean(
-      validatedFields.data.gastrointestinalDiseases
-    ),
-    sexuallyTransmittedDiseases: convertToBoolean(
-      validatedFields.data.sexuallyTransmittedDiseases
-    ),
-    chronicKidneyDisease: convertToBoolean(
-      validatedFields.data.chronicKidneyDisease
-    ),
-    other: convertToBoolean(validatedFields.data.other),
-  };
+  const finalData = Object.keys(validatedFields.data).reduce(
+    (acc, key) => {
+      if (!key.endsWith('Details')) {
+        acc[key] = convertToBoolean(validatedFields.data[key]);
+      } else {
+        acc[key] = validatedFields.data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   try {
     const response = await updatePathological(
@@ -262,20 +233,18 @@ export async function noPathologicalPatientAction(
 ) {
   const data = Object.fromEntries(formData.entries());
 
-  const noPathologicalData = {
-    physicalActivity: data.physicalActivity,
-    physicalActivityDetails: data.physicalActivityDetails,
-    smoking: data.smoking,
-    smokingDetails: data.smokingDetails,
-    alcoholism: data.alcoholism,
-    alcoholismDetails: data.alcoholismDetails,
-    otherSubstances: data.otherSubstances,
-    otherSubstancesDetails: data.otherSubstancesDetails,
-    recentVaccination: data.recentVaccination,
-    recentVaccinationDetails: data.recentVaccinationDetails,
-    other: data.other,
-    otherDetails: data.otherDetails,
-  };
+  const noPathologicalData = Object.keys(data).reduce(
+    (acc, key) => {
+      if (key.endsWith('Details')) {
+        const mainField = key.replace('Details', '');
+        acc[key] = data[mainField] === 'false' ? '' : data[key];
+      } else {
+        acc[key] = data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   const validatedFields = noPathologicalSchema.safeParse(noPathologicalData);
 
@@ -287,16 +256,18 @@ export async function noPathologicalPatientAction(
 
     return { error: errorDetails };
   }
-  const finalData = {
-    ...validatedFields.data,
-    physicalActivity: convertToBoolean(validatedFields.data.physicalActivity),
-    smoking: convertToBoolean(validatedFields.data.smoking),
-    alcoholism: convertToBoolean(validatedFields.data.alcoholism),
-    otherSubstances: convertToBoolean(validatedFields.data.otherSubstances),
-    recentVaccination: convertToBoolean(validatedFields.data.recentVaccination),
-    other: convertToBoolean(validatedFields.data.other),
-  };
-  console.log(finalData);
+  const finalData = Object.keys(validatedFields.data).reduce(
+    (acc, key) => {
+      if (!key.endsWith('Details')) {
+        acc[key] = convertToBoolean(validatedFields.data[key]);
+      } else {
+        acc[key] = validatedFields.data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+
   try {
     const response = await updateNoPathological(
       finalData,
@@ -319,20 +290,18 @@ export async function familyInheritancePatientAction(
 ) {
   const data = Object.fromEntries(formData.entries());
 
-  const familyInheritanceData = {
-    diabetes: data.diabetes,
-    diabetesDetails: data.diabetesDetails,
-    heartDiseases: data.heartDiseases,
-    heartDiseasesDetails: data.heartDiseasesDetails,
-    hypertension: data.hypertension,
-    hypertensionDetails: data.hypertensionDetails,
-    thyroidDiseases: data.thyroidDiseases,
-    thyroidDiseasesDetails: data.thyroidDiseasesDetails,
-    chronicKidneyDisease: data.chronicKidneyDisease,
-    chronicKidneyDiseaseDetails: data.chronicKidneyDiseaseDetails,
-    other: data.other,
-    otherDetails: data.otherDetails,
-  };
+  const familyInheritanceData = Object.keys(data).reduce(
+    (acc, key) => {
+      if (key.endsWith('Details')) {
+        const mainField = key.replace('Details', '');
+        acc[key] = data[mainField] === 'false' ? '' : data[key];
+      } else {
+        acc[key] = data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
   const validatedFields = familyInheritanceSchema.safeParse(
     familyInheritanceData
@@ -347,20 +316,61 @@ export async function familyInheritancePatientAction(
     return { error: errorDetails };
   }
 
-  const finalData = {
-    ...validatedFields.data,
-    diabetes: convertToBoolean(validatedFields.data.diabetes),
-    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
-    hypertension: convertToBoolean(validatedFields.data.hypertension),
-    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
-    chronicKidneyDisease: convertToBoolean(
-      validatedFields.data.chronicKidneyDisease
-    ),
-    other: convertToBoolean(validatedFields.data.other),
-  };
+  const finalData = Object.keys(validatedFields.data).reduce(
+    (acc, key) => {
+      if (!key.endsWith('Details')) {
+        acc[key] = convertToBoolean(validatedFields.data[key]);
+      } else {
+        acc[key] = validatedFields.data[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+
   try {
     const response = await updateFamilyInheritance(
       finalData,
+      await getCookie('token')
+    );
+    return {
+      success: response.success,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'An unexpected error occurred' };
+  }
+}
+
+export async function addMedicationPatientAction(
+  prevState: any,
+  formData: FormData
+) {
+  const data = Object.fromEntries(formData.entries());
+
+  const medicationData = {
+    medication: data.medication,
+    dosage: data.dosage,
+    frequency: data.frequency,
+    startDate: data.startDate,
+    endDate: data.endDate,
+  };
+  const validatedFields = medicationSchema.safeParse(medicationData);
+
+  if (!validatedFields.success) {
+    const errorDetails = validatedFields.error.errors.map((err) => ({
+      field: err.path[0],
+      message: err.message,
+    }));
+
+    return { error: errorDetails };
+  }
+
+  try {
+    const response = await addMedicationPatient(
+      validatedFields.data,
       await getCookie('token')
     );
     return {

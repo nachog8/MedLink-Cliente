@@ -31,20 +31,15 @@ export const authService = {
     }
   },
 
-    async resetPassword(token:string, newPassword:{newPassword:string}) {
-      try {
-        const response = await api.post('/auth/reset-password', {
-          newPassword
-        },  {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-        return response.data;
-      } catch (error) {
-          throw (error as Error).message;
-      }
-    },
-
-
+  async resetPassword(token: string, password: { password: string }) {
+    try {
+      const response = await api.post(
+        `/auth/reset-password/${token}`,
+        password
+      );
+      return response.data;
+    } catch (error) {
+      throw (error as Error).message;
+    }
+  },
 };

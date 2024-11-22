@@ -1,12 +1,10 @@
-import { BloodTypes, Genders } from '@/interfaces/auth';
-
 import { z } from 'zod';
 
 export const editProfileSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   dateOfBirth: z.string().optional(),
-  gender: z.nativeEnum(Genders).optional(),
+  gender: z.string().optional(),
   aboutMe: z
     .string()
     .max(200, { message: 'La descripción no debe exceder 500 caracteres.' })
@@ -14,10 +12,10 @@ export const editProfileSchema = z.object({
   phone: z.string().optional(),
   email: z.string().email({ message: 'Correo electrónico no válido.' }),
   location: z.string().optional(),
-  avatar: z.instanceof(File).optional(),
+  avatar: z.string().optional(),
   height: z.number().optional(),
   weight: z.number().optional(),
-  bloodType: z.nativeEnum(BloodTypes).optional(),
+  bloodType: z.string().optional(),
   bloodPressureTrend: z.string().optional(),
   isDonor: z.boolean().optional(),
   hasAllergies: z.boolean().optional(),
@@ -178,3 +176,29 @@ export const vaccinationSchema = z.object({
 });
 
 export type VaccinationFormType = z.infer<typeof vaccinationSchema>;
+
+export const medicationSchema = z
+  .object({
+    medication: z.string().min(2, {
+      message: 'El nombre del medicamento debe tener al menos 2 caracteres.',
+    }),
+    dosage: z.string().min(1, {
+      message: 'La dosis es requerida.',
+    }),
+    frequency: z.string({
+      required_error: 'La frecuencia es requerida.',
+    }),
+    startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
+      message: 'La fecha de inicio no es válida.',
+    }),
+    endDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
+      message: 'La fecha de finalización no es válida.',
+    }),
+  })
+  .refine((data) => new Date(data.endDate) >= new Date(data.startDate), {
+    message:
+      'La fecha de finalización debe ser posterior a la fecha de inicio.',
+    path: ['endDate'],
+  });
+
+export type MedicationFormType = z.infer<typeof medicationSchema>;

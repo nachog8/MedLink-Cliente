@@ -2,8 +2,8 @@ import { CardProfile } from '@/components/dashboard/patient/card-profile/card-pr
 import ClinicalHistoryCard from '@/components/dashboard/patient/card-clinical-history';
 import { FullScreenLoader } from '@/components/loading';
 import { MedicalDocList } from '@/components/dashboard/patient/card-doc-list';
+import MedicationCard from '@/components/dashboard/patient/card-active-medications';
 import { cookies } from 'next/headers';
-import { documents } from '@/data/dashboard-pacient';
 import { patientService } from '@/services/patient-service';
 
 const { getPatient } = patientService;
@@ -33,7 +33,10 @@ export default async function Page({ params }: Props) {
             pathologicalData={data.pathologicalData}
             noPathologicalData={data.nonPathologicalData}
           />
-          <MedicalDocList documents={documents} />
+          <div className="grid gap-5 lg:grid-cols-2">
+            <MedicalDocList documents={data.documents} />
+            <MedicationCard medications={data.medications} />
+          </div>
         </div>
       </div>
     </main>

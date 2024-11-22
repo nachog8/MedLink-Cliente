@@ -1,4 +1,3 @@
-import { AlertCircle, Check, Plus, X } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -7,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Check, Plus, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,7 @@ import {
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 import { Button } from '@/components/ui/button';
+import { InformationNotAvailable } from '@/components/other/information-not-available';
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -58,14 +59,7 @@ export function LayoutContentTab({
       </CardHeader>
       <CardContent>
         {!parsedItems || parsedItems.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-8">
-              <AlertCircle className="mb-4 h-16 w-16 text-muted-foreground" />
-              <p className="mb-4 text-lg font-medium text-muted-foreground">
-                No hay información disponible
-              </p>
-            </CardContent>
-          </Card>
+          <InformationNotAvailable />
         ) : (
           <ScrollArea className="h-72 w-full">
             <Table>

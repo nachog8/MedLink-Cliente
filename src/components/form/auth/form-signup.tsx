@@ -39,10 +39,6 @@ export default function FormSignUp() {
 
   useEffect(() => {
     if (state?.success) {
-      toast({
-        title: 'Inicio de Sesión Exitoso!!',
-        description: 'Tu cuenta ya fue creada, serás redirigido al Home',
-      });
       setTimeout(() => {
         login(state.payload.token);
       }, 2000);
@@ -68,7 +64,7 @@ export default function FormSignUp() {
             <FormItem>
               <FormLabel>Correo electrónico</FormLabel>
               <FormControl>
-                <Input type="email" {...field} />
+                <Input type="email" {...field} disabled={state?.success} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,7 +79,11 @@ export default function FormSignUp() {
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Input type={showPassword ? 'text' : 'password'} {...field} />
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    {...field}
+                    disabled={state?.success}
+                  />
                   <Button
                     type="button"
                     variant="ghost"

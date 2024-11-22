@@ -25,6 +25,7 @@ interface RenderFieldProps<T extends FieldValues> {
   label: string;
   icon?: ReactNode;
   type?: InputTypes;
+  placeholder?: string;
 }
 
 export const FieldInput = <T extends FieldValues>({
@@ -33,6 +34,7 @@ export const FieldInput = <T extends FieldValues>({
   label,
   icon,
   type,
+  placeholder,
 }: RenderFieldProps<T>) => (
   <FormField
     control={control}
@@ -48,6 +50,7 @@ export const FieldInput = <T extends FieldValues>({
               </div>
             )}
             <Input
+              placeholder={placeholder}
               type={type}
               {...field}
               className={`${icon ? 'pl-10' : 'pl-3'} ${

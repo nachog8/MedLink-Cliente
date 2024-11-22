@@ -18,7 +18,8 @@ import {
 
 import { Button } from '@/components/ui/button';
 import FileUploadDialog from '@/components/buttons/button-upload-files';
-import { Image as ImageIcon } from 'lucide-react';
+import { ImageIcon } from 'lucide-react';
+import { InformationNotAvailable } from '@/components/other/information-not-available';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
@@ -33,6 +34,8 @@ interface MedicalDocListProps {
 }
 
 export function MedicalDocList({ documents }: MedicalDocListProps) {
+  const hasDocuments = documents && documents.length > 0;
+
   const getIcon = (type: Document['type']) => {
     switch (type) {
       case 'pdf':
@@ -56,81 +59,82 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
   };
 
   return (
-    <Card>
-      <CardHeader className="rounded-t-lg border-b bg-white pb-4">
+    <Card className="h-auto">
+      <CardHeader className="rounded-t-lg border-b pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-2xl font-semibold text-gray-800">
             <FileText className="h-5 w-5 text-indigo-500" />
             Documentación Médica
           </CardTitle>
         </div>
-        <CardDescription>
-          Archivo de informes, resultados y documentos importantes que respaldan
-          el historial de salud del paciente.
-        </CardDescription>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="p-4">
-        <ScrollArea className="h-80 pr-4">
-          <div className="space-y-3">
-            {documents.map((doc, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-3 shadow-sm transition-colors hover:bg-gray-50"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={cn(
-                      'flex h-8 w-8 items-center justify-center rounded-full',
-                      getIconBackground(doc.type)
-                    )}
-                  >
-                    {getIcon(doc.type)}
+        {!hasDocuments ? (
+          <InformationNotAvailable />
+        ) : (
+          <ScrollArea className="h-[350px] pr-4">
+            <div className="space-y-3">
+              {documents.map((doc, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-3 shadow-sm transition-colors hover:bg-gray-50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={cn(
+                        'flex h-8 w-8 items-center justify-center rounded-full',
+                        getIconBackground(doc.type)
+                      )}
+                    >
+                      {getIcon(doc.type)}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-700">
+                        {doc.name}
+                      </span>
+                      <span className="text-sm text-gray-500">{doc.date}</span>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="font-medium text-gray-700">
-                      {doc.name}
-                    </span>
-                    <span className="text-sm text-gray-500">{doc.date}</span>
+                  <div className="flex items-center gap-2">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-gray-500 hover:text-gray-700"
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Descargar</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Eliminar</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-gray-500 hover:text-gray-700"
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Descargar</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-red-500 hover:text-red-700"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Eliminar</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea>
+        )}
       </CardContent>
       <CardFooter className="mt-6">
         <FileUploadDialog />

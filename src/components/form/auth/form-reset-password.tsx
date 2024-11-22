@@ -7,30 +7,40 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Form } from '@/components/ui/form';
+import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { ResetPasswordType, resetPasswordSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Lock } from 'lucide-react';
+import { ButtonSubmit } from '@/components/buttons/button-submit';
+import { CheckCircle2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { resetPasswordAction } from '@/actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
-import { FieldInput } from '../fields/field-input';
-import { ButtonSubmit } from '@/components/buttons/button-submit';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const ResetPasswordForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [state, formAction] = useFormState(resetPasswordAction, null);
   const { token } = useParams();
   const [isSuccess, setIsSuccess] = useState(false);
   const form = useForm<ResetPasswordType>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      newPassword: '',
+      password: '',
       confirmPassword: '',
     },
     mode: 'onChange',
@@ -90,17 +100,69 @@ export const ResetPasswordForm = () => {
         {/* Agregamos la apertura de Form aquí */}
         <Form {...form}>
           <form action={formAction}>
-            <FieldInput<ResetPasswordType>
+            <FormField
               control={form.control}
-              fieldName="newPassword"
-              label="Nueva Contraseña"
-              icon={<Lock />}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeClosedIcon className="h-4 w-4" />
+                        ) : (
+                          <EyeOpenIcon className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <FieldInput<ResetPasswordType>
+            <FormField
               control={form.control}
-              fieldName="confirmPassword"
-              label="Confirmar Contraseña"
-              icon={<Lock />}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirmar Contraseña</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      >
+                        {showConfirmPassword ? (
+                          <EyeClosedIcon className="h-4 w-4" />
+                        ) : (
+                          <EyeOpenIcon className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             {/* Input falso para mandar el token junto con el valor de la contraseña */}
             <input type="hidden" name="token" value={token} />

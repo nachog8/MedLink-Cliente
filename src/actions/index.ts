@@ -76,7 +76,6 @@ export async function registerPatientAction(
       success: true,
     };
   } catch (error) {
-   
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {
@@ -113,7 +112,7 @@ export async function registerProfessionalAction(
     ...validatedFields.data,
     licenseNumber: Number(validatedFields.data.licenseNumber),
   };
- 
+
   try {
     const resp = await register(newProfessional);
     return {
@@ -155,7 +154,6 @@ export async function forgotPasswordAction(prevState: any, formData: FormData) {
       },
     };
   } catch (error) {
-  
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {
@@ -168,10 +166,10 @@ export async function forgotPasswordAction(prevState: any, formData: FormData) {
 export async function resetPasswordAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
 
-  const token = data.token as string
+  const token = data.token as string;
 
   const resetPasswordData = {
-    newPassword: data.newPassword,
+    password: data.password,
     confirmPassword: data.confirmPassword,
   };
 
@@ -184,15 +182,14 @@ export async function resetPasswordAction(prevState: any, formData: FormData) {
     }));
     return { error: errorDetails };
   }
+  const { confirmPassword, ...password } = validatedFields.data;
 
-  const { confirmPassword, ...newPassword } = validatedFields.data;
   try {
-    const response = await resetPassword(token, newPassword);
+    const response = await resetPassword(token, password);
     return {
       success: response.success,
     };
   } catch (error) {
-
     if (error instanceof AxiosError) {
       return { error: error.response?.data || error.message };
     } else if (error instanceof Error) {

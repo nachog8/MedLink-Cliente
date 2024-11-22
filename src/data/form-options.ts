@@ -1,27 +1,116 @@
 import { BloodPressureTrend, BloodTypes, Genders } from '@/interfaces/auth';
 
 export const specialties = [
-  { label: 'Cardiología', value: 'Cardiology', description: 'Diagnóstico y tratamiento de enfermedades del corazón.' },
-  { label: 'Pediatría', value: 'Pediatrics', description: 'Cuidado integral de la salud de niños y adolescentes.' },
-  { label: 'Dermatología', value: 'Dermatology', description: 'Diagnóstico y tratamiento de enfermedades de la piel.' },
-  { label: 'Ginecología', value: 'Gynecology', description: 'Atención especializada en salud femenina.' },
-  { label: 'Neurología', value: 'Neurology', description: 'Diagnóstico y tratamiento de enfermedades del sistema nervioso.' },
-  { label: 'Oncología', value: 'Oncology', description: 'Diagnóstico y tratamiento de cáncer.' },
-  { label: 'Traumatología', value: 'Traumatology', description: 'Tratamiento de lesiones y enfermedades del sistema músculo-esquelético.' },
-  { label: 'Oftalmología', value: 'Ophthalmology', description: 'Diagnóstico y tratamiento de enfermedades de los ojos.' },
-  { label: 'Psiquiatría', value: 'Psychiatry', description: 'Diagnóstico y tratamiento de trastornos mentales.' },
-  { label: 'Endocrinología', value: 'Endocrinology', description: 'Diagnóstico y tratamiento de enfermedades hormonales.' },
-  { label: 'Infectología', value: 'Infectiology', description: 'Diagnóstico y tratamiento de enfermedades infecciosas.' },
-  { label: 'Medicina Interna', value: 'Internal Medicine', description: 'Atención integral de adultos con enfermedades complejas.' },
-  { label: 'Reumatología', value: 'Rheumatology', description: 'Diagnóstico y tratamiento de enfermedades reumáticas.' },
-  { label: 'Urología', value: 'Urology', description: 'Diagnóstico y tratamiento de enfermedades del sistema urinario.' },
-  { label: 'Otorrinolaringología', value: 'Otorhinolaryngology', description: 'Diagnóstico y tratamiento de enfermedades de oído, nariz y garganta.' },
-  { label: 'Gastroenterología', value: 'Gastroenterology', description: 'Diagnóstico y tratamiento de enfermedades del sistema digestivo.' },
-  { label: 'Cirugía General', value: 'General Surgery', description: 'Procedimientos quirúrgicos generales.' },
-  { label: 'Neumonología', value: 'Pulmonology', description: 'Diagnóstico y tratamiento de enfermedades respiratorias.' },
-  { label: 'Nutrición', value: 'Nutrition', description: 'Asesoramiento y tratamiento nutricional.' },
-  { label: 'Medicina Familiar', value: 'Family Medicine', description: 'Atención integral y continua para individuos y familias.' },
-  { label: 'Otros', value: 'Others', description: 'Otras especialidades médicas no especificadas.' },
+  {
+    label: 'Cardiología',
+    value: 'Cardiology',
+    description: 'Diagnóstico y tratamiento de enfermedades del corazón.',
+  },
+  {
+    label: 'Pediatría',
+    value: 'Pediatrics',
+    description: 'Cuidado integral de la salud de niños y adolescentes.',
+  },
+  {
+    label: 'Dermatología',
+    value: 'Dermatology',
+    description: 'Diagnóstico y tratamiento de enfermedades de la piel.',
+  },
+  {
+    label: 'Ginecología',
+    value: 'Gynecology',
+    description: 'Atención especializada en salud femenina.',
+  },
+  {
+    label: 'Neurología',
+    value: 'Neurology',
+    description:
+      'Diagnóstico y tratamiento de enfermedades del sistema nervioso.',
+  },
+  {
+    label: 'Oncología',
+    value: 'Oncology',
+    description: 'Diagnóstico y tratamiento de cáncer.',
+  },
+  {
+    label: 'Traumatología',
+    value: 'Traumatology',
+    description:
+      'Tratamiento de lesiones y enfermedades del sistema músculo-esquelético.',
+  },
+  {
+    label: 'Oftalmología',
+    value: 'Ophthalmology',
+    description: 'Diagnóstico y tratamiento de enfermedades de los ojos.',
+  },
+  {
+    label: 'Psiquiatría',
+    value: 'Psychiatry',
+    description: 'Diagnóstico y tratamiento de trastornos mentales.',
+  },
+  {
+    label: 'Endocrinología',
+    value: 'Endocrinology',
+    description: 'Diagnóstico y tratamiento de enfermedades hormonales.',
+  },
+  {
+    label: 'Infectología',
+    value: 'Infectiology',
+    description: 'Diagnóstico y tratamiento de enfermedades infecciosas.',
+  },
+  {
+    label: 'Medicina Interna',
+    value: 'Internal Medicine',
+    description: 'Atención integral de adultos con enfermedades complejas.',
+  },
+  {
+    label: 'Reumatología',
+    value: 'Rheumatology',
+    description: 'Diagnóstico y tratamiento de enfermedades reumáticas.',
+  },
+  {
+    label: 'Urología',
+    value: 'Urology',
+    description:
+      'Diagnóstico y tratamiento de enfermedades del sistema urinario.',
+  },
+  {
+    label: 'Otorrinolaringología',
+    value: 'Otorhinolaryngology',
+    description:
+      'Diagnóstico y tratamiento de enfermedades de oído, nariz y garganta.',
+  },
+  {
+    label: 'Gastroenterología',
+    value: 'Gastroenterology',
+    description:
+      'Diagnóstico y tratamiento de enfermedades del sistema digestivo.',
+  },
+  {
+    label: 'Cirugía General',
+    value: 'General Surgery',
+    description: 'Procedimientos quirúrgicos generales.',
+  },
+  {
+    label: 'Neumonología',
+    value: 'Pulmonology',
+    description: 'Diagnóstico y tratamiento de enfermedades respiratorias.',
+  },
+  {
+    label: 'Nutrición',
+    value: 'Nutrition',
+    description: 'Asesoramiento y tratamiento nutricional.',
+  },
+  {
+    label: 'Medicina Familiar',
+    value: 'Family Medicine',
+    description: 'Atención integral y continua para individuos y familias.',
+  },
+  {
+    label: 'Otros',
+    value: 'Others',
+    description: 'Otras especialidades médicas no especificadas.',
+  },
 ];
 
 export const genderOptions = [
@@ -203,3 +292,13 @@ export const vaccinationScheduleTypes = [
   { name: 'elevenYears', label: 'A los 11 Años', hasDetails: false },
   { name: 'other', label: 'Otros', hasDetails: true },
 ] as const;
+
+export const frequencyOptions = [
+  { value: 'once_daily', label: 'Una vez al día' },
+  { value: 'twice_daily', label: 'Dos veces al día' },
+  { value: 'three_times_daily', label: 'Tres veces al día' },
+  { value: 'four_times_daily', label: 'Cuatro veces al día' },
+  { value: 'every_morning', label: 'Cada mañana' },
+  { value: 'every_night', label: 'Cada noche' },
+  { value: 'as_needed', label: 'Según sea necesario' },
+];
