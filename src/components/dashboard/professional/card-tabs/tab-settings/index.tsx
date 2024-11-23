@@ -1,40 +1,38 @@
-'use client';
-
 import { Card, CardContent } from '@/components/ui/card';
-import { LocationsForm } from '@/components/form/professional/form-locations-professional';
-import { PersonalInfoForm } from '@/components/form/professional/form-personal-information-professional';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import Loading from '@/components/loading/loading';
+import { LocationsForm } from '@/components/form/professional/form-locations-professional';
 import { PasswordChangeForm } from '../tab-password';
+import { PersonalInfoForm } from '@/components/form/professional/form-personal-information-professional';
 import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/context/auth-context';
 
-export default function TabSettings() {
+export default function SettingsTabs() {
+  const { profile } = useAuth();
+  if (!profile) return <Loading />;
   return (
     <div className="space-y-5">
       <Separator />
-      <div className="space-y-3 p-5">
-        <h2 className="text-xl font-semibold">Settings</h2>
-        <p className="text-muted-foreground">
-          Administra y personaliza los detalles de tu cuenta para optimizar tu
-          perfil profesional. En esta sección, puedes actualizar tu información
-          personal y modificar tu contraseña para proteger tus datos. Asegúrate
-          de mantener tu perfil actualizado para mejorar la visibilidad y
-          brindar una experiencia completa a quienes buscan tus servicios
-        </p>
-      </div>
 
       <Tabs defaultValue="personal" className="w-full">
-        <TabsList className="grid h-full w-full grid-cols-2 md:grid-cols-4">
-          <TabsTrigger value="personal">Perfil</TabsTrigger>
-          <TabsTrigger value="locations">Lugares de Atención</TabsTrigger>
+        <TabsList className="flex h-auto flex-wrap justify-around">
+          <TabsTrigger value="personal" className="flex-1">
+            Perfil
+          </TabsTrigger>
+          <TabsTrigger value="locations" className="flex-1">
+            Lugares de Atención
+          </TabsTrigger>
 
-          <TabsTrigger value="password">Contraseña</TabsTrigger>
+          <TabsTrigger value="password" className="flex-1">
+            Contraseña
+          </TabsTrigger>
         </TabsList>
 
         <Card className="mt-4 border-none shadow-none">
-          <CardContent className="pt-6">
+          <CardContent className="p-0 pt-6">
             <TabsContent value="personal">
-              <PersonalInfoForm />
+              <PersonalInfoForm profileData={profile} />
             </TabsContent>
 
             <TabsContent value="locations">

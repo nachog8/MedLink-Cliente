@@ -17,34 +17,33 @@ import {
   PersonalInfoType,
   personalInfoSchema,
 } from '@/schemas/professionalSchema';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { useEffect, useState } from 'react';
+import { genderOptions, specialtiesOptions } from '@/data/form-options';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { ButtonForm } from '@/components/buttons/button-submit-form';
+import { FieldInput } from '../fields/field-input';
+import { FieldSelect } from '../fields/field-select';
 import { Textarea } from '@/components/ui/textarea';
-import { X } from 'lucide-react';
+import { UserDoctor } from '@/interfaces/auth';
 import { personalInfoProfessionalAction } from '@/actions/professional-actions';
 import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export function PersonalInfoForm() {
-  const [skillInput, setSkillInput] = useState('');
+// import { X } from 'lucide-react';
+
+interface Props {
+  profileData: Partial<UserDoctor>;
+}
+export function PersonalInfoForm({ profileData }: Props) {
+  // const [skillInput, setSkillInput] = useState('');
   const [state, formAction] = useFormState(
     personalInfoProfessionalAction,
     null
   );
   useEffect(() => {
     if (state?.success) {
-      console.log(state.data);
       toast({
         title: 'Actualizacion de Informacion Exitoso!!',
       });
@@ -64,34 +63,36 @@ export function PersonalInfoForm() {
   const form = useForm<PersonalInfoType>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      avatar: '',
-      aboutMe: '',
-      genre: 'male',
-      location: '',
-      phone: '',
-      email: '',
-      skills: [],
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
+      avatar: profileData.avatar,
+      aboutMe: profileData.aboutMe,
+      gender: profileData.gender,
+      location: profileData.location,
+      phone: profileData.phone,
+      email: profileData.email,
+      licenseNumber: profileData.licenseNumber,
+      specialization: profileData.specialization,
+
+      // skills: [],
     },
   });
+  // const addSkill = () => {
+  //   if (skillInput.trim() !== '') {
+  //     const currentSkills = form.getValues('skills') || [];
 
-  const addSkill = () => {
-    if (skillInput.trim() !== '') {
-      const currentSkills = form.getValues('skills') || [];
+  //     form.setValue('skills', [...currentSkills, skillInput.trim()]);
+  //     setSkillInput('');
+  //   }
+  // };
 
-      form.setValue('skills', [...currentSkills, skillInput.trim()]);
-      setSkillInput('');
-    }
-  };
-
-  const removeSkill = (index: number) => {
-    const currentSkills = form.getValues('skills') || [];
-    form.setValue(
-      'skills',
-      currentSkills.filter((_, i) => i !== index)
-    );
-  };
+  // const removeSkill = (index: number) => {
+  //   const currentSkills = form.getValues('skills') || [];
+  //   form.setValue(
+  //     'skills',
+  //     currentSkills.filter((_, i) => i !== index)
+  //   );
+  // };
 
   return (
     <Card>
@@ -109,49 +110,25 @@ export function PersonalInfoForm() {
         <Form {...form}>
           <form action={formAction} className="space-y-3">
             <div className="grid gap-3 md:grid-cols-2">
-              <FormField
+              <FieldInput<PersonalInfoType>
                 control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                fieldName="firstName"
+                label="Nombre"
+                placeholder="Jhon"
               />
-              <FormField
+              <FieldInput<PersonalInfoType>
                 control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Apellido</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                fieldName="lastName"
+                label="Apellido"
+                placeholder="Doe"
               />
             </div>
 
-            <FormField
+            <FieldInput<PersonalInfoType>
               control={form.control}
-              name="avatar"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL Foto de Perfil</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com/avatar.jpg"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName="avatar"
+              label="URL Foto de Perfil"
+              placeholder="https://example.com/avatar.jpg"
             />
 
             <FormField
@@ -172,77 +149,48 @@ export function PersonalInfoForm() {
               )}
             />
 
-            <div className="grid gap-3 md:grid-cols-2">
-              <FormField
+            <div className="grid gap-3 md:grid-cols-3">
+              <FieldSelect<PersonalInfoType>
                 control={form.control}
-                name="genre"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Género</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona tu género" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="male">Masculino</SelectItem>
-                        <SelectItem value="female">Femenino</SelectItem>
-                        <SelectItem value="other">Otro</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                fieldName="gender"
+                label="Género"
+                options={genderOptions}
               />
-              <FormField
+              <FieldSelect<PersonalInfoType>
                 control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Lugar de Trabajo</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Example: Corrientes, Corrientes"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                fieldName="specialization"
+                label="Especialización"
+                options={specialtiesOptions}
+              />
+              <FieldInput<PersonalInfoType>
+                control={form.control}
+                fieldName="licenseNumber"
+                label="Matricula"
+                placeholder="00000"
               />
             </div>
+            <FieldInput<PersonalInfoType>
+              control={form.control}
+              fieldName="location"
+              label="Lugar de Trabajo"
+              placeholder="Example: Corrientes, Corrientes"
+            />
 
-            <FormField
+            <FieldInput<PersonalInfoType>
               control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Telefóno</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Tu número de telefóno" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName="phone"
+              label="Telefóno"
+              placeholder="Tu número de telefóno"
             />
-            <FormField
+
+            <FieldInput<PersonalInfoType>
               control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="your.email@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              fieldName="email"
+              label="Email"
+              placeholder="your.email@example.com"
             />
-            <FormField
+
+            {/* <FormField
               control={form.control}
               name="skills"
               render={({ field }) => (
@@ -282,15 +230,10 @@ export function PersonalInfoForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <div className="grid md:justify-items-end">
-              <Button
-                type="submit"
-                onClick={() => console.log(form.getValues())}
-              >
-                Guardar Información
-              </Button>
+              <ButtonForm text="Guardar Información" />
             </div>
           </form>
         </Form>

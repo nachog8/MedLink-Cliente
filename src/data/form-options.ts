@@ -1,4 +1,9 @@
-import { BloodPressureTrend, BloodTypes, Genders } from '@/interfaces/auth';
+import {
+  BloodPressureTrend,
+  BloodTypes,
+  Genders,
+  Specialties,
+} from '@/interfaces/auth';
 
 export const specialties = [
   {
@@ -113,6 +118,29 @@ export const specialties = [
   },
 ];
 
+export const specialtiesOptions = [
+  { label: 'Cardiología', value: Specialties.CARDIOLOGY },
+  { label: 'Pediatría', value: Specialties.PEDIATRICS },
+  { label: 'Dermatología', value: Specialties.DERMATOLOGY },
+  { label: 'Ginecología', value: Specialties.GYNECOLOGY },
+  { label: 'Neurología', value: Specialties.NEUROLOGY },
+  { label: 'Oncología', value: Specialties.ONCOLOGY },
+  { label: 'Traumatología', value: Specialties.TRAUMATOLOGY },
+  { label: 'Oftalmología', value: Specialties.OPHTHALMOLOGY },
+  { label: 'Psiquiatría', value: Specialties.PSYCHIATRY },
+  { label: 'Endocrinología', value: Specialties.ENDOCRINOLOGY },
+  { label: 'Infectología', value: Specialties.INFECTIOLOGY },
+  { label: 'Medicina Interna', value: Specialties.INTERNAL_MEDICINE },
+  { label: 'Reumatología', value: Specialties.RHEUMATOLOGY },
+  { label: 'Urología', value: Specialties.UROLOGY },
+  { label: 'Otorrinolaringología', value: Specialties.OTORHINOLARYNGOLOGY },
+  { label: 'Gastroenterología', value: Specialties.GASTROENTEROLOGY },
+  { label: 'Cirugía General', value: Specialties.GENERAL_SURGERY },
+  { label: 'Neumonología', value: Specialties.PULMONOLOGY },
+  { label: 'Nutrición', value: Specialties.NUTRITION },
+  { label: 'Medicina Familiar', value: Specialties.FAMILY_MEDICINE },
+  { label: 'Otros', value: Specialties.OTHERS },
+];
 export const genderOptions = [
   { label: 'Masculino', value: Genders.MALE },
   { label: 'Femenino', value: Genders.FEMALE },

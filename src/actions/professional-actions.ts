@@ -1,31 +1,23 @@
 'use server';
 
-import {
-  locationProfessionalSchema,
-  personalInfoSchema,
-  seguritySchema,
-} from '@/schemas/professionalSchema';
+import { cookies } from 'next/headers';
+import { personalInfoSchema } from '@/schemas/professionalSchema';
+import { professionalService } from '@/services/professional-service';
 
+const { updateProfileProfessional } = professionalService;
+//Funciones de las Cookies
+export const getCookie = (name: string) => {
+  const cookieStore = cookies();
+
+  return cookieStore.get(name)?.value || '';
+};
 export async function personalInfoProfessionalAction(
   prevState: any,
   formData: FormData
 ) {
-  console.log('aqui muestro data', formData);
-  const data = Object.fromEntries(formData.entries());
-  const personalInfoData = {
-    firstName: data.first_name,
-    lastName: data.last_name,
-    avatar: data.avatar,
-    aboutMe: data.about_me,
-    genre: data.genre,
-    location: data.location,
-    phone: data.phone,
-    email: data.email,
-    skills: data.skills,
-  };
+  const infoDoctorData = Object.fromEntries(formData.entries());
 
-  // console.log("aqui muestro personalInfoData", personalInfoData)
-  const validatedFields = personalInfoSchema.safeParse(personalInfoData);
+  const validatedFields = personalInfoSchema.safeParse(infoDoctorData);
 
   if (!validatedFields.success) {
     const errorDetails = validatedFields.error.errors.map((err) => ({
@@ -35,10 +27,20 @@ export async function personalInfoProfessionalAction(
     return { error: errorDetails };
   }
 
+  const sanitizedData = Object.fromEntries(
+    Object.entries(validatedFields.data).filter(
+      ([, value]) => value !== '' && value !== undefined
+    )
+  );
+
   try {
+    const response = await updateProfileProfessional(
+      sanitizedData,
+      await getCookie('token')
+    );
+
     return {
-      data: validatedFields.data,
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {

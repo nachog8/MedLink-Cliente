@@ -7,10 +7,14 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { UserDoctor, UserPatient } from '@/interfaces/auth';
 
 import Cookies from 'js-cookie';
+import { authService } from '../services/auth-service';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
+
+const { getUserData } = authService;
 
 interface DecodedToken {
   id: string;
@@ -21,6 +25,7 @@ interface DecodedToken {
 interface AuthContextProps {
   isAuthenticated: boolean;
   user: DecodedToken | null;
+  profile: UserPatient | UserDoctor | null;
   loading: boolean;
   login: (newToken: string) => void;
   logout: () => void;
@@ -31,12 +36,27 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<DecodedToken | null>(null);
+  const [profile, setProfile] = useState<UserPatient | UserDoctor | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const loadProfile = useCallback(async () => {
+    if (!user || !token) return;
+
+    try {
+      const { payload } = await getUserData(user.role, user.id, token);
+      setProfile(payload);
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    }
+  }, [user, token]);
 
   const logout = useCallback(() => {
     setIsAuthenticated(false);
     setUser(null);
+    setProfile(null);
+    setToken(null);
     Cookies.remove('token');
     router.push('/signup');
   }, [router]);
@@ -69,6 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       setUser(decodedUser);
       setIsAuthenticated(true);
+      setToken(newToken);
       router.push('/');
     }
   };
@@ -83,6 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (checkTokenExpiration(decodedUser)) {
           setIsAuthenticated(true);
           setUser(decodedUser);
+          setToken(storedToken);
         }
       } catch (error) {
         console.error('Invalid token:', error);
@@ -94,31 +116,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [checkTokenExpiration, logout]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const intervalId = setInterval(() => {
-        const storedToken = Cookies.get('token');
-        if (storedToken) {
-          try {
-            const decodedUser: DecodedToken = jwtDecode(storedToken);
-            checkTokenExpiration(decodedUser);
-          } catch (error) {
-            console.error('Token validation error:', error);
-            logout();
-          }
-        } else {
-          logout();
-        }
-      }, 600000);
-
-      return () => clearInterval(intervalId);
+    if (user && token) {
+      loadProfile();
     }
-  }, [isAuthenticated, checkTokenExpiration, logout]);
+  }, [user, token, loadProfile]);
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         user,
+        profile,
         loading,
         login,
         logout,

@@ -1,21 +1,15 @@
+'use client';
+
 import { FileText, Mail, MapPin, Phone, User, Users } from 'lucide-react';
 
+import Loading from '@/components/loading/loading';
 import { Separator } from '@/components/ui/separator';
-
-interface DoctorInfo {
-  name: string;
-  last_name: string;
-  about_me: string;
-  gender: string;
-  phone: string;
-  email: string;
-  location: string;
-}
+import { useAuth } from '@/context/auth-context';
 
 interface InfoRowProps {
   icon: React.ReactNode;
   label: string;
-  value: string;
+  value: string | undefined;
 }
 
 function InfoRow({ icon, label, value }: InfoRowProps) {
@@ -26,42 +20,55 @@ function InfoRow({ icon, label, value }: InfoRowProps) {
           <span className="text-muted-foreground">{icon}</span>
           <span className="text-sm font-medium text-gray-700">{label}:</span>
         </div>
-        <span className="text-sm text-gray-600">{value}</span>
+        <span className="text-sm text-gray-600">{value || '-'}</span>
       </div>
       <Separator />
     </div>
   );
 }
 
-export function PersonalInformationTab({ info }: { info: DoctorInfo }) {
-  const renderInfoRows = (data: DoctorInfo) => {
+export function PersonalInformationTab() {
+  const { profile } = useAuth();
+
+  if (!profile) return <Loading />;
+
+  const renderInfoRows = () => {
     return (
       <>
         <InfoRow
           icon={<User className="h-4 w-4" />}
           label="Nombre"
-          value={`${data.name} ${data.last_name}`}
+          value={
+            profile.firstName && profile.lastName
+              ? `${profile.firstName} ${profile.lastName}`
+              : '-'
+          }
         />
-
         <InfoRow
           icon={<Users className="h-4 w-4" />}
           label="Género"
-          value={data.gender === 'male' ? 'Masculino' : 'Femenino'}
+          value={
+            profile.gender
+              ? profile.gender === 'Male'
+                ? 'Masculino'
+                : 'Femenino'
+              : '-'
+          }
         />
         <InfoRow
           icon={<Phone className="h-4 w-4" />}
           label="Teléfono"
-          value={data.phone}
+          value={profile.phone}
         />
         <InfoRow
           icon={<Mail className="h-4 w-4" />}
           label="Email"
-          value={data.email}
+          value={profile.email}
         />
         <InfoRow
           icon={<MapPin className="h-4 w-4" />}
           label="Locación"
-          value={data.location}
+          value={profile.location}
         />
       </>
     );
@@ -69,16 +76,19 @@ export function PersonalInformationTab({ info }: { info: DoctorInfo }) {
 
   return (
     <div className="space-y-5 px-5">
-      <Separator />
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <FileText className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-xl font-semibold">Sobre mí</h2>
+      {profile.aboutMe && ( // Condiciona la renderización de "Sobre mí"
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-muted-foreground" />
+            <h2 className="text-xl font-semibold">Sobre mí</h2>
+          </div>
+          <p className="text-xs text-muted-foreground md:text-base">
+            {profile.aboutMe}
+          </p>
         </div>
-        <p className="text-muted-foreground">{info.about_me}</p>
-      </div>
-      <Separator />
-      <div className="space-y-2">{renderInfoRows(info)}</div>
+      )}
+
+      <div className="space-y-2">{renderInfoRows()}</div>
     </div>
   );
 }

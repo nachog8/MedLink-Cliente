@@ -1,6 +1,5 @@
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
 
-import ContactSection from './footer-contact';
 import { FooterSection } from './footer-section';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,8 +9,8 @@ import { SocialButton } from './footer-button-social';
 export default function Footer() {
   return (
     <footer className="bg-white font-poppins">
-      <div className="container mx-auto px-4 py-8 text-center md:py-12 lg:py-16 lg:text-start">
-        <div className="grid gap-8 lg:grid-cols-5">
+      <div className="container mx-auto px-4 py-8 text-center md:py-12 lg:py-16 lg:text-center">
+        <div className="grid gap-8 lg:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="inline-block">
               <Image
@@ -47,7 +46,7 @@ export default function Footer() {
 
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Redes Sociales</h3>
-            <div className="flex justify-center space-x-2 lg:justify-start">
+            <div className="flex justify-center space-x-2 lg:justify-center">
               <SocialButton
                 href="https://facebook.com"
                 icon={Facebook}
@@ -65,8 +64,6 @@ export default function Footer() {
               />
             </div>
           </div>
-
-          <ContactSection />
         </div>
 
         <Separator className="my-8" />

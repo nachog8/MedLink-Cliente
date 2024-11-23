@@ -1,3 +1,5 @@
+import { Genders, Specialties } from '@/interfaces/auth';
+
 import { z } from 'zod';
 
 export const personalInfoSchema = z.object({
@@ -8,11 +10,15 @@ export const personalInfoSchema = z.object({
     .string()
     .max(233, 'About me must be at least 233 characters')
     .optional(),
-  genre: z.enum(['male', 'female', 'other']).optional(),
+  gender: z.nativeEnum(Genders).optional(),
   location: z.string().optional(),
   phone: z.string().optional(),
   email: z.string().email('Must be a valid email'),
-  skills: z.array(z.string()).optional(),
+  licenseNumber: z
+    .string()
+    .transform((value) => parseFloat(value))
+    .refine((value) => !isNaN(value), { message: 'Debe ser un número válido' }),
+  specialization: z.nativeEnum(Specialties),
 });
 
 export type PersonalInfoType = z.infer<typeof personalInfoSchema>;

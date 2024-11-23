@@ -1,6 +1,7 @@
 import { Register, RegisterProfessional } from '@/interfaces/auth';
 
 import api from '@/config/axios';
+import axios from 'axios';
 
 export const authService = {
   async login(data: { email: string; password: string }) {
@@ -40,6 +41,25 @@ export const authService = {
       return response.data;
     } catch (error) {
       throw (error as Error).message;
+    }
+  },
+
+  async getUserData(userRole: string, userId: string, token: string) {
+    try {
+      const response = await api.get(`/${userRole}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Axios error: ${error.message}`);
+      } else if (error instanceof Error) {
+        throw new Error(`Error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred');
+      }
     }
   },
 };
