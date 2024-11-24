@@ -44,7 +44,7 @@ export const authService = {
     }
   },
 
-  async getUserData(userRole: string, userId: string, token: string) {
+  async getUserData(userRole: string, userId: string, token?: string) {
     try {
       const response = await api.get(`/${userRole}/${userId}`, {
         headers: {

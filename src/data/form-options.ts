@@ -171,6 +171,29 @@ export const allergyTypes = [
   { name: 'otherAllergies', label: '¿Tienes otras alergias?' },
 ] as const;
 
+export const specialtiesTranslationMap = {
+  [Specialties.CARDIOLOGY]: 'Cardiología',
+  [Specialties.PEDIATRICS]: 'Pediatría',
+  [Specialties.DERMATOLOGY]: 'Dermatología',
+  [Specialties.GYNECOLOGY]: 'Ginecología',
+  [Specialties.NEUROLOGY]: 'Neurología',
+  [Specialties.ONCOLOGY]: 'Oncología',
+  [Specialties.TRAUMATOLOGY]: 'Traumatología',
+  [Specialties.OPHTHALMOLOGY]: 'Oftalmología',
+  [Specialties.PSYCHIATRY]: 'Psiquiatría',
+  [Specialties.ENDOCRINOLOGY]: 'Endocrinología',
+  [Specialties.INFECTIOLOGY]: 'Infectología',
+  [Specialties.INTERNAL_MEDICINE]: 'Medicina Interna',
+  [Specialties.RHEUMATOLOGY]: 'Reumatología',
+  [Specialties.UROLOGY]: 'Urología',
+  [Specialties.OTORHINOLARYNGOLOGY]: 'Otorrinolaringología',
+  [Specialties.GASTROENTEROLOGY]: 'Gastroenterología',
+  [Specialties.GENERAL_SURGERY]: 'Cirugía General',
+  [Specialties.PULMONOLOGY]: 'Neumonología',
+  [Specialties.NUTRITION]: 'Nutrición',
+  [Specialties.FAMILY_MEDICINE]: 'Medicina Familiar',
+  [Specialties.OTHERS]: 'Otros',
+};
 export const fieldTranslationMap = {
   foodAllergy: 'Alergia a la comida',
   foodAllergyDetails: 'Detalles de alergia a la comida',

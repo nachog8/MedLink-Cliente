@@ -1,25 +1,16 @@
-import React, { ReactNode, createContext, useCallback, useState } from 'react';
+'use client';
 
-import { authService } from '../services/auth-service';
+import React, { ReactNode, createContext, useState } from 'react';
 
-const { getUserData } = authService;
+import { User } from '@/interfaces/auth';
+import { authService } from '../services/auth-service'; // Aquí se asume que tienes un servicio para obtener datos.
 
-interface User {
-  id: string;
-  name: string;
-  role: string;
-}
-
-interface ProfileData {
-  email: string;
-  [key: string]: any;
-}
+const { getUserData } = authService; // Función para obtener datos del usuario desde el servidor.
 
 interface ProfileContextProps {
-  selectedUser: User | null;
-  dynamicProfile: ProfileData | null;
-  selectUser: (user: User) => void;
-  loadDynamicProfile: () => Promise<void>;
+  visitedProfile: User | null; // Datos del perfil visitado
+  loadVisitedProfile: (id: string, role: string) => Promise<void>; // Función para cargar datos del perfil visitado.
+  clearVisitedProfile: () => void; // Limpiar el estado del perfil visitado.
 }
 
 const ProfileContext = createContext<ProfileContextProps | undefined>(
@@ -27,33 +18,36 @@ const ProfileContext = createContext<ProfileContextProps | undefined>(
 );
 
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [dynamicProfile, setDynamicProfile] = useState<ProfileData | null>(
-    null
-  );
+  const [visitedProfile, setVisitedProfile] = useState<User | null>(null);
 
-  const selectUser = (user: User) => {
-    setSelectedUser(user);
-    setDynamicProfile(null); // Reset profile data when a new user is selected
+  /**
+   * Carga los datos del perfil del usuario visitado.
+   * @param id - ID del usuario a cargar.
+   * @param role - Rol del usuario a cargar.
+   */
+  const loadVisitedProfile = async (id: string, role: string) => {
+    try {
+      const { payload } = await getUserData(role, id);
+      setVisitedProfile(payload); // Guarda los datos en el estado.
+    } catch (error) {
+      console.error('Error cargando el perfil visitado:', error);
+      setVisitedProfile(null); // Limpia el estado en caso de error.
+    }
   };
 
-  const loadDynamicProfile = useCallback(async () => {
-    if (!selectedUser) return;
-    try {
-      const { payload } = await getUserData(selectedUser.role, selectedUser.id);
-      setDynamicProfile(payload);
-    } catch (error) {
-      console.error('Error loading dynamic profile:', error);
-    }
-  }, [selectedUser]);
+  /**
+   * Limpia el estado del perfil visitado (cuando el usuario cambia de página, por ejemplo).
+   */
+  const clearVisitedProfile = () => {
+    setVisitedProfile(null);
+  };
 
   return (
     <ProfileContext.Provider
       value={{
-        selectedUser,
-        dynamicProfile,
-        selectUser,
-        loadDynamicProfile,
+        visitedProfile,
+        loadVisitedProfile,
+        clearVisitedProfile,
       }}
     >
       {children}

@@ -1,10 +1,19 @@
 'use client';
 
-import { FileText, Mail, MapPin, Phone, User, Users } from 'lucide-react';
+import {
+  Award,
+  FileText,
+  Mail,
+  MapPin,
+  Phone,
+  User,
+  Users,
+} from 'lucide-react';
 
-import Loading from '@/components/loading/loading';
 import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/context/auth-context';
+import { UserDoctor } from '@/interfaces/auth';
+import { specialtiesTranslationMap } from '@/data/form-options';
+import { translateSpecialization } from '@/lib/translate-data';
 
 interface InfoRowProps {
   icon: React.ReactNode;
@@ -12,26 +21,11 @@ interface InfoRowProps {
   value: string | undefined;
 }
 
-function InfoRow({ icon, label, value }: InfoRowProps) {
-  return (
-    <div className="flex flex-col space-y-1.5">
-      <div className="flex items-center justify-between py-2">
-        <div className="flex items-center gap-2">
-          <span className="text-muted-foreground">{icon}</span>
-          <span className="text-sm font-medium text-gray-700">{label}:</span>
-        </div>
-        <span className="text-sm text-gray-600">{value || '-'}</span>
-      </div>
-      <Separator />
-    </div>
-  );
-}
-
-export function PersonalInformationTab() {
-  const { profile } = useAuth();
-
-  if (!profile) return <Loading />;
-
+export function PersonalInformationTab({
+  dataProfile: profile,
+}: {
+  dataProfile: UserDoctor;
+}) {
   const renderInfoRows = () => {
     return (
       <>
@@ -49,7 +43,7 @@ export function PersonalInformationTab() {
           label="Género"
           value={
             profile.gender
-              ? profile.gender === 'Male'
+              ? profile.gender === 'MALE'
                 ? 'Masculino'
                 : 'Femenino'
               : '-'
@@ -70,6 +64,14 @@ export function PersonalInformationTab() {
           label="Locación"
           value={profile.location}
         />
+        <InfoRow
+          icon={<Award className="h-4 w-4" />}
+          label="Especialización"
+          value={translateSpecialization(
+            profile.specialization,
+            specialtiesTranslationMap
+          )}
+        />
       </>
     );
   };
@@ -89,6 +91,20 @@ export function PersonalInformationTab() {
       )}
 
       <div className="space-y-2">{renderInfoRows()}</div>
+    </div>
+  );
+}
+function InfoRow({ icon, label, value }: InfoRowProps) {
+  return (
+    <div className="flex flex-col space-y-1.5">
+      <div className="flex items-center justify-between py-2">
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground">{icon}</span>
+          <span className="text-sm font-medium text-gray-700">{label}:</span>
+        </div>
+        <span className="text-sm text-gray-600">{value || '-'}</span>
+      </div>
+      <Separator />
     </div>
   );
 }

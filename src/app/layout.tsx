@@ -5,6 +5,7 @@ import Footer from '@/components/footer';
 import type { Metadata } from 'next';
 import Navbar from '@/components/navbar';
 import { Poppins } from '@next/font/google';
+import { ProfileProvider } from '@/context/profile-context';
 import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
@@ -34,7 +35,9 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           {/* Fijarse luego si necesita de un flex-grow */}
-          <main>{children}</main>
+          <ProfileProvider>
+            <main>{children}</main>
+          </ProfileProvider>
           <Footer />
           <Toaster />
         </AuthProvider>

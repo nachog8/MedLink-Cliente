@@ -7,9 +7,9 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { UserDoctor, UserPatient } from '@/interfaces/auth';
 
 import Cookies from 'js-cookie';
+import { User } from '@/interfaces/auth';
 import { authService } from '../services/auth-service';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ interface DecodedToken {
 interface AuthContextProps {
   isAuthenticated: boolean;
   user: DecodedToken | null;
-  profile: UserPatient | UserDoctor | null;
+  profile: User | null;
   loading: boolean;
   login: (newToken: string) => void;
   logout: () => void;
@@ -36,7 +36,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<DecodedToken | null>(null);
-  const [profile, setProfile] = useState<UserPatient | UserDoctor | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();

@@ -1,3 +1,5 @@
+import { specialtiesTranslationMap } from '@/data/form-options';
+
 type TranslationMap = { [key: string]: string };
 
 interface Data {
@@ -60,4 +62,18 @@ export function translateVaccinationData(
   }
 
   return translatedData;
+}
+
+type SpecializationKey = keyof typeof specialtiesTranslationMap;
+/**
+ * Traduce un array de especializaciones usando el mapa de traducción.
+ * @param specializations - Array de especializaciones en inglés.
+ * @param translationMap - Mapa de traducción para especializaciones.
+ * @returns Un array con las especializaciones traducidas al idioma deseado.
+ */
+export function translateSpecialization(
+  specialization: string,
+  translationMap: Record<SpecializationKey, string>
+): string {
+  return translationMap[specialization as SpecializationKey] || specialization;
 }

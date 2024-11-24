@@ -1,39 +1,38 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Trash2, Eye, AlertCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Eye, Trash2 } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+
+import { Button } from '@/components/ui/button';
+import DoctorPatientListCardSkeleton from '@/components/skeletons/professional';
+import { InformationNotAvailable } from '@/components/other/information-not-available';
+import Link from 'next/link';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { UserDoctor } from '@/interfaces/auth';
+import { useAuth } from '@/context/auth-context';
+import { useParams } from 'next/navigation';
 
-interface Patient {
-  id: string;
-  avatar: string;
-  firstName: string;
-  lastName: string;
-}
+export default function CardListPatients() {
+  const { id } = useParams(); // ID de la URL
+  const { profile } = useAuth(); // Usuario autenticado
 
-export default function CardListPatients({
-  patients: patientsIniciales = [],
-}: {
-  patients?: Patient[];
-}) {
-  const [patients, setPatients] = useState(patientsIniciales);
+  const isDoctor = profile?.id === id;
 
-  const deletePatient = (id: string) => {
-    setPatients(patients.filter((patient) => patient.id !== id));
-  };
+  if (!isDoctor) return null;
 
+  // Acceder al perfil del usuario autenticado
+  const userDoctor = profile as UserDoctor;
+  if (!profile) return <DoctorPatientListCardSkeleton />;
+  const patients = userDoctor.patients;
   return (
-    <Card className="h-max">
+    <Card className="h-max w-3/4">
       <CardHeader className="rounded-t-lg border-b bg-white pb-4">
         <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-800">
           Lista de Pacientes
@@ -41,14 +40,7 @@ export default function CardListPatients({
       </CardHeader>
       <CardContent className="p-4">
         {!patients || patients.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-8">
-              <AlertCircle className="mb-4 h-16 w-16 text-muted-foreground" />
-              <p className="mb-4 text-lg font-medium text-muted-foreground">
-                No hay información disponible
-              </p>
-            </CardContent>
-          </Card>
+          <InformationNotAvailable />
         ) : (
           <ScrollArea className="h-[250px]">
             <div className="space-y-2">
@@ -57,6 +49,7 @@ export default function CardListPatients({
                   key={i}
                   className="flex items-center justify-between rounded-xl border-2 border-muted p-3"
                 >
+                  {/* TODO: HABLAR CON SAUL PORQUE CON SOLO EL ID DE LOS PATIENTS NO HAGO MUCHO */}
                   <Avatar className="h-10 w-10">
                     <AvatarImage
                       src={patient.avatar}
@@ -68,36 +61,7 @@ export default function CardListPatients({
                     {patient.firstName} {patient.lastName}
                   </h3>
                   <div className="space-x-2">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button size={'icon'} asChild variant="outline">
-                            <Link href={`/perfil/${patient.id}`}>
-                              <Eye />
-                            </Link>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Ver Perfil</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="destructive"
-                            size={'icon'}
-                            onClick={() => deletePatient(patient.id)}
-                          >
-                            <Trash2 />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Eliminar Paciente</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <TooltipsButtonsPatient id={patient} />
                   </div>
                 </div>
               ))}
@@ -106,5 +70,45 @@ export default function CardListPatients({
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function TooltipsButtonsPatient({ id }: { id: string }) {
+  const deletePatient = (id: string) => {
+    console.log(id);
+  };
+  return (
+    <>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button size={'icon'} asChild variant="outline">
+              <Link href={`/paciente/${id}`}>
+                <Eye />
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Ver Perfil</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="destructive"
+              size={'icon'}
+              onClick={() => deletePatient(id)}
+            >
+              <Trash2 />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Eliminar Paciente</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </>
   );
 }

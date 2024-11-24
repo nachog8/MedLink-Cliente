@@ -1,7 +1,6 @@
-import CardMedicalProfessional from '@/components/dashboard/professional/card-tabs';
-
-import ProfileCard from '@/components/dashboard/professional/card-profile';
 import CardListPatients from '@/components/dashboard/professional/card-list-patients';
+import CardMedicalProfessional from '@/components/dashboard/professional/card-tabs';
+import ProfileCard from '@/components/dashboard/professional/card-profile';
 
 export default function DoctorProfile() {
   return (
@@ -14,10 +13,10 @@ export default function DoctorProfile() {
       />
       <div className="container mx-auto">
         <ProfileCard />
-        <div className="m-10 grid gap-5 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <CardMedicalProfessional />
-          </div>
+        <div className="m-10 mx-auto flex max-w-6xl flex-col gap-5 lg:flex-row">
+          {/* <div className="lg:col-span-2"> */}
+          <CardMedicalProfessional />
+          {/* </div> */}
           <CardListPatients />
         </div>
       </div>
