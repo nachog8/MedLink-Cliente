@@ -33,7 +33,7 @@ export const skills = [
 
 export const locations = [
   {
-    name: 'Hospital Italiano',
+    name: 'Hospital de Campaña Corrientes',
     address: 'Av. Juan B. Justo 4200, CABA',
     schedule: 'Lunes y Miércoles 9:00 - 15:00',
     insurance: ['OSDE', 'Swiss Medical', 'Galeno'],
@@ -53,10 +53,10 @@ export const doctorInfo = {
     'Soy un profesional de la salud dedicado, con experiencia en cirugía general y comprometido con brindar atención de calidad y personalizada a cada paciente. Mi enfoque se basa en una combinación de conocimientos actualizados, trato humano y escucha activa, buscando  siempre el bienestar integral de quienes confían en mí.',
   gender: 'male',
 
-    phone: '+54-3718-441861',
-    email: 'barrett@hotmail.com',
+  phone: '+54-3718-441861',
+  email: 'barrett@hotmail.com',
 
-  location: "Corrientes,Corrientes"
+  location: 'Corrientes,Corrientes',
 };
 
 export const userProfile = {

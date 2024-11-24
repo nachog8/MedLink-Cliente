@@ -115,12 +115,7 @@ const DoctorProfileTabs = ({ userDoctor }: { userDoctor: UserDoctor }) => {
               <PersonalInformationTab dataProfile={userDoctor} />
             </TabsContent>
             <TabsContent value="medical">
-              <AtentionMedicalTab
-                locations={locations}
-                mapSrc={
-                  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.0168878895474!2d-58.4315899!3d-34.6037389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca099b0e2be7%3A0x389ca1a7bd839!2sHospital%20Italiano%20de%20Buenos%20Aires!5e0!3m2!1sen!2sar!4v1650000000000!5m2!1sen!2sar'
-                }
-              />
+              <AtentionMedicalTab locations={locations} />
             </TabsContent>
           </CardContent>
         </Card>

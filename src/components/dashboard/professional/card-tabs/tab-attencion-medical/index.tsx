@@ -1,10 +1,65 @@
-import { Building, Clock, CreditCard, MapPin } from 'lucide-react';
+import { Building, Clock, CreditCard } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { geocodeAddress } from '@/services/google-maps-service';
 
-export function AtentionMedicalTab({ locations, mapSrc }) {
+// Tipo de datos para cada ubicación
+interface Location {
+  name: string;
+  address: string;
+  schedule: string;
+  insurance: string[];
+}
+
+// Tipo de datos para la respuesta de geocodificación
+interface GeocodedLocation extends Location {
+  lat: number | null;
+  lng: number | null;
+}
+
+export function AtentionMedicalTab({ locations }: { locations: Location[] }) {
+  const [geoLocations, setGeoLocations] = useState<GeocodedLocation[]>([]);
+
+  // Convierte direcciones en coordenadas geográficas
+  useEffect(() => {
+    const fetchGeoLocations = async () => {
+      const results = await Promise.all(
+        locations.map(async (location) => {
+          try {
+            const geocoded = await geocodeAddress(location.address);
+            return {
+              name: location.name,
+              address: location.address,
+              schedule: location.schedule,
+              insurance: location.insurance,
+              lat: geocoded.lat,
+              lng: geocoded.lng,
+            };
+          } catch (error) {
+            console.error(
+              `Error obteniendo coordenadas para ${location.address}:`,
+              error
+            );
+            return {
+              ...location,
+              lat: null,
+              lng: null,
+            };
+          }
+        })
+      );
+      setGeoLocations(results);
+    };
+
+    fetchGeoLocations();
+  }, [locations]);
+
+  if (!geoLocations.length) {
+    return <p>Cargando ubicaciones...</p>;
+  }
+
   return (
     <div className="space-y-5">
       <div className="space-y-3 p-5">
@@ -17,7 +72,7 @@ export function AtentionMedicalTab({ locations, mapSrc }) {
         </p>
       </div>
 
-      {locations.map((location, index) => (
+      {geoLocations.map((location, index) => (
         <Card key={index} className="mb-6">
           <CardContent className="p-6">
             <div className="flex flex-col gap-6 md:flex-row">
@@ -53,15 +108,19 @@ export function AtentionMedicalTab({ locations, mapSrc }) {
               </div>
               <div className="flex-1">
                 <div className="aspect-video w-full overflow-hidden rounded-lg shadow-md">
-                  <iframe
-                    src={`${mapSrc}&q=${encodeURIComponent(location.address)}`}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
+                  {location.lat && location.lng ? (
+                    <iframe
+                      src={`https://www.google.com/maps/embed/v1/place?key=TU_CLAVE_API&q=${location.lat},${location.lng}`}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  ) : (
+                    <p>No se pudo cargar el mapa para esta ubicación.</p>
+                  )}
                 </div>
               </div>
             </div>
