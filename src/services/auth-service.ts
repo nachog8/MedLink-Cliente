@@ -62,4 +62,17 @@ export const authService = {
       }
     }
   },
+
+  async changeUserPassword(token: string, password: { password: string }) {
+    try {
+      const response = await api.post(`/auth/update-password`, password, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw (error as Error).message;
+    }
+  },
 };

@@ -19,7 +19,7 @@ export const personalInfoSchema = z.object({
     .transform((value) => parseFloat(value))
     .refine((value) => !isNaN(value), { message: 'Debe ser un número válido' }),
   specialization: z.nativeEnum(Specialties),
-  skills: z.array(z.string()),
+  // skills: z.array(z.string()),
 });
 
 export type PersonalInfoType = z.infer<typeof personalInfoSchema>;

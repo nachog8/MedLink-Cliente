@@ -13,7 +13,7 @@ import { Pencil, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ClinicalSummary } from '../card-clinical-result';
 import EditProfileForm from '@/components/form/patient/form-profile-patient';
-import { PasswordChangeForm } from '@/components/form/patient/form-update-password';
+import { PasswordChangeForm } from '@/components/form/auth/form-change-password';
 import PatientProfileCardSkeleton from '@/components/skeletons/patient';
 import { PersonalInfoCard } from '../../dashboard-shared/personal-information';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -62,6 +62,7 @@ export const CardProfile = () => {
   } = (visitedProfile ?? profile) as UserPatient;
   const formattedDate = formatDate(dateOfBirth);
   const fullName = `${firstName} ${lastName}`.trim();
+
   const renderDialog = (
     triggerLabel: string,
     icon: React.ReactNode,
@@ -84,7 +85,7 @@ export const CardProfile = () => {
       <CardHeader className="flex justify-center pb-0 pt-6">
         <Avatar className="mx-auto h-40 w-40 border-4 border-white shadow-lg">
           <AvatarImage
-            src={`http://localhost:8081${avatar}`}
+            src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${avatar}`}
             alt={`${firstName}'s avatar`}
           />
           <AvatarFallback className="text-4xl">

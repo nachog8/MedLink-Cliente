@@ -47,8 +47,8 @@ export function ClinicalSummary({
         <Separator />
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col justify-between gap-5">
-            <InfoItem icon={Ruler} label="Altura" value={height} />
-            <InfoItem icon={Weight} label="Peso" value={weight} />
+            <InfoItem icon={Ruler} label="Altura" value={`${height} cm`} />
+            <InfoItem icon={Weight} label="Peso" value={`${height} kg`} />
             <InfoItem
               icon={Droplet}
               label="Grupo Sanguíneo"

@@ -55,10 +55,7 @@ export default function MedicalPage() {
       </section>
 
       {/* Contenido principal */}
-      <div
-        className="bg-cover bg-center py-24"
-        style={{ backgroundImage: 'url(/images/fondo1.jpg)' }}
-      >
+      <div className="bg-cover bg-center py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Atención Compasiva */}
           <section className="container mx-auto my-20 flex flex-col items-start justify-between px-4 lg:flex-row">

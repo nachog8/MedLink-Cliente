@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Document, UserPatient } from '@/interfaces/auth';
 import { Download, FileIcon, FileText, Trash2 } from 'lucide-react';
 import {
   Tooltip,
@@ -18,11 +17,12 @@ import {
 } from '@/components/ui/tooltip';
 
 import { Button } from '@/components/ui/button';
-import FileUploadDialog from '@/components/buttons/button-upload-files';
+import { FileUploadDialog } from '@/components/file-upload/file-upload-dialog';
 import { ImageIcon } from 'lucide-react';
 import { InformationNotAvailable } from '@/components/other/information-not-available';
 import { PatientDocumentationMedicalSkeleton } from '@/components/skeletons/patient';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { UserPatient } from '@/interfaces/auth';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/auth-context';
 import { useEffect } from 'react';
@@ -113,7 +113,7 @@ export function MedicalDocList() {
                       </Tooltip>
                     </TooltipProvider>
                     {/* Proteger botón de eliminación */}
-                    {isUser && (
+                    {/* {isUser && (
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -130,7 +130,7 @@ export function MedicalDocList() {
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                    )}
+                    )} */}
                   </div>
                 </div>
               ))}
@@ -147,8 +147,15 @@ export function MedicalDocList() {
     </Card>
   );
 }
-const getIcon = (type: Document['type']) => {
-  switch (type) {
+
+const getFileType = (type: string): 'pdf' | 'image' | 'other' => {
+  if (type.includes('image')) return 'image';
+  if (type === 'application/pdf') return 'pdf';
+  return 'other';
+};
+
+const getIcon = (type: string) => {
+  switch (getFileType(type)) {
     case 'pdf':
       return <FileText className="h-4 w-4 text-red-600" />;
     case 'image':
@@ -158,8 +165,8 @@ const getIcon = (type: Document['type']) => {
   }
 };
 
-const getIconBackground = (type: Document['type']) => {
-  switch (type) {
+const getIconBackground = (type: string) => {
+  switch (getFileType(type)) {
     case 'pdf':
       return 'bg-red-100';
     case 'image':

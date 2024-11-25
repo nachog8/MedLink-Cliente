@@ -49,7 +49,7 @@ export default function ProfileCard() {
           {/* Avatar */}
           <Avatar className="h-44 w-44">
             <AvatarImage
-              src={userDoctor.avatar}
+              src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${userDoctor.avatar}`}
               alt={`Avatar of ${userDoctor.firstName}`}
               className="object-cover"
             />

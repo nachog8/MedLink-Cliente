@@ -102,35 +102,35 @@ export async function locationsProfessionalAction(
   }
 }
 
-export async function segurityProfessionalAction(
-  prevState: any,
-  formData: FormData
-) {
-  const data = Object.fromEntries(formData.entries());
-  const segurityData = {
-    currentPassword: data.currentPassword,
-    newPassword: data.newPassword,
-    confirmPassword: data.confirmPassword,
-  };
+// export async function segurityProfessionalAction(
+//   prevState: any,
+//   formData: FormData
+// ) {
+//   const data = Object.fromEntries(formData.entries());
+//   const segurityData = {
+//     currentPassword: data.currentPassword,
+//     newPassword: data.newPassword,
+//     confirmPassword: data.confirmPassword,
+//   };
 
-  const validatedFields = seguritySchema.safeParse(segurityData);
+//   const validatedFields = seguritySchema.safeParse(segurityData);
 
-  if (!validatedFields.success) {
-    const errorDetails = validatedFields.error.errors.map((err) => ({
-      field: err.path[0],
-      message: err.message,
-    }));
-    return { error: errorDetails };
-  }
-  const { confirmPassword, ...newPassword } = validatedFields.data;
-  try {
-    return {
-      success: true,
-    };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    }
-    return { error: 'An unexpected error occurred' };
-  }
-}
+//   if (!validatedFields.success) {
+//     const errorDetails = validatedFields.error.errors.map((err) => ({
+//       field: err.path[0],
+//       message: err.message,
+//     }));
+//     return { error: errorDetails };
+//   }
+//   const { confirmPassword, ...newPassword } = validatedFields.data;
+//   try {
+//     return {
+//       success: true,
+//     };
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       return { error: error.message };
+//     }
+//     return { error: 'An unexpected error occurred' };
+//   }
+// }

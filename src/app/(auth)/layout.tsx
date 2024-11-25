@@ -12,13 +12,6 @@ export default function AuthLayout({
 }) {
   return (
     <div className="relative w-full">
-      <Image
-        src={'/images/fondo.jpg'}
-        width={5000}
-        height={3750}
-        alt={'fondo'}
-        className="absolute inset-0 -z-10 h-screen w-screen object-cover"
-      />
       {/* Contenido centrado */}
       <div className="relative z-10 py-14 font-poppins">{children}</div>
     </div>

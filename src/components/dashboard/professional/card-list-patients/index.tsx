@@ -32,7 +32,7 @@ export default function CardListPatients() {
   if (!profile) return <DoctorPatientListCardSkeleton />;
   const patients = userDoctor.patients;
   return (
-    <Card className="h-max w-3/4">
+    <Card className="mb-10 h-max lg:w-3/4">
       <CardHeader className="rounded-t-lg border-b bg-white pb-4">
         <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-800">
           Lista de Pacientes

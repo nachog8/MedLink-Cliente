@@ -1,21 +1,25 @@
 'use client';
 
-import { useState, useCallback, DragEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { DragEvent, useCallback, useState } from 'react';
+import { FileIcon, Send, Upload, X } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { X, Upload, Send, FileIcon } from 'lucide-react';
 
 export default function FileUploadDialog() {
   const [files, setFiles] = useState<File[]>([]);
-  const [open, setOpen] = useState(false);
-
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFiles = useCallback((newFiles: FileList | null) => {
@@ -61,10 +65,11 @@ export default function FileUploadDialog() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button className="w-full">Subir Archivos</Button>
       </DialogTrigger>
+      <DialogDescription />
       <DialogContent className="sm:max-w-[425px]">
         <div
           className={`mt-4 cursor-pointer rounded-lg border-2 border-dashed p-4 text-center transition-colors ${

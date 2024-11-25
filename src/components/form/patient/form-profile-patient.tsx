@@ -34,7 +34,7 @@ import { useEffect, useState } from 'react';
 import { ButtonForm } from '@/components/buttons/button-submit-form';
 import { FieldSelect } from '../fields/field-select';
 import { FieldSwitch } from '../fields/field-switch';
-import ImageUpload from '@/components/buttons/button-image-upload';
+import { ImageUpload } from '@/components/buttons/button-image-upload';
 import { MessageSuccesfull } from '@/components/other/message-succesfull';
 import { Textarea } from '@/components/ui/textarea';
 import { UserPatient } from '@/interfaces/auth';
@@ -113,7 +113,11 @@ export default function EditProfileForm({
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-5 px-3">
-        <ImageUpload form={form} name="avatar" />
+        <ImageUpload<EditProfileFormType>
+          control={form.control}
+          fieldName="avatar"
+          setValue={form.setValue}
+        />
 
         <FieldInput<EditProfileFormType>
           control={form.control}

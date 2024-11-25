@@ -10,9 +10,15 @@ import {
 
 import { AxiosError } from 'axios';
 import { authService } from '@/services/auth-service';
+import { cookies } from 'next/headers';
 
-const { register, login, forgotPassword, resetPassword } = authService;
+const { register, login, forgotPassword, resetPassword, changeUserPassword } =
+  authService;
+export const getCookie = (name: string) => {
+  const cookieStore = cookies();
 
+  return cookieStore.get(name)?.value || '';
+};
 export async function loginAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
   const loginData = {
@@ -186,6 +192,46 @@ export async function resetPasswordAction(prevState: any, formData: FormData) {
 
   try {
     const response = await resetPassword(token, password);
+    return {
+      success: response.success,
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { error: error.response?.data || error.message };
+    } else if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'An unexpected error occurred' };
+  }
+}
+
+export async function changePasswordUserAction(
+  prevState: any,
+  formData: FormData
+) {
+  const data = Object.fromEntries(formData.entries());
+
+  const resetPasswordData = {
+    password: data.newPassword,
+    confirmPassword: data.confirmPassword,
+  };
+
+  const validatedFields = resetPasswordSchema.safeParse(resetPasswordData);
+
+  if (!validatedFields.success) {
+    const errorDetails = validatedFields.error.errors.map((err) => ({
+      field: err.path[0],
+      message: err.message,
+    }));
+    return { error: errorDetails };
+  }
+  const { confirmPassword, ...password } = validatedFields.data;
+
+  try {
+    const response = await changeUserPassword(
+      await getCookie('token'),
+      password
+    );
     return {
       success: response.success,
     };

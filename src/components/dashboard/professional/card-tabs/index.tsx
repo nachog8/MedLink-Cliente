@@ -15,7 +15,7 @@ import { AtentionMedicalTab } from './tab-attencion-medical';
 import { Button } from '@/components/ui/button';
 import { DoctorProfileCardSkeleton } from '@/components/skeletons/professional';
 import { LocationsForm } from '@/components/form/professional/form-locations-professional';
-import { PasswordChangeForm } from './tab-password';
+import { PasswordChangeForm } from '@/components/form/auth/form-change-password';
 import { PersonalInfoForm } from '@/components/form/professional/form-personal-information-professional';
 import { PersonalInformationTab } from './tab-information-personal';
 import { Separator } from '@/components/ui/separator';

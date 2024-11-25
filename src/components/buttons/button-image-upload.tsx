@@ -1,6 +1,13 @@
 'use client';
 
 import {
+  Control,
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormSetValue,
+} from 'react-hook-form';
+import {
   FormControl,
   FormField,
   FormItem,
@@ -9,17 +16,20 @@ import {
 import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { EditProfileFormType } from '@/schemas/schemas-profile';
 import Image from 'next/image';
 import { UploadCloud } from 'lucide-react';
-import { UseFormReturn } from 'react-hook-form';
 
-interface ImageUploadProps {
-  form: UseFormReturn<EditProfileFormType>;
-  name: keyof EditProfileFormType;
+interface RenderFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  fieldName: Path<T>;
+  setValue: UseFormSetValue<T>;
 }
 
-export default function ImageUpload({ form, name }: ImageUploadProps) {
+export const ImageUpload = <T extends FieldValues>({
+  control,
+  fieldName,
+  setValue,
+}: RenderFieldProps<T>) => {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +39,7 @@ export default function ImageUpload({ form, name }: ImageUploadProps) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
-        form.setValue(name, file);
+        setValue(fieldName, file as PathValue<T, Path<T>>);
       };
       reader.readAsDataURL(file);
     }
@@ -41,8 +51,8 @@ export default function ImageUpload({ form, name }: ImageUploadProps) {
 
   return (
     <FormField
-      control={form.control}
-      name={name}
+      control={control}
+      name={fieldName}
       render={({ field }) => (
         <FormItem>
           <FormControl>
@@ -85,4 +95,4 @@ export default function ImageUpload({ form, name }: ImageUploadProps) {
       )}
     />
   );
-}
+};

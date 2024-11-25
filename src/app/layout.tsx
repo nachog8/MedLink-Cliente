@@ -36,7 +36,9 @@ export default function RootLayout({
           <Navbar />
           {/* Fijarse luego si necesita de un flex-grow */}
           <ProfileProvider>
-            <main>{children}</main>
+            <main className="bg-[url(/images/fondo1.jpg)] bg-cover bg-bottom bg-no-repeat">
+              {children}
+            </main>
           </ProfileProvider>
           <Footer />
           <Toaster />

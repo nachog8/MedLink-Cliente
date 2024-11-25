@@ -27,6 +27,7 @@ interface AuthContextProps {
   user: DecodedToken | null;
   profile: User | null;
   loading: boolean;
+  token: string | null;
   login: (newToken: string) => void;
   logout: () => void;
 }
@@ -126,6 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isAuthenticated,
         user,
+        token,
         profile,
         loading,
         login,

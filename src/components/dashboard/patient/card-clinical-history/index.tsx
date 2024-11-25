@@ -76,25 +76,25 @@ export default function ClinicalHistoryCard() {
           <TabsList className="mb-4 h-auto w-full flex-wrap justify-stretch">
             <TabsTrigger
               value={'allergies'}
-              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex-1 px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Alergias
             </TabsTrigger>
             <TabsTrigger
               value={'pathological'}
-              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex-1 px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Antecedentes Patologicos
             </TabsTrigger>
             <TabsTrigger
               value={'no-pathological'}
-              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex-1 px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Antecedentes No Patologicos
             </TabsTrigger>
             <TabsTrigger
               value={'family inheritance'}
-              className="px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex-1 px-4 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Antecedente Heredo Familiar
             </TabsTrigger>

@@ -23,11 +23,22 @@ export const professionalService = {
     }
   },
 
-  async updateProfileProfessional(data: Partial<UserDoctor>, token: string) {
+  async updateProfileProfessional(data: any, token: string) {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      if (value instanceof File || typeof value !== 'object') {
+        formData.append(key, value);
+      } else if (typeof value === 'object') {
+        formData.append(key, JSON.stringify(value));
+      }
+    });
+
     try {
-      const response = await api.put(`/doctor`, data, {
+      const response = await api.put(`/doctor`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
       return response.data;
