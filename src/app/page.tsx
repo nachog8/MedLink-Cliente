@@ -1,34 +1,31 @@
-"use client";
+'use client';
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import Image from "next/image";
-import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+import Image from 'next/image';
+import Link from 'next/link';
 
 const specialties = [
   {
-    name: "Cardiología",
-    description: "Diagnóstico y tratamiento de enfermedades del corazón.",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+    name: 'Cardiología',
+    description: 'Diagnóstico y tratamiento de enfermedades del corazón.',
+    image: '/images/home/home-1.avif',
   },
   {
-    name: "Pediatría",
-    description: "Cuidado integral de la salud de niños y adolescentes.",
-    image:
-      "https://images.unsplash.com/photo-1535191162489-aaec838b5221?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+    name: 'Pediatría',
+    description: 'Cuidado integral de la salud de niños y adolescentes.',
+    image: '/images/home/home-2.avif',
   },
   {
-    name: "Traumatología",
+    name: 'Traumatología',
     description:
-      "Tratamiento de lesiones y enfermedades del sistema músculo-esquelético.",
-    image:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+      'Tratamiento de lesiones y enfermedades del sistema músculo-esquelético.',
+    image: '/images/home/home-3.avif',
   },
   {
-    name: "Ginecología",
-    description: "Atención especializada en salud femenina.",
-    image:
-      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+    name: 'Ginecología',
+    description: 'Atención especializada en salud femenina.',
+    image: '/images/home/home-4.avif',
   },
 ];
 
@@ -36,7 +33,7 @@ export default function MedicalPage() {
   return (
     <div className="bg-gray-80">
       {/* Banner */}
-      <section className="relative bg-blue-500 group">
+      <section className="group relative bg-blue-500">
         <div className="relative h-[500px] overflow-hidden">
           <Image
             src="/images/home.jpg"
@@ -48,7 +45,9 @@ export default function MedicalPage() {
           <div className="absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-500 group-hover:bg-opacity-60"></div>
         </div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-          <h1 className="text-4xl font-bold md:text-5xl">Bienvenidos a MedLink</h1>
+          <h1 className="text-4xl font-bold md:text-5xl">
+            Bienvenidos a MedLink
+          </h1>
           <p className="mt-4 text-lg md:text-xl">
             Donde la atención médica de calidad está al alcance de todos
           </p>
@@ -57,10 +56,10 @@ export default function MedicalPage() {
 
       {/* Contenido principal */}
       <div
-        className="py-24 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/fondo1.jpg)" }}
+        className="bg-cover bg-center py-24"
+        style={{ backgroundImage: 'url(/images/fondo1.jpg)' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Atención Compasiva */}
           <section className="container mx-auto my-20 flex flex-col items-start justify-between px-4 lg:flex-row">
             <div className="flex flex-col items-start lg:w-2/3 lg:flex-row">
@@ -90,37 +89,47 @@ export default function MedicalPage() {
             </div>
 
             {/* Opening Hours Card */}
-            <Card className="mt-10 w-full shadow-md lg:ml-10 lg:mt-0 lg:w-1/4 transition-shadow hover:shadow-lg">
-  <CardHeader>
-    <CardTitle className="rounded-lg bg-blue-500 text-center text-xl text-white">
-      Horarios
-    </CardTitle>
-  </CardHeader>
-  <CardContent className="overflow-auto text-gray-600 shadow-md transition-shadow hover:shadow-xl">
-    <ul className="space-y-6">
-      {[{ day: "Lunes - Viernes:", hours: "9:00 - 17:00" }, { day: "Sábado:", hours: "9:00 - 16:00" }, { day: "Domingo:", hours: "Cerrado" }].map((item, index) => (
-        <li key={index} className="flex items-center justify-between">
-          <span className="flex-1 font-semibold">{item.day}</span>
-          <div className="mx-4 h-6 w-px bg-gray-300"></div>
-          <span className="flex-1 text-right font-semibold">{item.hours}</span>
-        </li>
-      ))}
-    </ul>
-    <div className="mt-8 text-center">
-      <h3 className="text-xl font-bold text-gray-800">¿Necesitás ayuda?</h3>
-      <p className="mt-4 text-gray-600">
-        Contáctanos para obtener asistencia personalizada.
-      </p>
-      <Link
-        href="/contacto"
-        className="mt-6 inline-block rounded-md bg-blue-500 px-6 py-3 text-white hover:bg-blue-600"
-      >
-        Contacto
-      </Link>
-    </div>
-  </CardContent>
-</Card>
-
+            <Card className="mt-10 w-full shadow-md transition-shadow hover:shadow-lg lg:ml-10 lg:mt-0 lg:w-1/4">
+              <CardHeader>
+                <CardTitle className="rounded-lg bg-blue-500 text-center text-xl text-white">
+                  Horarios
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="overflow-auto text-gray-600 shadow-md transition-shadow hover:shadow-xl">
+                <ul className="space-y-6">
+                  {[
+                    { day: 'Lunes - Viernes:', hours: '9:00 - 17:00' },
+                    { day: 'Sábado:', hours: '9:00 - 16:00' },
+                    { day: 'Domingo:', hours: 'Cerrado' },
+                  ].map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="flex-1 font-semibold">{item.day}</span>
+                      <div className="mx-4 h-6 w-px bg-gray-300"></div>
+                      <span className="flex-1 text-right font-semibold">
+                        {item.hours}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-8 text-center">
+                  <h3 className="text-xl font-bold text-gray-800">
+                    ¿Necesitás ayuda?
+                  </h3>
+                  <p className="mt-4 text-gray-600">
+                    Contáctanos para obtener asistencia personalizada.
+                  </p>
+                  <Link
+                    href="/contacto"
+                    className="mt-6 inline-block rounded-md bg-blue-500 px-6 py-3 text-white hover:bg-blue-600"
+                  >
+                    Contacto
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Especialidades Médicas */}
@@ -137,17 +146,19 @@ export default function MedicalPage() {
               {specialties.map((specialty, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                  className="overflow-hidden rounded-lg bg-white shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl"
                 >
                   <div className="relative h-48">
-                    <img
+                    <Image
+                      width={500}
+                      height={500}
                       src={specialty.image}
                       alt={specialty.name}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <h3 className="mb-2 text-xl font-semibold text-gray-900">
                       {specialty.name}
                     </h3>
                     <p className="text-gray-600">{specialty.description}</p>
