@@ -17,6 +17,7 @@ import {
   PersonalInfoType,
   personalInfoSchema,
 } from '@/schemas/professionalSchema';
+import { Specialties, UserDoctor } from '@/interfaces/auth';
 import { genderOptions, specialtiesOptions } from '@/data/form-options';
 import { useEffect, useState } from 'react';
 
@@ -25,7 +26,6 @@ import { FieldInput } from '../fields/field-input';
 import { FieldSelect } from '../fields/field-select';
 import { ImageUpload } from '@/components/buttons/button-image-upload';
 import { Textarea } from '@/components/ui/textarea';
-import { UserDoctor } from '@/interfaces/auth';
 import { personalInfoProfessionalAction } from '@/actions/professional-actions';
 import { toast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -44,11 +44,35 @@ interface Props {
   profileData: Partial<UserDoctor>;
 }
 export function PersonalInfoForm({ profileData }: Props) {
+  console.log(profileData);
   // const [skillInput, setSkillInput] = useState('');
   const [state, formAction] = useFormState(
     personalInfoProfessionalAction,
     null
   );
+
+  const form = useForm<PersonalInfoType>({
+    resolver: zodResolver(personalInfoSchema),
+    defaultValues: {
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
+      avatar: undefined,
+      aboutMe: profileData.aboutMe,
+      gender: profileData.gender,
+      location: profileData.location,
+      phone: profileData.phone,
+      email: profileData.email,
+      licenseNumber: profileData.licenseNumber,
+      specialization: Object.values(Specialties).includes(
+        profileData.specialization?.[0] as Specialties
+      )
+        ? (profileData.specialization?.[0] as Specialties)
+        : undefined,
+
+      // skills: [],
+    },
+  });
+
   useEffect(() => {
     if (state?.success) {
       toast({
@@ -67,23 +91,6 @@ export function PersonalInfoForm({ profileData }: Props) {
     }
   }, [state]);
 
-  const form = useForm<PersonalInfoType>({
-    resolver: zodResolver(personalInfoSchema),
-    defaultValues: {
-      firstName: profileData.firstName,
-      lastName: profileData.lastName,
-      avatar: undefined,
-      aboutMe: profileData.aboutMe,
-      gender: profileData.gender,
-      location: profileData.location,
-      phone: profileData.phone,
-      email: profileData.email,
-      licenseNumber: profileData.licenseNumber,
-      specialization: profileData.specialization,
-
-      // skills: [],
-    },
-  });
   // const addSkill = () => {
   //   if (skillInput.trim() !== '') {
   //     const currentSkills = form.getValues('skills') || [];

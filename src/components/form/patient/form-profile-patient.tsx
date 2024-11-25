@@ -54,6 +54,7 @@ export default function EditProfileForm({
   phone,
   email,
   location,
+  avatar,
   clinicalData,
 }: Partial<UserPatient>) {
   const {
@@ -80,7 +81,7 @@ export default function EditProfileForm({
       phone,
       email,
       location,
-      avatar: undefined,
+      avatar,
       height,
       weight,
       bloodType,

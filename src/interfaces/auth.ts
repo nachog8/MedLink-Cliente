@@ -10,6 +10,7 @@ export interface Register {
   password: string;
 }
 export type Document = {
+  url: string;
   name: string;
   type: 'pdf' | 'image' | 'other';
   date: string;
@@ -96,7 +97,7 @@ export interface User {
   gender: Genders;
   aboutMe: string;
   email: string;
-  avatar: string;
+  avatar: File;
   phone: string;
   location: string;
   role: Role;

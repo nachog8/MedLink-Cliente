@@ -99,13 +99,20 @@ export function MedicalDocList() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-gray-500 hover:text-gray-700"
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${doc.url}`}
+                            download={doc.name}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
-                            <Download className="h-4 w-4" />
-                          </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-gray-500 hover:text-gray-700"
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </a>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Descargar</p>

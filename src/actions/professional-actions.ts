@@ -21,8 +21,28 @@ export async function personalInfoProfessionalAction(
   formData: FormData
 ) {
   const infoDoctorData = Object.fromEntries(formData.entries());
+  const editDoctorData = Object.entries(infoDoctorData).reduce(
+    (acc, [key, value]) => {
+      if (value !== '' && value !== undefined) {
+        if (key === 'avatar') {
+          if (
+            value instanceof File &&
+            value.size > 0 &&
+            value.type !== 'application/octet-stream' &&
+            value.name !== 'undefined'
+          ) {
+            acc[key] = value;
+          }
+        } else {
+          acc[key] = value;
+        }
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
 
-  const validatedFields = personalInfoSchema.safeParse(infoDoctorData);
+  const validatedFields = personalInfoSchema.safeParse(editDoctorData);
 
   if (!validatedFields.success) {
     const errorDetails = validatedFields.error.errors.map((err) => ({

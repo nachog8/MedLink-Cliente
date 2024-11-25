@@ -41,8 +41,15 @@ export async function edithProfilePatientAction(
   const editProfileData = Object.entries(data).reduce(
     (acc, [key, value]) => {
       if (value !== '' && value !== undefined) {
-        if (key === 'avatar' && value instanceof File) {
-          acc[key] = value;
+        if (key === 'avatar') {
+          if (
+            value instanceof File &&
+            value.size > 0 &&
+            value.type !== 'application/octet-stream' &&
+            value.name !== 'undefined'
+          ) {
+            acc[key] = value;
+          }
         } else if (key === 'height' || key === 'weight') {
           acc[key] = Number(value) || null;
         } else if (value === 'on') {

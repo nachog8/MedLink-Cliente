@@ -82,8 +82,8 @@ export const ImageUpload = <T extends FieldValues>({
                 ) : (
                   <div className="flex flex-col items-center justify-center">
                     <UploadCloud className="h-10 w-10 text-muted-foreground" />
-                    <span className="mt-2 text-sm text-muted-foreground">
-                      Upload Image
+                    <span className="mt-2 w-40 text-wrap text-sm text-muted-foreground">
+                      Suba una imagen .jpg o .png
                     </span>
                   </div>
                 )}
