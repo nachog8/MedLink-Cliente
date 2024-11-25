@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Card,
@@ -5,37 +7,59 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Pencil, Settings } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { ClinicalSummary } from '../card-clinical-result';
 import EditProfileForm from '@/components/form/patient/form-profile-patient';
 import { PasswordChangeForm } from '@/components/form/patient/form-update-password';
+import PatientProfileCardSkeleton from '@/components/skeletons/patient';
 import { PersonalInfoCard } from '../../dashboard-shared/personal-information';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserPatient } from '@/interfaces/auth';
 import { calculateAge } from '@/lib/calculate-age';
 import { formatDate } from '@/lib/date-formatter';
+import { useAuth } from '@/context/auth-context';
+import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { useProfile } from '@/context/profile-context';
 
-export const CardProfile = ({
-  firstName,
-  lastName,
-  location,
-  aboutMe,
-  avatar,
-  dateOfBirth,
-  email,
-  gender,
-  phone,
-  clinicalData,
-}: Partial<UserPatient>) => {
+export const CardProfile = () => {
+  const { id } = useParams();
+  const { profile } = useAuth();
+  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
+    useProfile();
+  useEffect(() => {
+    if (!id || typeof id !== 'string') return;
+
+    if (profile?.id === id) {
+      clearVisitedProfile();
+    } else if (!visitedProfile || visitedProfile.id !== id) {
+      loadVisitedProfile(id, 'patient');
+    }
+  }, [
+    id,
+    profile?.id,
+    visitedProfile,
+    loadVisitedProfile,
+    clearVisitedProfile,
+  ]);
+  const isUser = profile?.id === id;
+  if (!profile && !visitedProfile) return <PatientProfileCardSkeleton />;
+
+  const {
+    avatar,
+    firstName,
+    dateOfBirth,
+    aboutMe,
+    clinicalData,
+    gender,
+    email,
+    location,
+    lastName,
+    phone,
+  } = (visitedProfile ?? profile) as UserPatient;
   const formattedDate = formatDate(dateOfBirth);
   const fullName = `${firstName} ${lastName}`.trim();
   const renderDialog = (
@@ -56,10 +80,13 @@ export const CardProfile = ({
     </Dialog>
   );
   return (
-    <Card className="w-full max-w-[500px] overflow-hidden">
+    <Card className="w-full overflow-hidden lg:max-w-[500px]">
       <CardHeader className="flex justify-center pb-0 pt-6">
         <Avatar className="mx-auto h-40 w-40 border-4 border-white shadow-lg">
-          <AvatarImage src={avatar} alt={`${firstName}'s avatar`} />
+          <AvatarImage
+            src={`http://localhost:8081${avatar}`}
+            alt={`${firstName}'s avatar`}
+          />
           <AvatarFallback className="text-4xl">
             {firstName ? firstName[0] : 'N/A'}
           </AvatarFallback>
@@ -89,40 +116,36 @@ export const CardProfile = ({
         <ClinicalSummary {...clinicalData} />
       </CardContent>
 
-      <CardFooter className="flex items-center justify-between">
-        {renderDialog(
-          'Editar Perfil',
-          <Pencil className="h-4 w-4" />,
-          <>
-            <DialogHeader>
-              <DialogTitle className="flex justify-center text-2xl">
-                <Pencil className="mr-2 h-6 w-6" />
-                Editar Perfil
-              </DialogTitle>
-            </DialogHeader>
-            <ScrollArea className="max-h-[70vh] w-full p-3">
-              <EditProfileForm
-                firstName={firstName}
-                lastName={lastName}
-                dateOfBirth={formattedDate}
-                gender={gender}
-                aboutMe={aboutMe}
-                phone={phone}
-                email={email}
-                location={location}
-                avatar={avatar}
-                clinicalData={clinicalData}
-              />
-            </ScrollArea>
-          </>
-        )}
+      {isUser && (
+        <CardFooter className="flex items-center justify-between">
+          {renderDialog(
+            'Editar Perfil',
+            <Pencil className="h-4 w-4" />,
+            <>
+              <ScrollArea className="mt-5 max-h-[70vh] w-full p-3">
+                <EditProfileForm
+                  firstName={firstName}
+                  lastName={lastName}
+                  dateOfBirth={formattedDate}
+                  gender={gender}
+                  aboutMe={aboutMe}
+                  phone={phone}
+                  email={email}
+                  location={location}
+                  avatar={avatar}
+                  clinicalData={clinicalData}
+                />
+              </ScrollArea>
+            </>
+          )}
 
-        {renderDialog(
-          'Cambiar Contraseña',
-          <Settings className="h-4 w-4" />,
-          <PasswordChangeForm />
-        )}
-      </CardFooter>
+          {renderDialog(
+            'Cambiar Contraseña',
+            <Settings className="h-4 w-4" />,
+            <PasswordChangeForm />
+          )}
+        </CardFooter>
+      )}
     </Card>
   );
 };

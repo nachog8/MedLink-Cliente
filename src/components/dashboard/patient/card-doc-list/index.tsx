@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Document, UserPatient } from '@/interfaces/auth';
 import { Download, FileIcon, FileText, Trash2 } from 'lucide-react';
 import {
   Tooltip,
@@ -20,43 +21,41 @@ import { Button } from '@/components/ui/button';
 import FileUploadDialog from '@/components/buttons/button-upload-files';
 import { ImageIcon } from 'lucide-react';
 import { InformationNotAvailable } from '@/components/other/information-not-available';
+import { PatientDocumentationMedicalSkeleton } from '@/components/skeletons/patient';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/context/auth-context';
+import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { useProfile } from '@/context/profile-context';
 
-type Document = {
-  name: string;
-  type: 'pdf' | 'image' | 'other';
-  date: string;
-};
+export function MedicalDocList() {
+  const { id } = useParams();
+  const { profile } = useAuth();
+  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
+    useProfile();
+  useEffect(() => {
+    if (!id || typeof id !== 'string') return;
 
-interface MedicalDocListProps {
-  documents: Document[];
-}
+    if (profile?.id === id) {
+      clearVisitedProfile();
+    } else if (!visitedProfile || visitedProfile.id !== id) {
+      loadVisitedProfile(id, 'patient');
+    }
+  }, [
+    id,
+    profile?.id,
+    visitedProfile,
+    loadVisitedProfile,
+    clearVisitedProfile,
+  ]);
+  const isUser = profile?.id === id;
 
-export function MedicalDocList({ documents }: MedicalDocListProps) {
+  if (!profile && !visitedProfile)
+    return <PatientDocumentationMedicalSkeleton />;
+
+  const { documents } = (visitedProfile ?? profile) as UserPatient;
   const hasDocuments = documents && documents.length > 0;
-
-  const getIcon = (type: Document['type']) => {
-    switch (type) {
-      case 'pdf':
-        return <FileText className="h-4 w-4 text-red-600" />;
-      case 'image':
-        return <ImageIcon className="h-4 w-4 text-blue-600" />;
-      default:
-        return <FileIcon className="h-4 w-4 text-gray-600" />;
-    }
-  };
-
-  const getIconBackground = (type: Document['type']) => {
-    switch (type) {
-      case 'pdf':
-        return 'bg-red-100';
-      case 'image':
-        return 'bg-blue-100';
-      default:
-        return 'bg-gray-100';
-    }
-  };
 
   return (
     <Card className="h-auto">
@@ -113,22 +112,25 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-red-500 hover:text-red-700"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Eliminar</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    {/* Proteger botón de eliminación */}
+                    {isUser && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-red-500 hover:text-red-700"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Eliminar</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
                   </div>
                 </div>
               ))}
@@ -136,9 +138,33 @@ export function MedicalDocList({ documents }: MedicalDocListProps) {
           </ScrollArea>
         )}
       </CardContent>
-      <CardFooter className="mt-6">
-        <FileUploadDialog />
-      </CardFooter>
+      {/* Proteger CardFooter */}
+      {isUser && (
+        <CardFooter className="mt-6">
+          <FileUploadDialog />
+        </CardFooter>
+      )}
     </Card>
   );
 }
+const getIcon = (type: Document['type']) => {
+  switch (type) {
+    case 'pdf':
+      return <FileText className="h-4 w-4 text-red-600" />;
+    case 'image':
+      return <ImageIcon className="h-4 w-4 text-blue-600" />;
+    default:
+      return <FileIcon className="h-4 w-4 text-gray-600" />;
+  }
+};
+
+const getIconBackground = (type: Document['type']) => {
+  switch (type) {
+    case 'pdf':
+      return 'bg-red-100';
+    case 'image':
+      return 'bg-blue-100';
+    default:
+      return 'bg-gray-100';
+  }
+};

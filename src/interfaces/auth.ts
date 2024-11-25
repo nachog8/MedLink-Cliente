@@ -1,6 +1,25 @@
+import {
+  AllergieFormType,
+  FamilyInheritanceFormType,
+  NoPathologicalFormType,
+  PathologicalFormType,
+} from '@/schemas/schemas-profile';
+
 export interface Register {
   email: string;
   password: string;
+}
+export type Document = {
+  name: string;
+  type: 'pdf' | 'image' | 'other';
+  date: string;
+};
+interface Medication {
+  medication: string;
+  dosage: string;
+  frequency: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface RegisterProfessional extends Register {
@@ -85,6 +104,12 @@ export interface User {
 export interface UserPatient extends User {
   dateOfBirth: string;
   clinicalData: ClinicalData;
+  documents: Document[];
+  medications: Medication[];
+  allergiesData: AllergieFormType;
+  pathologicalData: PathologicalFormType;
+  familyInheritance: FamilyInheritanceFormType;
+  nonPathologicalData: NoPathologicalFormType;
 }
 
 export interface UserDoctor extends User {

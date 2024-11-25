@@ -1,3 +1,5 @@
+'use client';
+
 import {
   AllergieFormType,
   FamilyInheritanceFormType,
@@ -19,21 +21,43 @@ import { FileText } from 'lucide-react';
 import { LayoutContentTab } from './layout-content-tab';
 import NoPathologicalForm from '@/components/form/patient/form-no-pathological-history';
 import PathologicalForm from '@/components/form/patient/form-pathological-history';
+import { PatientMedicalHistorySkeleton } from '@/components/skeletons/patient';
+import { UserPatient } from '@/interfaces/auth';
 import { fieldTranslationMap } from '@/data/form-options';
 import { translateData } from '@/lib/translate-data';
+import { useAuth } from '@/context/auth-context';
+import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { useProfile } from '@/context/profile-context';
 
-interface Props {
-  allergiesData: AllergieFormType;
-  pathologicalData: PathologicalFormType;
-  familyInheritanceData: FamilyInheritanceFormType;
-  noPathologicalData: NoPathologicalFormType;
-}
-export default function ClinicalHistoryCard({
-  allergiesData,
-  familyInheritanceData,
-  pathologicalData,
-  noPathologicalData,
-}: Props) {
+export default function ClinicalHistoryCard() {
+  const { id } = useParams();
+  const { profile } = useAuth();
+  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
+    useProfile();
+  useEffect(() => {
+    if (!id || typeof id !== 'string') return;
+
+    if (profile?.id === id) {
+      clearVisitedProfile();
+    } else if (!visitedProfile || visitedProfile.id !== id) {
+      loadVisitedProfile(id, 'patient');
+    }
+  }, [
+    id,
+    profile?.id,
+    visitedProfile,
+    loadVisitedProfile,
+    clearVisitedProfile,
+  ]);
+  const isUser = profile?.id === id;
+  if (!profile && !visitedProfile) return <PatientMedicalHistorySkeleton />;
+  const {
+    allergiesData,
+    familyInheritance,
+    nonPathologicalData,
+    pathologicalData,
+  } = (visitedProfile ?? profile) as UserPatient;
   return (
     <Card className="h-full w-full">
       <CardHeader>
@@ -98,10 +122,10 @@ export default function ClinicalHistoryCard({
           </TabsContent>
           <TabsContent value={'no-pathological'}>
             <LayoutContentTab
-              items={translateData(noPathologicalData, fieldTranslationMap)}
+              items={translateData(nonPathologicalData, fieldTranslationMap)}
               title="Antecedentes No Patologicos"
               form_dialog_information={
-                <NoPathologicalForm initialValues={noPathologicalData} />
+                <NoPathologicalForm initialValues={nonPathologicalData} />
               }
               title_dialog_information="Enfermedades No Patologicas"
             />
@@ -109,10 +133,10 @@ export default function ClinicalHistoryCard({
 
           <TabsContent value={'family inheritance'}>
             <LayoutContentTab
-              items={translateData(familyInheritanceData, fieldTranslationMap)}
+              items={translateData(familyInheritance, fieldTranslationMap)}
               title="Antecedentes Heredo Familiar"
               form_dialog_information={
-                <FamilyInheritanceForm initialValues={familyInheritanceData} />
+                <FamilyInheritanceForm initialValues={familyInheritance} />
               }
               title_dialog_information="Enfermedades Hereditarias"
             />

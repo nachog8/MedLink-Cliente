@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const personalInfoSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  avatar: z.string().optional(),
+  avatar: z.instanceof(File).optional(),
   aboutMe: z
     .string()
     .max(233, 'About me must be at least 233 characters')
@@ -19,6 +19,7 @@ export const personalInfoSchema = z.object({
     .transform((value) => parseFloat(value))
     .refine((value) => !isNaN(value), { message: 'Debe ser un número válido' }),
   specialization: z.nativeEnum(Specialties),
+  skills: z.array(z.string()),
 });
 
 export type PersonalInfoType = z.infer<typeof personalInfoSchema>;

@@ -44,11 +44,11 @@ export default function FormSignUp() {
       }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
-        ? state.error.map((error) => `${error.message}`).join('\n')
+        ? state.error.map((err: Error) => `${err.message}`).join('\n')
         : state.error;
 
       toast({
-        title: 'Error al Iniciar Sesión',
+        title: 'Registration Error',
         description: errorMessage,
         variant: 'destructive',
       });

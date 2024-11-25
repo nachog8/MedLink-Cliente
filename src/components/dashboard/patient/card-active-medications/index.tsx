@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -10,23 +12,39 @@ import {
 import { ButtonCustomDialog } from '@/components/buttons/button-custom-dialog';
 import { InformationNotAvailable } from '@/components/other/information-not-available';
 import { MedicationForm } from '@/components/form/patient/form-medication';
+import { PatientActiveMedicationsSkeleton } from '@/components/skeletons/patient';
 import { Pill } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { UserPatient } from '@/interfaces/auth';
 import { formatDate } from '@/lib/date-formatter';
+import { useAuth } from '@/context/auth-context';
+import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { useProfile } from '@/context/profile-context';
 
-interface Medication {
-  medication: string;
-  dosage: string;
-  frequency: string;
-  startDate: Date;
-  endDate: Date;
-}
+export default function MedicationCard() {
+  const { id } = useParams();
+  const { profile } = useAuth();
+  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
+    useProfile();
+  useEffect(() => {
+    if (!id || typeof id !== 'string') return;
 
-interface Props {
-  medications: Medication[];
-}
-
-export default function MedicationCard({ medications }: Props) {
+    if (profile?.id === id) {
+      clearVisitedProfile();
+    } else if (!visitedProfile || visitedProfile.id !== id) {
+      loadVisitedProfile(id, 'patient');
+    }
+  }, [
+    id,
+    profile?.id,
+    visitedProfile,
+    loadVisitedProfile,
+    clearVisitedProfile,
+  ]);
+  const isUser = profile?.id === id;
+  if (!profile && !visitedProfile) return <PatientActiveMedicationsSkeleton />;
+  const { medications } = (visitedProfile ?? profile) as UserPatient;
   const hasMedications = medications && medications.length > 0;
 
   return (
@@ -71,11 +89,13 @@ export default function MedicationCard({ medications }: Props) {
           </ScrollArea>
         )}
       </CardContent>
-      <CardFooter className="mt-6">
-        <ButtonCustomDialog buttonText="Añadir Medicamentos">
-          <MedicationForm />
-        </ButtonCustomDialog>
-      </CardFooter>
+      {isUser && (
+        <CardFooter className="mt-6">
+          <ButtonCustomDialog buttonText="Añadir Medicamentos">
+            <MedicationForm />
+          </ButtonCustomDialog>
+        </CardFooter>
+      )}
     </Card>
   );
 }

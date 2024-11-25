@@ -1,7 +1,12 @@
 'use server';
 
+import {
+  locationProfessionalSchema,
+  personalInfoSchema,
+  seguritySchema,
+} from '@/schemas/professionalSchema';
+
 import { cookies } from 'next/headers';
-import { personalInfoSchema } from '@/schemas/professionalSchema';
 import { professionalService } from '@/services/professional-service';
 
 const { updateProfileProfessional } = professionalService;
@@ -60,19 +65,19 @@ export async function locationsProfessionalAction(
     locations: [],
   };
 
-  Object.keys(data).forEach((key) => {
-    const match = key.match(/^locations\.(\d+)\.(\w+)$/);
-    if (match) {
-      const index = parseInt(match[1], 10);
-      const field = match[2];
+  // Object.keys(data).forEach((key) => {
+  //   const match = key.match(/^locations\.(\d+)\.(\w+)$/);
+  //   if (match) {
+  //     const index = parseInt(match[1], 10);
+  //     const field = match[2];
 
-      if (!locationsData.locations[index]) {
-        locationsData.locations[index] = {};
-      }
+  //     if (!locationsData.locations[index]) {
+  //       locationsData.locations[index] = {};
+  //     }
 
-      locationsData.locations[index][field] = data[key];
-    }
-  });
+  //     locationsData.locations[index][field] = data[key];
+  //   }
+  // });
 
   const validatedFields = locationProfessionalSchema.safeParse(locationsData);
 

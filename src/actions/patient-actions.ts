@@ -40,9 +40,10 @@ export async function edithProfilePatientAction(
 
   const editProfileData = Object.entries(data).reduce(
     (acc, [key, value]) => {
-      if (key === 'avatar') return acc;
       if (value !== '' && value !== undefined) {
-        if (key === 'height' || key === 'weight') {
+        if (key === 'avatar' && value instanceof File) {
+          acc[key] = value;
+        } else if (key === 'height' || key === 'weight') {
           acc[key] = Number(value) || null;
         } else if (value === 'on') {
           acc[key] = true;
@@ -145,17 +146,13 @@ export async function allergiePatientAction(
     }));
     return { error: errorDetails };
   }
-  const finalData = Object.keys(validatedFields.data).reduce(
-    (acc, key) => {
-      if (!key.endsWith('Details')) {
-        acc[key] = convertToBoolean(validatedFields.data[key]);
-      } else {
-        acc[key] = validatedFields.data[key];
-      }
-      return acc;
-    },
-    {} as Record<string, any>
-  );
+  const finalData = {
+    ...validatedFields.data,
+    foodAllergy: convertToBoolean(validatedFields.data.foodAllergy),
+    insectAllergy: convertToBoolean(validatedFields.data.insectAllergy),
+    medicineAllergy: convertToBoolean(validatedFields.data.medicineAllergy),
+    otherAllergies: convertToBoolean(validatedFields.data.otherAllergies),
+  };
 
   try {
     const response = await updateAllergies(finalData, await getCookie('token'));
@@ -199,17 +196,31 @@ export async function pathologicalPatientAction(
 
     return { error: errorDetails };
   }
-  const finalData = Object.keys(validatedFields.data).reduce(
-    (acc, key) => {
-      if (!key.endsWith('Details')) {
-        acc[key] = convertToBoolean(validatedFields.data[key]);
-      } else {
-        acc[key] = validatedFields.data[key];
-      }
-      return acc;
-    },
-    {} as Record<string, any>
-  );
+  const finalData = {
+    ...validatedFields.data,
+    hospitalization: convertToBoolean(validatedFields.data.hospitalization),
+    diabetes: convertToBoolean(validatedFields.data.diabetes),
+    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
+    hypertension: convertToBoolean(validatedFields.data.hypertension),
+    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
+    trauma: convertToBoolean(validatedFields.data.trauma),
+    cancer: convertToBoolean(validatedFields.data.cancer),
+    tuberculosis: convertToBoolean(validatedFields.data.tuberculosis),
+    transfusions: convertToBoolean(validatedFields.data.transfusions),
+    respiratoryDiseases: convertToBoolean(
+      validatedFields.data.respiratoryDiseases
+    ),
+    gastrointestinalDiseases: convertToBoolean(
+      validatedFields.data.gastrointestinalDiseases
+    ),
+    sexuallyTransmittedDiseases: convertToBoolean(
+      validatedFields.data.sexuallyTransmittedDiseases
+    ),
+    chronicKidneyDisease: convertToBoolean(
+      validatedFields.data.chronicKidneyDisease
+    ),
+    other: convertToBoolean(validatedFields.data.other),
+  };
 
   try {
     const response = await updatePathological(
@@ -256,17 +267,15 @@ export async function noPathologicalPatientAction(
 
     return { error: errorDetails };
   }
-  const finalData = Object.keys(validatedFields.data).reduce(
-    (acc, key) => {
-      if (!key.endsWith('Details')) {
-        acc[key] = convertToBoolean(validatedFields.data[key]);
-      } else {
-        acc[key] = validatedFields.data[key];
-      }
-      return acc;
-    },
-    {} as Record<string, any>
-  );
+  const finalData = {
+    ...validatedFields.data,
+    physicalActivity: convertToBoolean(validatedFields.data.physicalActivity),
+    smoking: convertToBoolean(validatedFields.data.smoking),
+    alcoholism: convertToBoolean(validatedFields.data.alcoholism),
+    otherSubstances: convertToBoolean(validatedFields.data.otherSubstances),
+    recentVaccination: convertToBoolean(validatedFields.data.recentVaccination),
+    other: convertToBoolean(validatedFields.data.other),
+  };
 
   try {
     const response = await updateNoPathological(
@@ -316,17 +325,17 @@ export async function familyInheritancePatientAction(
     return { error: errorDetails };
   }
 
-  const finalData = Object.keys(validatedFields.data).reduce(
-    (acc, key) => {
-      if (!key.endsWith('Details')) {
-        acc[key] = convertToBoolean(validatedFields.data[key]);
-      } else {
-        acc[key] = validatedFields.data[key];
-      }
-      return acc;
-    },
-    {} as Record<string, any>
-  );
+  const finalData = {
+    ...validatedFields.data,
+    diabetes: convertToBoolean(validatedFields.data.diabetes),
+    heartDiseases: convertToBoolean(validatedFields.data.heartDiseases),
+    hypertension: convertToBoolean(validatedFields.data.hypertension),
+    thyroidDiseases: convertToBoolean(validatedFields.data.thyroidDiseases),
+    chronicKidneyDisease: convertToBoolean(
+      validatedFields.data.chronicKidneyDisease
+    ),
+    other: convertToBoolean(validatedFields.data.other),
+  };
 
   try {
     const response = await updateFamilyInheritance(

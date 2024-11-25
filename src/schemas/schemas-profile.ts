@@ -12,7 +12,7 @@ export const editProfileSchema = z.object({
   phone: z.string().optional(),
   email: z.string().email({ message: 'Correo electrónico no válido.' }),
   location: z.string().optional(),
-  avatar: z.string().optional(),
+  avatar: z.instanceof(File).optional(),
   height: z.number().optional(),
   weight: z.number().optional(),
   bloodType: z.string().optional(),

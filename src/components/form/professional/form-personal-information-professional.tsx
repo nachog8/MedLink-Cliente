@@ -18,15 +18,18 @@ import {
   personalInfoSchema,
 } from '@/schemas/professionalSchema';
 import { genderOptions, specialtiesOptions } from '@/data/form-options';
+import { useEffect, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { ButtonForm } from '@/components/buttons/button-submit-form';
 import { FieldInput } from '../fields/field-input';
 import { FieldSelect } from '../fields/field-select';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { UserDoctor } from '@/interfaces/auth';
+import { X } from 'lucide-react';
 import { personalInfoProfessionalAction } from '@/actions/professional-actions';
 import { toast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,7 +40,7 @@ interface Props {
   profileData: Partial<UserDoctor>;
 }
 export function PersonalInfoForm({ profileData }: Props) {
-  // const [skillInput, setSkillInput] = useState('');
+  const [skillInput, setSkillInput] = useState('');
   const [state, formAction] = useFormState(
     personalInfoProfessionalAction,
     null
@@ -74,25 +77,25 @@ export function PersonalInfoForm({ profileData }: Props) {
       licenseNumber: profileData.licenseNumber,
       specialization: profileData.specialization,
 
-      // skills: [],
+      skills: [],
     },
   });
-  // const addSkill = () => {
-  //   if (skillInput.trim() !== '') {
-  //     const currentSkills = form.getValues('skills') || [];
+  const addSkill = () => {
+    if (skillInput.trim() !== '') {
+      const currentSkills = form.getValues('skills') || [];
 
-  //     form.setValue('skills', [...currentSkills, skillInput.trim()]);
-  //     setSkillInput('');
-  //   }
-  // };
+      form.setValue('skills', [...currentSkills, skillInput.trim()]);
+      setSkillInput('');
+    }
+  };
 
-  // const removeSkill = (index: number) => {
-  //   const currentSkills = form.getValues('skills') || [];
-  //   form.setValue(
-  //     'skills',
-  //     currentSkills.filter((_, i) => i !== index)
-  //   );
-  // };
+  const removeSkill = (index: number) => {
+    const currentSkills = form.getValues('skills') || [];
+    form.setValue(
+      'skills',
+      currentSkills.filter((_, i) => i !== index)
+    );
+  };
 
   return (
     <Card>
@@ -190,7 +193,7 @@ export function PersonalInfoForm({ profileData }: Props) {
               placeholder="your.email@example.com"
             />
 
-            {/* <FormField
+            <FormField
               control={form.control}
               name="skills"
               render={({ field }) => (
@@ -230,7 +233,7 @@ export function PersonalInfoForm({ profileData }: Props) {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             <div className="grid md:justify-items-end">
               <ButtonForm text="Guardar Información" />

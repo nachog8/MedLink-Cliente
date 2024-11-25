@@ -94,10 +94,21 @@ export const patientService = {
     }
   },
   async updateProfilePatient(data: any, token: string) {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      if (value instanceof File || typeof value !== 'object') {
+        formData.append(key, value);
+      } else if (typeof value === 'object') {
+        formData.append(key, JSON.stringify(value));
+      }
+    });
+
     try {
-      const response = await api.put(`/patient`, data, {
+      const response = await api.put(`/patient`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
       return response.data;

@@ -50,7 +50,7 @@ export default function CardListPatients() {
                   className="flex items-center justify-between rounded-xl border-2 border-muted p-3"
                 >
                   {/* TODO: HABLAR CON SAUL PORQUE CON SOLO EL ID DE LOS PATIENTS NO HAGO MUCHO */}
-                  <Avatar className="h-10 w-10">
+                  {/* <Avatar className="h-10 w-10">
                     <AvatarImage
                       src={patient.avatar}
                       alt={`${patient.firstName} ${patient.lastName}`}
@@ -59,7 +59,7 @@ export default function CardListPatients() {
                   </Avatar>
                   <h3 className="text-sm font-medium">
                     {patient.firstName} {patient.lastName}
-                  </h3>
+                  </h3> */}
                   <div className="space-x-2">
                     <TooltipsButtonsPatient id={patient} />
                   </div>
