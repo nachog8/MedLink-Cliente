@@ -1,13 +1,9 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-
-import { useState } from 'react';
-
+import { Card, CardContent } from '../../ui/card';
 import { CheckCircle2, Mail, Phone, User } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
+import { ContactFormType, contactSchema } from '@/schemas';
+import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -17,16 +13,17 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
-import { Card, CardContent } from '../../ui/card';
-import { ContactFormType, contactSchema } from '@/schemas';
-import { FieldInput } from '../fields/field-input';
+import { Button } from '@/components/ui/button';
 import { ButtonSubmit } from '@/components/buttons/button-submit';
-import { useFormState } from 'react-dom';
+import { FieldInput } from '../fields/field-input';
+import { Textarea } from '@/components/ui/textarea';
 import { contactAction } from '@/actions/contact-action';
-import { useEffect } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export function ContactForm() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -43,7 +40,6 @@ export function ContactForm() {
   });
   useEffect(() => {
     if (state?.success) {
-      console.log('hola');
       setOpenDialog(true);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)

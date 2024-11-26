@@ -17,10 +17,12 @@ import {
 } from '@/components/ui/tooltip';
 
 import { Button } from '@/components/ui/button';
+import { ButtonCustomDialog } from '@/components/buttons/button-custom-dialog';
 import DoctorPatientListCardSkeleton from '@/components/skeletons/professional';
 import { InformationNotAvailable } from '@/components/other/information-not-available';
 import Link from 'next/link';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SendEmailPatient } from '@/components/form/professional/form-send-email-patient';
 import { UserDoctor } from '@/interfaces/auth';
 import { useAuth } from '@/context/auth-context';
 import { useParams } from 'next/navigation';
@@ -74,7 +76,14 @@ export default function CardListPatients() {
           </ScrollArea>
         )}
       </CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter>
+        <ButtonCustomDialog
+          buttonText="Agregar Paciente"
+          dialogTitle="Solicitar Permiso a Paciente"
+        >
+          <SendEmailPatient />
+        </ButtonCustomDialog>
+      </CardFooter>
     </Card>
   );
 }

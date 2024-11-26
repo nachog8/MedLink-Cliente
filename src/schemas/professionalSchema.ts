@@ -52,3 +52,11 @@ export const seguritySchema = z
   });
 
 export type SegurityType = z.infer<typeof seguritySchema>;
+
+export const sendEmailPatientSchema = z.object({
+  email: z.string().email({
+    message: 'Por favor, ingresa una dirección de email válida.',
+  }),
+});
+
+export type SendEmailPatientType = z.infer<typeof sendEmailPatientSchema>;

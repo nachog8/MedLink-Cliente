@@ -3,12 +3,14 @@
 import {
   locationProfessionalSchema,
   personalInfoSchema,
+  sendEmailPatientSchema,
 } from '@/schemas/professionalSchema';
 
 import { cookies } from 'next/headers';
 import { professionalService } from '@/services/professional-service';
 
-const { updateProfileProfessional } = professionalService;
+const { updateProfileProfessional, sendEmailPatientProfessional } =
+  professionalService;
 //Funciones de las Cookies
 export const getCookie = (name: string) => {
   const cookieStore = cookies();
@@ -126,35 +128,37 @@ export async function locationsProfessionalAction(
   }
 }
 
-// export async function segurityProfessionalAction(
-//   prevState: any,
-//   formData: FormData
-// ) {
-//   const data = Object.fromEntries(formData.entries());
-//   const segurityData = {
-//     currentPassword: data.currentPassword,
-//     newPassword: data.newPassword,
-//     confirmPassword: data.confirmPassword,
-//   };
+export async function sendEmailPatientProfessionalAction(
+  prevState: any,
+  formData: FormData
+) {
+  const data = Object.fromEntries(formData.entries());
+  const emailPatientData = {
+    email: data.email,
+  };
 
-//   const validatedFields = seguritySchema.safeParse(segurityData);
+  const validatedFields = sendEmailPatientSchema.safeParse(emailPatientData);
 
-//   if (!validatedFields.success) {
-//     const errorDetails = validatedFields.error.errors.map((err) => ({
-//       field: err.path[0],
-//       message: err.message,
-//     }));
-//     return { error: errorDetails };
-//   }
-//   const { confirmPassword, ...newPassword } = validatedFields.data;
-//   try {
-//     return {
-//       success: true,
-//     };
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       return { error: error.message };
-//     }
-//     return { error: 'An unexpected error occurred' };
-//   }
-// }
+  if (!validatedFields.success) {
+    const errorDetails = validatedFields.error.errors.map((err) => ({
+      field: err.path[0],
+      message: err.message,
+    }));
+    return { error: errorDetails };
+  }
+
+  try {
+    const response = await sendEmailPatientProfessional(
+      validatedFields.data,
+      await getCookie('token')
+    );
+    return {
+      success: response.success,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'An unexpected error occurred' };
+  }
+}

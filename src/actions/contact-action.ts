@@ -1,16 +1,16 @@
-"use server"
+'use server';
 
-import { contactSchema } from "@/schemas";
-import { contactService } from "@/services/contact-service";
-import { AxiosError } from "axios";
+import { AxiosError } from 'axios';
+import { contactSchema } from '@/schemas';
+import { contactService } from '@/services/contact-service';
 
-const {contactMessage} = contactService
+const { contactMessage } = contactService;
 
 export async function contactAction(prevState: any, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
   const contactData = {
-    firstName : data.firstName,
-    lastName : data.lastName,
+    firstName: data.firstName,
+    lastName: data.lastName,
     phone: data.phone,
     email: data.email,
     comment: data.comment,
@@ -26,12 +26,12 @@ export async function contactAction(prevState: any, formData: FormData) {
     }));
     return { error: errorDetails };
   }
-  console.log(validatedFields.data)
+
   try {
     const resp = await contactMessage(validatedFields.data);
-    console.log(resp);
+
     return {
-      success: resp.success
+      success: resp.success,
     };
   } catch (error) {
     console.log(error);

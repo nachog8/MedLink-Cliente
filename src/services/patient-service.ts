@@ -161,22 +161,27 @@ export const patientService = {
     }
   },
 
-  // async updateVaccinationSchedulePatient(data: any, token: string) {
-  //   try {
-  //     const response = await api.put(`/vaccination-shedule`, data, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     return response.data;
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       throw new Error(`Axios error: ${error.message}`);
-  //     } else if (error instanceof Error) {
-  //       throw new Error(`Error: ${error.message}`);
-  //     } else {
-  //       throw new Error('Unknown error occurred');
-  //     }
-  //   }
-  // },
+  async authorizeDoctorPatient(token: string, tokenAuthorization: string) {
+    try {
+      const response = await api.post(
+        `/patient/authorize-doctor/${tokenAuthorization}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Axios error: ${error.message}`);
+      } else if (error instanceof Error) {
+        throw new Error(`Error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred');
+      }
+    }
+  },
 };
