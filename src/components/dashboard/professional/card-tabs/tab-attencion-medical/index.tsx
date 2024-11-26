@@ -110,7 +110,7 @@ export function AtentionMedicalTab({ locations }: { locations: Location[] }) {
                 <div className="aspect-video w-full overflow-hidden rounded-lg shadow-md">
                   {location.lat && location.lng ? (
                     <iframe
-                      src={`https://www.google.com/maps/embed/v1/place?key=TU_CLAVE_API&q=${location.lat},${location.lng}`}
+                      src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyB6-RHobnGewae_E3Fqn1OB77yAXUM2sYE&q=${location.lat},${location.lng}`}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}

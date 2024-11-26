@@ -1,52 +1,187 @@
-import { Github, Linkedin, Users } from 'lucide-react';
+import { Github, Instagram, Linkedin, Users } from 'lucide-react';
+
+import CardDeveloper from '@/components/other/card-developers';
 
 const teamMembers = [
   {
-    name: 'Bruno Catterino',
-    role: 'Front End',
-    imageUrl:
-      'https://ui-avatars.com/api/?name=Bruno+Catterino&background=random',
-    linkedin: 'https://www.linkedin.com/in/bruno-catterino',
-    github: 'https://github.com/brunocatterino',
+    avatarSrc: '',
+    description:
+      'Soy diseñador gráfico y hace un año comencé a explorar el mundo de la programación, ampliando mis habilidades en el desarrollo web.',
+    skills: ['JavaScript', 'React', 'Next.js', 'Node.js'],
+    socialLinks: [
+      {
+        icon: Linkedin,
+        url: 'https://www.linkedin.com/in/bruno-catterino',
+      },
+      {
+        icon: Github,
+        url: 'https://github.com/BrunoCatterino',
+      },
+      {
+        icon: Instagram,
+        url: 'https://www.instagram.com/brunocatterino',
+      },
+    ],
+    name: 'Bruno Emanuel Catterino',
+    role: 'Desarrollador Front-End',
   },
   {
-    name: 'Saul Belbey',
-    role: 'Back End',
-    imageUrl: 'https://ui-avatars.com/api/?name=Saul+Belbey&background=random',
-    linkedin: 'https://www.linkedin.com/in/saulbelbey',
-    github: 'https://github.com/sbelbey',
+    avatarSrc:
+      'https://media.licdn.com/dms/image/v2/C4D03AQHfWt4fd2TT5g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1663974778457?e=1738195200&v=beta&t=4LvPPRG9OVuvoewWig6zWqyOSSIM5G9jwbmG431DvJ8',
+    description:
+      'Soy un apasionado desarrollador de software con un conjunto diverso de habilidades y una sólida experiencia en informática. Mi enfoque principal es crear soluciones innovadoras y eficientes para abordar problemas de manera efectiva. Mis habilidades clave incluyen liderazgo, empatía, trabajo en equipo y capacidad analítica.',
+    skills: [
+      'HTML',
+      'CSS',
+      'JAVASCRIPT',
+      'TYPESCRIPT',
+      'PYTHON',
+      'NODEJS',
+      'DJANGO',
+      'GIT',
+      'MYSQL',
+      'SQL SERVER',
+      'MONGODB',
+      'SCRUM',
+      'API REST',
+      'MVC',
+      'JSON',
+      'REACT',
+      'AWS',
+    ],
+    socialLinks: [
+      {
+        icon: Linkedin,
+        url: 'https://www.linkedin.com/in/saulbelbey/',
+      },
+      {
+        icon: Github,
+        url: 'https://github.com/sbelbey',
+      },
+      {
+        icon: Instagram,
+        url: 'https://www.instagram.com/sbelbey/',
+      },
+    ],
+    name: 'Belbey Saúl Iván',
+    role: 'Backend Developer',
   },
   {
-    name: 'Ignacio Guridi',
-    role: 'Front End',
-    imageUrl:
-      'https://ui-avatars.com/api/?name=Ignacio+Guridi&background=random',
-    linkedin: 'https://www.linkedin.com/in/guridi-ignacio',
-    github: 'https://github.com/nachog8',
+    avatarSrc:
+      'https://media.licdn.com/dms/image/v2/D4D03AQEXdhYruhC-cw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1709860201608?e=1738195200&v=beta&t=g-6073R-dnshgREuy7ME53ekJ3gEqcO3m00eFZKBN_w',
+    description:
+      'Soy un apasionado desarrollador enfocado en el front-end, con ganas de expandir mis conocimientos hacia el desarrollo full-stack. Como estudiante avanzado de Ingeniería en Sistemas, combino una sólida formación técnica con habilidades prácticas para crear interfaces atractivas, intuitivas y funcionales. Mi enfoque está en diseñar soluciones innovadoras y eficientes, destacando por mi liderazgo, empatía, trabajo en equipo ycapacidad analítica.',
+    skills: [
+      'HTML',
+      'CSS',
+      'JAVASCRIPT',
+      'NEXTJS',
+      'TYPESCRIPT',
+      'PYTHON',
+      'NODEJS',
+      'DJANGO',
+      'GIT',
+      'MYSQL',
+      'MONGODB',
+      'SCRUM',
+      'API REST',
+      'REACT',
+    ],
+    socialLinks: [
+      {
+        icon: Linkedin,
+        url: 'https://www.linkedin.com/in/guridi-ignacio/',
+      },
+      {
+        icon: Github,
+        url: 'https://github.com/nachog8',
+      },
+      {
+        icon: Instagram,
+        url: 'https://www.instagram.com/nachog8/',
+      },
+    ],
+    name: 'Ignacio Javier Guridi',
+    role: 'Frontend Developer',
   },
   {
+    avatarSrc:
+      'https://ui-avatars.com/api/?name=Jose+Maria+Candia&background=random',
+    description: '',
+    skills: [],
+    socialLinks: [
+      {
+        icon: Linkedin,
+        url: 'https://www.linkedin.com/in/jose-maria-candia-527bb3202',
+      },
+      {
+        icon: Github,
+        url: 'https://github.com/joss-dev',
+      },
+      {
+        icon: Instagram,
+        url: '/',
+      },
+    ],
     name: 'Jose Maria Candia',
     role: 'Back End',
-    imageUrl:
-      'https://ui-avatars.com/api/?name=Jose+Maria+Candia&background=random',
-    linkedin: 'https://www.linkedin.com/in/jose-maria-candia-527bb3202',
-    github: 'https://github.com/joss-dev',
   },
   {
+    avatarSrc:
+      'https://www.shutterstock.com/image-vector/vector-halloween-faces-nightmare-before-260nw-2047758854.jpg',
+    description:
+      'Ingeniero electromecánico iniciando mi carrera como desarrollador web front end, con entusiasmo por aprender y convertirme en full stack.',
+    skills: [
+      'SASS',
+      'NODEJS',
+      'TAILWIND',
+      'MUI',
+      'BOOSTRAP',
+      'NEXTJS',
+      'TYPESCRIPT',
+      'SHADCN',
+      'DOCKER',
+      'GIT',
+      'FIREBASE',
+      'MONGODB',
+      'SQLLITE',
+      'MYSQL',
+      'POSTGRESQL',
+      'NEXTUI',
+      'OAUTH',
+      'ZOD',
+      'API REST',
+    ],
+    socialLinks: [
+      {
+        icon: Linkedin,
+        url: 'https://www.linkedin.com/in/santiago-emmanuel-barreto',
+      },
+      {
+        icon: Github,
+        url: 'https://github.com/JamesBarr456',
+      },
+      {
+        icon: Instagram,
+        url: 'https://www.instagram.com/barretoemmanuel',
+      },
+    ],
     name: 'Emmanuel Santiago Barreto',
     role: 'Front End',
-    imageUrl:
-      'https://ui-avatars.com/api/?name=Emmanuel+Santiago+Barreto&background=random',
-    linkedin: 'https://www.linkedin.com/in/santiago-emmanuel-barreto',
-    github: 'https://github.com/JamesBarr456',
   },
 ];
 
-const AboutUsPage = () => {
+const Page = () => {
   return (
-    <div className="min-h-screen bg-[url('/images/fondo1.jpg')] from-gray-100 to-blue-50 bg-cover bg-center px-6 py-24">
-      <div className="mb-36 text-center">
-        <h1 className="flex items-center justify-center gap-2 text-4xl font-extrabold text-gray-800">
+    <section
+      className="min-h-screen bg-[url('/images/fondo1.jpg')] from-gray-100 to-blue-50 bg-cover bg-center px-6 py-24 font-poppins"
+      aria-labelledby="about-us-title"
+    >
+      <header className="mb-36 text-center">
+        <h1
+          id="about-us-title"
+          className="flex items-center justify-center gap-2 text-4xl font-extrabold text-gray-800"
+        >
           <Users size={50} className="text-blue-400" />
           Nuestro Equipo
         </h1>
@@ -54,54 +189,23 @@ const AboutUsPage = () => {
           Conoce a las personas que hacen posible este proyecto.
         </p>
         <div className="mx-auto mt-8 h-1 w-36 rounded-full bg-blue-400"></div>
-      </div>
+      </header>
 
       <div className="flex flex-wrap justify-center gap-8">
         {teamMembers.map((member, index) => (
-          <div
+          <CardDeveloper
             key={index}
-            className="relative w-72 transform rounded-lg bg-white p-6 text-center shadow-xl transition duration-500 ease-in-out hover:scale-105 hover:shadow-2xl"
-          >
-            <div className="absolute -top-14 left-1/2 -translate-x-1/2 transform">
-              <div className="h-28 w-28 overflow-hidden rounded-full border-4 shadow-lg">
-                <img
-                  src={member.imageUrl}
-                  alt={member.name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="mt-16">
-              <h2 className="text-xl font-bold text-gray-800">{member.name}</h2>
-              <p className="text-sm text-gray-500">{member.role}</p>
-
-              <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-blue-400"></div>
-
-              <div className="mt-4 flex justify-center gap-4">
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  <Linkedin size={24} />
-                </a>
-                <a
-                  href={member.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-black"
-                >
-                  <Github size={24} />
-                </a>
-              </div>
-            </div>
-          </div>
+            avatarSrc={member.avatarSrc}
+            description={member.description}
+            name={member.name}
+            role={member.role}
+            skills={member.skills}
+            socialLinks={member.socialLinks}
+          />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
-export default AboutUsPage;
+export default Page;

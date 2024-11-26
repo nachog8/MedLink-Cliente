@@ -1,5 +1,6 @@
 'use client';
 
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { CircleUserRound, LayoutDashboard, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
@@ -9,25 +10,52 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/context/auth-context';
 
 export function UserButton() {
-  const { isAuthenticated, logout, user } = useAuth();
+  const { isAuthenticated, logout, profile } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const profileUrl = user
-    ? user.role === 'Patient'
-      ? `/paciente/${user.id}`
-      : user.role === 'Doctor'
-        ? `/profesional/${user.id}`
+  useEffect(() => {
+    if (profile?.avatar) {
+      setIsLoading(false);
+    }
+  }, [profile?.avatar]);
+
+  const profileUrl = profile
+    ? profile.role === 'Patient'
+      ? `/paciente/${profile.id}`
+      : profile.role === 'Doctor'
+        ? `/profesional/${profile.id}`
         : null
     : null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <CircleUserRound className="h-7 w-7 cursor-pointer" />
+        {isAuthenticated ? (
+          <Avatar className="h-7 w-7 cursor-pointer">
+            {isLoading ? (
+              <Skeleton className="h-full w-full rounded-full" />
+            ) : (
+              <>
+                <AvatarImage
+                  src={`http://localhost:8081${profile?.avatar}`}
+                  alt="User avatar"
+                />
+                <AvatarFallback>
+                  {profile?.firstName ? profile.firstName[0] : 'NN'}
+                </AvatarFallback>
+              </>
+            )}
+          </Avatar>
+        ) : (
+          <CircleUserRound className="h-7 w-7 cursor-pointer" />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40 font-poppins" align="end" forceMount>
         <DropdownMenuLabel className="text-center">

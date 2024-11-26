@@ -7,7 +7,7 @@ export const editProfileSchema = z.object({
   gender: z.string().optional(),
   aboutMe: z
     .string()
-    .max(200, { message: 'La descripción no debe exceder 500 caracteres.' })
+    .max(500, { message: 'La descripción no debe exceder 500 caracteres.' })
     .optional(),
   phone: z.string().optional(),
   email: z.string().email({ message: 'Correo electrónico no válido.' }),

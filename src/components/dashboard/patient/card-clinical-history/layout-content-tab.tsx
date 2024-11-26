@@ -21,12 +21,14 @@ import { Button } from '@/components/ui/button';
 import { InformationNotAvailable } from '@/components/other/information-not-available';
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { boolean } from 'zod';
 
 interface ItemsDetails {
   [key: string]: boolean | string | undefined;
 }
 
 interface StatusCardProps {
+  protect: boolean;
   items: ItemsDetails;
   title: string;
   description?: string;
@@ -42,6 +44,7 @@ export function LayoutContentTab({
   form_dialog_information: Form,
   description_dialog_information,
   title_dialog_information,
+  protect,
 }: StatusCardProps) {
   const parsedItems = Object.keys(items)
     .filter((key) => !key.endsWith('Details'))
@@ -95,27 +98,29 @@ export function LayoutContentTab({
           </ScrollArea>
         )}
       </CardContent>
-      <CardFooter className="flex justify-end">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Agregar más información
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="font-poppins">
-            <DialogHeader>
-              <DialogTitle>{title_dialog_information}</DialogTitle>
-              <DialogDescription>
-                {description_dialog_information}
-              </DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="max-h-[400px] w-full rounded-xl border-2 border-muted">
-              {Form}
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-      </CardFooter>
+      {protect && (
+        <CardFooter className="flex justify-end">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                Agregar más información
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="font-poppins">
+              <DialogHeader>
+                <DialogTitle>{title_dialog_information}</DialogTitle>
+                <DialogDescription>
+                  {description_dialog_information}
+                </DialogDescription>
+              </DialogHeader>
+              <ScrollArea className="max-h-[400px] w-full rounded-xl border-2 border-muted">
+                {Form}
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
+        </CardFooter>
+      )}
     </Card>
   );
 }

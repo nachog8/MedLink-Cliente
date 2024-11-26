@@ -20,9 +20,11 @@ import { UserPatient } from '@/interfaces/auth';
 import { fieldTranslationMap } from '@/data/form-options';
 import { translateData } from '@/lib/translate-data';
 import { useAuth } from '@/context/auth-context';
+import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 
 export default function ClinicalHistoryCard() {
+  const { id } = useParams();
   const { profile } = useAuth();
   const { visitedProfile } = useProfile();
 
@@ -33,6 +35,8 @@ export default function ClinicalHistoryCard() {
     nonPathologicalData,
     pathologicalData,
   } = (visitedProfile ?? profile) as UserPatient;
+
+  const isUser = profile?.id === id;
   return (
     <Card className="h-full w-full">
       <CardHeader>
@@ -77,6 +81,7 @@ export default function ClinicalHistoryCard() {
 
           <TabsContent value={'allergies'}>
             <LayoutContentTab
+              protect={isUser}
               items={translateData(allergiesData, fieldTranslationMap)}
               title="Antecedentes de Alergias"
               form_dialog_information={
@@ -87,6 +92,7 @@ export default function ClinicalHistoryCard() {
           </TabsContent>
           <TabsContent value={'pathological'}>
             <LayoutContentTab
+              protect={isUser}
               items={translateData(pathologicalData, fieldTranslationMap)}
               title="Antecedentes Patologicos"
               form_dialog_information={
@@ -97,6 +103,7 @@ export default function ClinicalHistoryCard() {
           </TabsContent>
           <TabsContent value={'no-pathological'}>
             <LayoutContentTab
+              protect={isUser}
               items={translateData(nonPathologicalData, fieldTranslationMap)}
               title="Antecedentes No Patologicos"
               form_dialog_information={
@@ -108,6 +115,7 @@ export default function ClinicalHistoryCard() {
 
           <TabsContent value={'family inheritance'}>
             <LayoutContentTab
+              protect={isUser}
               items={translateData(familyInheritance, fieldTranslationMap)}
               title="Antecedentes Heredo Familiar"
               form_dialog_information={

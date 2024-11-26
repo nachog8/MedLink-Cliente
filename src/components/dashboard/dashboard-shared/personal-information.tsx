@@ -75,7 +75,7 @@ export function PersonalInfoCard({
         />
         <InfoRow
           label="Edad"
-          value={`${age} años`}
+          value={`${age}`}
           icon={<Cake className="h-4 w-4 text-indigo-500" />}
         />
         <InfoRow

@@ -1,6 +1,6 @@
 'use client';
 
-import { User, UserDoctor } from '@/interfaces/auth';
+import { User, UserDoctor, UserPatient } from '@/interfaces/auth';
 
 import AuthorizationPreview from '@/components/other/message-authorization-preview';
 import { CardProfile } from '@/components/dashboard/patient/card-profile/card-profile';
@@ -24,12 +24,19 @@ export default function Page() {
   useEffect(() => {
     if (!id || typeof id !== 'string') return;
 
-    if (profile && isDoctor(profile) && profile.patients?.includes(id)) {
-      if (!visitedProfile || visitedProfile.id !== id) {
-        loadVisitedProfile(id, 'patient');
+    if (profile && isDoctor(profile)) {
+      const isPatientInList = profile.patients?.some(
+        (patient: UserPatient) => patient.id === id
+      );
+
+      if (isPatientInList) {
+        if (!visitedProfile || visitedProfile.id !== id) {
+          loadVisitedProfile(id, 'patient');
+        }
+        return;
       }
-      return;
     }
+
     if (profile?.id === id) {
       clearVisitedProfile();
       return;
@@ -38,14 +45,13 @@ export default function Page() {
     clearVisitedProfile();
   }, [id, profile, visitedProfile, loadVisitedProfile, clearVisitedProfile]);
 
-  // Renderizado condicional: acceso no autorizado
   if (
     !id ||
     (typeof id === 'string' &&
       profile?.id !== id &&
       profile &&
       isDoctor(profile) &&
-      !profile.patients?.includes(id))
+      !profile.patients?.some((patient: UserPatient) => patient.id === id))
   ) {
     return <AuthorizationPreview />;
   }

@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { UserDoctor, UserPatient } from '@/interfaces/auth';
 
 import { Button } from '@/components/ui/button';
 import { ButtonCustomDialog } from '@/components/buttons/button-custom-dialog';
@@ -23,7 +24,6 @@ import { InformationNotAvailable } from '@/components/other/information-not-avai
 import Link from 'next/link';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SendEmailPatient } from '@/components/form/professional/form-send-email-patient';
-import { UserDoctor } from '@/interfaces/auth';
 import { useAuth } from '@/context/auth-context';
 import { useParams } from 'next/navigation';
 
@@ -57,18 +57,18 @@ export default function CardListPatients() {
                   className="flex items-center justify-between rounded-xl border-2 border-muted p-3"
                 >
                   {/* TODO: HABLAR CON SAUL PORQUE CON SOLO EL ID DE LOS PATIENTS NO HAGO MUCHO */}
-                  {/* <Avatar className="h-10 w-10">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage
-                      src={patient.avatar}
+                      src={`http://localhost:8081${patient.avatar}`}
                       alt={`${patient.firstName} ${patient.lastName}`}
                     />
                     <AvatarFallback>{patient.firstName[0]}</AvatarFallback>
                   </Avatar>
                   <h3 className="text-sm font-medium">
                     {patient.firstName} {patient.lastName}
-                  </h3> */}
+                  </h3>
                   <div className="space-x-2">
-                    <TooltipsButtonsPatient id={patient} />
+                    <TooltipsButtonsPatient id={patient.id} />
                   </div>
                 </div>
               ))}
@@ -89,9 +89,9 @@ export default function CardListPatients() {
 }
 
 function TooltipsButtonsPatient({ id }: { id: string }) {
-  const deletePatient = (id: string) => {
-    console.log(id);
-  };
+  // const deletePatient = (id: string) => {
+  //   console.log(id);
+  // };
   return (
     <>
       <TooltipProvider>
@@ -108,7 +108,7 @@ function TooltipsButtonsPatient({ id }: { id: string }) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <TooltipProvider>
+      {/* <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -123,7 +123,7 @@ function TooltipsButtonsPatient({ id }: { id: string }) {
             <p>Eliminar Paciente</p>
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
+      </TooltipProvider> */}
     </>
   );
 }

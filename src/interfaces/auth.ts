@@ -117,5 +117,5 @@ export interface UserDoctor extends User {
   licenseNumber: number;
   specialization: Specialties;
   clinical: string[];
-  patients: string[];
+  patients: UserPatient[];
 }

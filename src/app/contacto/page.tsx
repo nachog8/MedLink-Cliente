@@ -1,6 +1,3 @@
-import { ContactInfo } from '@/components/contact/contact-info';
-import { ContactForm } from '@/components/form/contact/form-contact';
-
 import {
   Card,
   CardContent,
@@ -9,11 +6,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Mail, MapPin, Phone } from 'lucide-react';
+
+import { ContactForm } from '@/components/form/contact/form-contact';
+import { ContactInfo } from '@/components/contact/contact-info';
 import Image from 'next/image';
 
 export default function Page() {
   return (
-    <div className="container m-auto mt-16 space-y-5 font-poppins max-xl:w-[95%] lg:grid lg:grid-cols-2 lg:space-y-0">
+    <div className="container m-auto space-y-5 py-16 font-poppins max-xl:w-[95%] lg:grid lg:grid-cols-2 lg:space-y-0">
       <section className="flex flex-col items-center justify-center gap-6 rounded-xl bg-sky-400 p-10">
         <ContactInfo
           icon={Phone}

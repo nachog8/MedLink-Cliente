@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 export const geocodeAddress = async (address: string) => {
-  const apiKey =
-    process.env.GOOGLE_MAPS_API_KEY ||
-    'AIzaSyB6-RHobnGewae_E3Fqn1OB77yAXUM2sYE';
+  const apiKey = 'AIzaSyB6-RHobnGewae_E3Fqn1OB77yAXUM2sYE';
   // TODO: La API actualmente me esta devolviendo un error de APIKEY? No se porque ocurre esto
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
 

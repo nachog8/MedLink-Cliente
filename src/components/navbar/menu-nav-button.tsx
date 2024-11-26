@@ -17,7 +17,7 @@ export const MenuNavButton = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full md:hidden">
+        <Button variant="ghost" size="icon" className="rounded-full lg:hidden">
           <Menu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
         </Button>
       </SheetTrigger>

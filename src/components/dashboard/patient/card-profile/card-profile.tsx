@@ -45,7 +45,7 @@ export const CardProfile = () => {
     phone,
   } = (visitedProfile ?? profile) as UserPatient;
   const formattedDate = formatDate(dateOfBirth);
-  const fullName = `${firstName} ${lastName}`.trim();
+  const fullName = `${firstName || ''} ${lastName || ''}`.trim() || null;
 
   const renderDialog = (
     triggerLabel: string,
@@ -73,7 +73,7 @@ export const CardProfile = () => {
             alt={`${firstName}'s avatar`}
           />
           <AvatarFallback className="text-4xl">
-            {firstName ? firstName[0] : 'N/A'}
+            {firstName ? firstName[0] : ''}
           </AvatarFallback>
         </Avatar>
       </CardHeader>
