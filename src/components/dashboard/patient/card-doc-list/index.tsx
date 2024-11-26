@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Download, FileIcon, FileText, Trash2 } from 'lucide-react';
+import { Download, FileIcon, FileText } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -25,30 +25,14 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserPatient } from '@/interfaces/auth';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/auth-context';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 
 export function MedicalDocList() {
   const { id } = useParams();
   const { profile } = useAuth();
-  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
-    useProfile();
-  useEffect(() => {
-    if (!id || typeof id !== 'string') return;
+  const { visitedProfile } = useProfile();
 
-    if (profile?.id === id) {
-      clearVisitedProfile();
-    } else if (!visitedProfile || visitedProfile.id !== id) {
-      loadVisitedProfile(id, 'patient');
-    }
-  }, [
-    id,
-    profile?.id,
-    visitedProfile,
-    loadVisitedProfile,
-    clearVisitedProfile,
-  ]);
   const isUser = profile?.id === id;
 
   if (!profile && !visitedProfile)

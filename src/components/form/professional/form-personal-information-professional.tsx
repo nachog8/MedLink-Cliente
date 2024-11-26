@@ -44,7 +44,6 @@ interface Props {
   profileData: Partial<UserDoctor>;
 }
 export function PersonalInfoForm({ profileData }: Props) {
-  console.log(profileData);
   // const [skillInput, setSkillInput] = useState('');
   const [state, formAction] = useFormState(
     personalInfoProfessionalAction,

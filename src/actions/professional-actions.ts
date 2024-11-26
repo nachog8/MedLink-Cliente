@@ -3,7 +3,6 @@
 import {
   locationProfessionalSchema,
   personalInfoSchema,
-  seguritySchema,
 } from '@/schemas/professionalSchema';
 
 import { cookies } from 'next/headers';
@@ -84,7 +83,8 @@ export async function locationsProfessionalAction(
   const locationsData = {
     locations: [],
   };
-
+  console.log(data);
+  return;
   // Object.keys(data).forEach((key) => {
   //   const match = key.match(/^locations\.(\d+)\.(\w+)$/);
   //   if (match) {
@@ -110,9 +110,13 @@ export async function locationsProfessionalAction(
   }
 
   try {
+    const response = await updateProfileProfessional(
+      validatedFields.data,
+      await getCookie('token')
+    );
+
     return {
-      data: validatedFields.data,
-      success: true,
+      success: response.success,
     };
   } catch (error) {
     if (error instanceof Error) {

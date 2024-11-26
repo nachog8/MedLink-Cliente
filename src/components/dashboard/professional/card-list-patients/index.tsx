@@ -1,7 +1,13 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Eye, Trash2 } from 'lucide-react';
 import {
   Tooltip,
@@ -27,7 +33,6 @@ export default function CardListPatients() {
 
   if (!isDoctor) return null;
 
-  // Acceder al perfil del usuario autenticado
   const userDoctor = profile as UserDoctor;
   if (!profile) return <DoctorPatientListCardSkeleton />;
   const patients = userDoctor.patients;
@@ -69,6 +74,7 @@ export default function CardListPatients() {
           </ScrollArea>
         )}
       </CardContent>
+      <CardFooter></CardFooter>
     </Card>
   );
 }

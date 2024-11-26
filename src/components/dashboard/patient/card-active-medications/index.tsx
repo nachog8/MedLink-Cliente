@@ -25,23 +25,8 @@ import { useProfile } from '@/context/profile-context';
 export default function MedicationCard() {
   const { id } = useParams();
   const { profile } = useAuth();
-  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
-    useProfile();
-  useEffect(() => {
-    if (!id || typeof id !== 'string') return;
+  const { visitedProfile } = useProfile();
 
-    if (profile?.id === id) {
-      clearVisitedProfile();
-    } else if (!visitedProfile || visitedProfile.id !== id) {
-      loadVisitedProfile(id, 'patient');
-    }
-  }, [
-    id,
-    profile?.id,
-    visitedProfile,
-    loadVisitedProfile,
-    clearVisitedProfile,
-  ]);
   const isUser = profile?.id === id;
   if (!profile && !visitedProfile) return <PatientActiveMedicationsSkeleton />;
   const { medications } = (visitedProfile ?? profile) as UserPatient;

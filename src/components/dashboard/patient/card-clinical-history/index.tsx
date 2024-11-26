@@ -1,12 +1,6 @@
 'use client';
 
 import {
-  AllergieFormType,
-  FamilyInheritanceFormType,
-  NoPathologicalFormType,
-  PathologicalFormType,
-} from '@/schemas/schemas-profile';
-import {
   Card,
   CardContent,
   CardDescription,
@@ -26,31 +20,12 @@ import { UserPatient } from '@/interfaces/auth';
 import { fieldTranslationMap } from '@/data/form-options';
 import { translateData } from '@/lib/translate-data';
 import { useAuth } from '@/context/auth-context';
-import { useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 
 export default function ClinicalHistoryCard() {
-  const { id } = useParams();
   const { profile } = useAuth();
-  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
-    useProfile();
-  useEffect(() => {
-    if (!id || typeof id !== 'string') return;
+  const { visitedProfile } = useProfile();
 
-    if (profile?.id === id) {
-      clearVisitedProfile();
-    } else if (!visitedProfile || visitedProfile.id !== id) {
-      loadVisitedProfile(id, 'patient');
-    }
-  }, [
-    id,
-    profile?.id,
-    visitedProfile,
-    loadVisitedProfile,
-    clearVisitedProfile,
-  ]);
-  const isUser = profile?.id === id;
   if (!profile && !visitedProfile) return <PatientMedicalHistorySkeleton />;
   const {
     allergiesData,

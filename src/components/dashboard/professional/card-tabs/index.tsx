@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/card';
 import { FileText, Settings } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useEffect, useState } from 'react';
 
 import { AtentionMedicalTab } from './tab-attencion-medical';
 import { Button } from '@/components/ui/button';
@@ -24,28 +23,15 @@ import { locations } from '@/data/dashboard-professional';
 import { useAuth } from '@/context/auth-context';
 import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
+import { useState } from 'react';
 
 export default function CardMedicalProfessional() {
   const { id } = useParams();
   const { profile } = useAuth();
-  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
-    useProfile();
-  const [isSettingsView, setIsSettingsView] = useState(false);
-  useEffect(() => {
-    if (!id || typeof id !== 'string') return;
+  const { visitedProfile } = useProfile();
 
-    if (profile?.id === id) {
-      clearVisitedProfile();
-    } else if (!visitedProfile || visitedProfile.id !== id) {
-      loadVisitedProfile(id, 'doctor');
-    }
-  }, [
-    id,
-    profile?.id,
-    visitedProfile,
-    loadVisitedProfile,
-    clearVisitedProfile,
-  ]);
+  const [isSettingsView, setIsSettingsView] = useState(false);
+
   if (!profile && !visitedProfile) return <DoctorProfileCardSkeleton />;
   const isUser = profile?.id === id;
   const userDoctor = (visitedProfile ?? profile) as UserDoctor;

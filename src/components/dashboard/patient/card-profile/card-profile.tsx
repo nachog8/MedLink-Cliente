@@ -21,30 +21,14 @@ import { UserPatient } from '@/interfaces/auth';
 import { calculateAge } from '@/lib/calculate-age';
 import { formatDate } from '@/lib/date-formatter';
 import { useAuth } from '@/context/auth-context';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 
 export const CardProfile = () => {
   const { id } = useParams();
   const { profile } = useAuth();
-  const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
-    useProfile();
-  useEffect(() => {
-    if (!id || typeof id !== 'string') return;
+  const { visitedProfile } = useProfile();
 
-    if (profile?.id === id) {
-      clearVisitedProfile();
-    } else if (!visitedProfile || visitedProfile.id !== id) {
-      loadVisitedProfile(id, 'patient');
-    }
-  }, [
-    id,
-    profile?.id,
-    visitedProfile,
-    loadVisitedProfile,
-    clearVisitedProfile,
-  ]);
   const isUser = profile?.id === id;
   if (!profile && !visitedProfile) return <PatientProfileCardSkeleton />;
 
