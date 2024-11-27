@@ -19,7 +19,7 @@ import { UserDoctor, UserPatient } from '@/interfaces/auth';
 
 import { Button } from '@/components/ui/button';
 import { ButtonCustomDialog } from '@/components/buttons/button-custom-dialog';
-import DoctorPatientListCardSkeleton from '@/components/skeletons/professional';
+import { DoctorPatientListCardSkeleton } from '@/components/skeletons/professional';
 import { InformationNotAvailable } from '@/components/other/information-not-available';
 import Link from 'next/link';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -28,8 +28,8 @@ import { useAuth } from '@/context/auth-context';
 import { useParams } from 'next/navigation';
 
 export default function CardListPatients() {
-  const { id } = useParams(); // ID de la URL
-  const { profile } = useAuth(); // Usuario autenticado
+  const { id } = useParams();
+  const { profile } = useAuth();
 
   const isDoctor = profile?.id === id;
 

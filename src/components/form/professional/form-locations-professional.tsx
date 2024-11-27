@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export function LocationsForm() {
+export function LocationsForm({ reload }: { reload: () => void }) {
   const [state, formAction] = useFormState(locationsProfessionalAction, null);
   const form = useForm<LocationProfessionalType>({
     resolver: zodResolver(locationProfessionalSchema),
@@ -37,6 +37,7 @@ export function LocationsForm() {
       toast({
         title: 'Actualizacion de Informacion Exitoso!!',
       });
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

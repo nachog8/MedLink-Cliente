@@ -26,7 +26,7 @@ import { useState } from 'react';
 
 export default function CardMedicalProfessional() {
   const { id } = useParams();
-  const { profile } = useAuth();
+  const { profile, handleUpdateSuccess } = useAuth();
   const { visitedProfile, loading: loadingVisitedProfile } = useProfile();
   const isUser = profile?.id === id;
 
@@ -73,7 +73,7 @@ export default function CardMedicalProfessional() {
       </CardHeader>
       <CardContent>
         {isSettingsView && isUser ? (
-          <SettingsTabs userDoctor={userDoctor} />
+          <SettingsTabs userDoctor={userDoctor} reload={handleUpdateSuccess} />
         ) : (
           <DoctorProfileTabs userDoctor={userDoctor} />
         )}
@@ -110,7 +110,13 @@ const DoctorProfileTabs = ({ userDoctor }: { userDoctor: UserDoctor }) => {
   );
 };
 
-function SettingsTabs({ userDoctor }: { userDoctor: UserDoctor }) {
+function SettingsTabs({
+  userDoctor,
+  reload,
+}: {
+  userDoctor: UserDoctor;
+  reload: () => void;
+}) {
   return (
     <div className="space-y-5">
       <Separator />
@@ -132,15 +138,15 @@ function SettingsTabs({ userDoctor }: { userDoctor: UserDoctor }) {
         <Card className="mt-4 border-none shadow-none">
           <CardContent className="p-0 pt-6">
             <TabsContent value="personal">
-              <PersonalInfoForm profileData={userDoctor} />
+              <PersonalInfoForm profileData={userDoctor} reload={reload} />
             </TabsContent>
 
             <TabsContent value="locations">
-              <LocationsForm />
+              <LocationsForm reload={reload} />
             </TabsContent>
 
             <TabsContent value="password">
-              <PasswordChangeForm />
+              <PasswordChangeForm reload={reload} />
             </TabsContent>
           </CardContent>
         </Card>

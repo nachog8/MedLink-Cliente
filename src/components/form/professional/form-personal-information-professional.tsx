@@ -42,8 +42,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Props {
   profileData: Partial<UserDoctor>;
+  reload: () => void;
 }
-export function PersonalInfoForm({ profileData }: Props) {
+export function PersonalInfoForm({ profileData, reload }: Props) {
   // const [skillInput, setSkillInput] = useState('');
   const [state, formAction] = useFormState(
     personalInfoProfessionalAction,
@@ -77,6 +78,7 @@ export function PersonalInfoForm({ profileData }: Props) {
       toast({
         title: 'Actualizacion de Informacion Exitoso!!',
       });
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
