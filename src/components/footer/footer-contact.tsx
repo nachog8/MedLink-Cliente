@@ -1,6 +1,6 @@
 'use client';
 
-import { ContactFormType, contactSchema } from '@/schemas/schemas-auth';
+import { ContactFormType, contactSchema } from '@/schemas';
 import {
   Form,
   FormControl,

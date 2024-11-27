@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { LoginFormType, loginSchema } from '@/schemas/schemas-auth';
+import { LoginFormType, loginSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -48,7 +48,7 @@ export default function FormSignUp() {
         : state.error;
 
       toast({
-        title: 'Registration Error',
+        title: 'Ocurrio un error al iniciar sesión. Intente nuevamente',
         description: errorMessage,
         variant: 'destructive',
       });

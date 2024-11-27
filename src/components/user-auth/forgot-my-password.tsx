@@ -10,10 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  ForgotPasswordType,
-  forgotPasswordSchema,
-} from '@/schemas/schemas-auth';
+import { ForgotPasswordType, forgotPasswordSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';

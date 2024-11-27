@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '../../ui/card';
 import { CheckCircle2, Mail, Phone, User } from 'lucide-react';
-import { ContactFormType, contactSchema } from '@/schemas/schemas-auth';
+import { ContactFormType, contactSchema } from '@/schemas';
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
 import {
   Form,

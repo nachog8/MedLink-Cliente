@@ -19,13 +19,13 @@ export default function Page() {
           icon={Phone}
           title="Teléfono"
           description="Estamos disponibles para ayudarte."
-          contactText="+1-2345-2345"
+          contactText="+54-3718-441861"
         />
         <ContactInfo
           icon={Mail}
           title="Correo"
           description="También podes comunicarte con nosotros a través de nuestro correo"
-          contactText="medlink-contact@info.com"
+          contactText="medlinkdevlights@gmail.com"
         />
         <ContactInfo
           icon={MapPin}

@@ -1,6 +1,6 @@
 'use client';
 
-import { AllergieFormType, allergieSchema } from '@/schemas/schemas-patient';
+import { AllergieFormType, allergieSchema } from '@/schemas/schemas-profile';
 import {
   Form,
   FormControl,

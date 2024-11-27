@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import {
   MedicationFormType,
   medicationSchema,
-} from '@/schemas/schemas-patient';
+} from '@/schemas/schemas-profile';
 import { useEffect, useState } from 'react';
 
 import { ButtonForm } from '@/components/buttons/button-submit-form';

@@ -10,15 +10,20 @@ import { Share2 } from 'lucide-react';
 import { UserDoctor } from '@/interfaces/auth';
 import { Whatsapp } from '@/components/icons/whatsapp';
 import { useAuth } from '@/context/auth-context';
+import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ProfileCard() {
+  const { id } = useParams();
   const { toast } = useToast();
   const { profile } = useAuth();
   const { visitedProfile } = useProfile();
+  const isUser = profile?.id === id;
 
-  if (!profile && !visitedProfile) return <DoctorInfoCardSkeleton />;
+  if (!profile || (!isUser && !visitedProfile)) {
+    return <DoctorInfoCardSkeleton />;
+  }
 
   const userDoctor = (visitedProfile ?? profile) as UserDoctor;
 

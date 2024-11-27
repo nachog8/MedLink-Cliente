@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ResetPasswordType, resetPasswordSchema } from '@/schemas/schemas-auth';
+import { ResetPasswordType, resetPasswordSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -79,7 +79,7 @@ export const ResetPasswordForm = () => {
                 </p>
               </div>
               <Button asChild>
-                <Link href="/signup">Ir a Inicio de Sesión</Link>
+                <Link href="/signin">Ir a Inicio de Sesión</Link>
               </Button>
             </div>
           </div>

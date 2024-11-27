@@ -4,14 +4,15 @@ import React, { ReactNode, createContext, useState } from 'react';
 
 import Cookies from 'js-cookie';
 import { User } from '@/interfaces/auth';
-import { authService } from '../services/auth-service'; // Aquí se asume que tienes un servicio para obtener datos.
+import { authService } from '../services/auth-service';
+import { useRouter } from 'next/navigation';
 
-const { getUserData } = authService; // Función para obtener datos del usuario desde el servidor.
-
+const { getUserData } = authService;
 interface ProfileContextProps {
-  visitedProfile: User | null; // Datos del perfil visitado
-  loadVisitedProfile: (id: string, role: string) => Promise<void>; // Función para cargar datos del perfil visitado.
-  clearVisitedProfile: () => void; // Limpiar el estado del perfil visitado.
+  visitedProfile: User | null;
+  loadVisitedProfile: (id: string, role: string) => Promise<void>;
+  clearVisitedProfile: () => void;
+  loading: boolean;
 }
 
 const ProfileContext = createContext<ProfileContextProps | undefined>(
@@ -20,24 +21,28 @@ const ProfileContext = createContext<ProfileContextProps | undefined>(
 
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const [visitedProfile, setVisitedProfile] = useState<User | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
   /**
    * Carga los datos del perfil del usuario visitado.
    * @param id - ID del usuario a cargar.
    * @param role - Rol del usuario a cargar.
    */
-
   const loadVisitedProfile = async (id: string, role: string) => {
+    setLoading(true);
     try {
       const token = Cookies.get('token');
       if (!token) {
-        throw new Error('No se encontró el token de autenticación');
+        console.warn('El token no está disponible. Verifica la autenticación.');
+        return;
       }
       const { payload } = await getUserData(role, id, token);
       setVisitedProfile(payload);
     } catch (error) {
       console.error('Error cargando el perfil visitado:', error);
       setVisitedProfile(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,6 +59,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
         visitedProfile,
         loadVisitedProfile,
         clearVisitedProfile,
+        loading,
       }}
     >
       {children}

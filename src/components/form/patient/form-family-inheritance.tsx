@@ -3,7 +3,7 @@
 import {
   FamilyInheritanceFormType,
   familyInheritanceSchema,
-} from '@/schemas/schemas-patient';
+} from '@/schemas/schemas-profile';
 import {
   Form,
   FormControl,

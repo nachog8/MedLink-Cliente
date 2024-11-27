@@ -10,10 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  ProfessionalFormType,
-  professionalSchema,
-} from '@/schemas/schemas-auth';
+import { ProfessionalFormType, professionalSchema } from '@/schemas';
 import {
   Select,
   SelectContent,
@@ -52,12 +49,12 @@ export default function FormSignProfessional() {
   useEffect(() => {
     if (state?.success) {
       toast({
-        title: 'Registration Successful!',
+        title: 'Registro exitoso!!',
         description:
-          'Your account has been created. You will be redirected to the Login page.',
+          'Tu cuenta ya fue creada. Seras redirigido al inicio de sesión.',
       });
       setTimeout(() => {
-        router.push('/signup');
+        router.push('/signin');
       }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
@@ -65,7 +62,7 @@ export default function FormSignProfessional() {
         : state.error;
 
       toast({
-        title: 'Registration Error',
+        title: 'Error en el procesos de registro.',
         description: errorMessage,
         variant: 'destructive',
       });

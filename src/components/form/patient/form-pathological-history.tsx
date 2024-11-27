@@ -10,7 +10,7 @@ import {
 import {
   PathologicalFormType,
   pathologicalSchema,
-} from '@/schemas/schemas-patient';
+} from '@/schemas/schemas-profile';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';

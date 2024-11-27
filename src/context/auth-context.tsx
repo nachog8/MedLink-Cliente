@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setProfile(null);
     setToken(null);
     Cookies.remove('token');
-    router.push('/signup');
+    router.push('/signin');
   }, [router]);
 
   const checkTokenExpiration = useCallback(

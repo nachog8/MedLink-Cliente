@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { PatientFormType, patientSchema } from '@/schemas/schemas-auth';
+import { PatientFormType, patientSchema } from '@/schemas';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -46,7 +46,7 @@ export default function FormSignInPatient() {
           'Tu cuenta ya fue creada, serás redirigido a Inicio de Sesión.',
       });
       setTimeout(() => {
-        router.push('/signup');
+        router.push('/signin');
       }, 2000);
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)

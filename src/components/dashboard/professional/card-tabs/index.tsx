@@ -30,9 +30,10 @@ export default function CardMedicalProfessional() {
   const { visitedProfile } = useProfile();
 
   const [isSettingsView, setIsSettingsView] = useState(false);
-
-  if (!profile && !visitedProfile) return <DoctorProfileCardSkeleton />;
   const isUser = profile?.id === id;
+  if (!profile || (!isUser && !visitedProfile))
+    return <DoctorProfileCardSkeleton />;
+
   const userDoctor = (visitedProfile ?? profile) as UserDoctor;
   const toggleView = () => {
     setIsSettingsView(!isSettingsView);

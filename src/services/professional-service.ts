@@ -88,4 +88,18 @@ export const professionalService = {
       }
     }
   },
+  async getAllProfessional() {
+    try {
+      const response = await api.get(`/admin/doctors`);
+      return response.data.payload;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Axios error: ${error.message}`);
+      } else if (error instanceof Error) {
+        throw new Error(`Error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred');
+      }
+    }
+  },
 };

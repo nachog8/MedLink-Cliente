@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Whatsapp } from '@/components/icons/whatsapp';
 
 export function DoctorInfoCardSkeleton() {
   return (
@@ -24,8 +25,8 @@ export function DoctorInfoCardSkeleton() {
 
           <div className="mt-4 flex flex-col gap-3 md:mt-0">
             <Button variant="outline" className="gap-2" disabled>
-              <Send className="h-4 w-4" />
-              Enviar Correo
+              <Whatsapp />
+              Mandar Mensaje
             </Button>
             <Button variant="outline" className="gap-2" disabled>
               <Share2 className="h-4 w-4" />
@@ -100,7 +101,7 @@ export function DoctorProfileCardSkeleton() {
   );
 }
 
-export default function DoctorPatientListCardSkeleton() {
+export function DoctorPatientListCardSkeleton() {
   return (
     <Card className="h-max">
       <CardHeader className="rounded-t-lg border-b bg-white pb-4">
@@ -128,5 +129,21 @@ export default function DoctorPatientListCardSkeleton() {
         </ScrollArea>
       </CardContent>
     </Card>
+  );
+}
+
+export function DoctorsListSkeleton() {
+  return (
+    <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="space-y-4">
+          <Skeleton className="h-[200px] w-full rounded-lg" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

@@ -82,7 +82,7 @@ export function UserButton() {
           </>
         ) : (
           <DropdownMenuItem asChild>
-            <Link href="/signup" className="flex items-center">
+            <Link href="/signin" className="flex items-center">
               <span>Iniciar sesión</span>
             </Link>
           </DropdownMenuItem>

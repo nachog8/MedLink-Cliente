@@ -53,7 +53,7 @@ export function TabSplitContainer({
             <p className="w-full text-center text-sm text-blue-600 text-muted-foreground">
               Ya tienes una cuenta?
               <Link
-                href="/signup"
+                href="/signin"
                 className="mx-4 font-medium text-primary hover:underline"
                 prefetch={false}
               >
