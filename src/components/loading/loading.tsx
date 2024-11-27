@@ -1,33 +1,33 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface SpinnerProps {
-  size?: "sm" | "md" | "lg";
-  color?: "primary" | "secondary" | "accent";
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'primary' | 'secondary' | 'accent';
   className?: string;
 }
 
 export default function Loading({
-  size = "md",
-  color = "primary",
+  size = 'md',
+  color = 'primary',
   className,
 }: SpinnerProps = {}) {
   const sizeClasses = {
-    sm: "w-4 h-4",
-    md: "w-8 h-8",
-    lg: "w-12 h-12",
+    sm: 'w-4 h-4',
+    md: 'w-8 h-8',
+    lg: 'w-12 h-12',
   };
 
   const colorClasses = {
-    primary: "text-primary",
-    secondary: "text-secondary",
-    accent: "text-accent",
+    primary: 'text-primary',
+    secondary: 'text-secondary',
+    accent: 'text-accent',
   };
 
   return (
     <div
       role="status"
       className={cn(
-        "animate-spin",
+        'animate-spin',
         sizeClasses[size],
         colorClasses[color],
         className
@@ -37,7 +37,7 @@ export default function Loading({
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        className="w-full h-full"
+        className="h-full w-full"
       >
         <circle
           className="opacity-25"

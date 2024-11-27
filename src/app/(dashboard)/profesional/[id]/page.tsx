@@ -22,13 +22,7 @@ export default function DoctorProfile() {
     } else if (!visitedProfile || visitedProfile.id !== id) {
       loadVisitedProfile(id, 'doctor');
     }
-  }, [
-    id,
-    profile?.id,
-    visitedProfile,
-    loadVisitedProfile,
-    clearVisitedProfile,
-  ]);
+  }, [id, profile?.id, loadVisitedProfile, clearVisitedProfile]);
 
   return (
     <div className="relative px-3 py-20 font-poppins">

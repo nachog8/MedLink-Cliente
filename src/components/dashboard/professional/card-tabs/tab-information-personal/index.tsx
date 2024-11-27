@@ -77,7 +77,7 @@ export function PersonalInformationTab({
   };
 
   return (
-    <div className="space-y-5 px-5">
+    <div className="space-y-5 rounded-lg border-2 border-muted px-5">
       {profile.aboutMe && ( // Condiciona la renderización de "Sobre mí"
         <div className="space-y-3">
           <div className="flex items-center gap-2">

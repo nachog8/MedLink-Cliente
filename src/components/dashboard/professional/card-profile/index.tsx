@@ -18,10 +18,10 @@ export default function ProfileCard() {
   const { id } = useParams();
   const { toast } = useToast();
   const { profile } = useAuth();
-  const { visitedProfile } = useProfile();
+  const { visitedProfile, loading: loadingVisitedProfile } = useProfile();
   const isUser = profile?.id === id;
 
-  if (!profile || (!isUser && !visitedProfile)) {
+  if (loadingVisitedProfile || !profile || (!isUser && !visitedProfile)) {
     return <DoctorInfoCardSkeleton />;
   }
 

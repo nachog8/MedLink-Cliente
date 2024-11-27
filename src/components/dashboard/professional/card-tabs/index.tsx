@@ -27,11 +27,11 @@ import { useState } from 'react';
 export default function CardMedicalProfessional() {
   const { id } = useParams();
   const { profile } = useAuth();
-  const { visitedProfile } = useProfile();
+  const { visitedProfile, loading: loadingVisitedProfile } = useProfile();
+  const isUser = profile?.id === id;
 
   const [isSettingsView, setIsSettingsView] = useState(false);
-  const isUser = profile?.id === id;
-  if (!profile || (!isUser && !visitedProfile))
+  if (loadingVisitedProfile || !profile || (!isUser && !visitedProfile))
     return <DoctorProfileCardSkeleton />;
 
   const userDoctor = (visitedProfile ?? profile) as UserDoctor;
@@ -95,7 +95,7 @@ const DoctorProfileTabs = ({ userDoctor }: { userDoctor: UserDoctor }) => {
             Atención Médica
           </TabsTrigger>
         </TabsList>
-        <Card className="mt-4 shadow-none">
+        <Card className="mt-4 border-none shadow-none">
           <CardContent className="p-0 pt-6">
             <TabsContent value="personal">
               <PersonalInformationTab dataProfile={userDoctor} />

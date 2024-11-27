@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 
 import { InformationNotAvailable } from '@/components/other/information-not-available';
+import Loading from '@/components/loading/loading';
 import { Location } from '@/interfaces/auth';
 import { geocodeAddress } from '@/services/google-maps-service';
 
@@ -47,7 +48,7 @@ export function AtentionMedicalTab({ locations }: { locations: Location[] }) {
   }, [locations]);
 
   if (!geoLocations.length) {
-    return <p>Cargando ubicaciones...</p>;
+    return <InformationNotAvailable />;
   }
 
   return (

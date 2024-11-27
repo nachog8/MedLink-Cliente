@@ -29,6 +29,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
    * @param role - Rol del usuario a cargar.
    */
   const loadVisitedProfile = async (id: string, role: string) => {
+    setVisitedProfile(null);
     setLoading(true);
     try {
       const token = Cookies.get('token');
