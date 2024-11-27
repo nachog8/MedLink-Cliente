@@ -9,7 +9,7 @@ import { useToast } from './use-toast';
 const { uploadFilesPatient } = patientService;
 
 export function useFileUpload() {
-  const { token } = useAuth();
+  const { token, handleUpdateSuccess } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -70,6 +70,7 @@ export function useFileUpload() {
           description: 'Archivos suibidos con exito',
         });
         setFiles([]);
+        handleUpdateSuccess();
       } else {
         throw new Error(result.error);
       }

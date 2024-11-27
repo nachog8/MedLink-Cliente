@@ -21,7 +21,7 @@ import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export function MedicationForm() {
+export function MedicationForm({ reload }: { reload: () => void }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [state, formAction] = useFormState(addMedicationPatientAction, null);
   const router = useRouter();
@@ -37,7 +37,7 @@ export function MedicationForm() {
   useEffect(() => {
     if (state?.success) {
       setIsSubmitted(true);
-      router.refresh();
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

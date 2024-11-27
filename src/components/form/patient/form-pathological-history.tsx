@@ -30,10 +30,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 type PathologicalFormProps = {
   initialValues?: Partial<PathologicalFormType>;
+  reload: () => void;
 };
 
 export default function PathologicalForm({
   initialValues,
+  reload,
 }: PathologicalFormProps) {
   const [state, formAction] = useFormState(pathologicalPatientAction, null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -49,7 +51,7 @@ export default function PathologicalForm({
   useEffect(() => {
     if (state?.success) {
       setIsSubmitted(true);
-      router.refresh();
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

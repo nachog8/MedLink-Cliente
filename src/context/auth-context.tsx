@@ -30,6 +30,7 @@ interface AuthContextProps {
   token: string | null;
   login: (newToken: string) => void;
   logout: () => void;
+  handleUpdateSuccess: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -52,6 +53,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Error loading profile:', error);
     }
   }, [user, token]);
+
+  const handleUpdateSuccess = () => {
+    loadProfile(); // Vuelve a cargar el perfil del usuario logueado.
+  };
 
   const logout = useCallback(() => {
     setIsAuthenticated(false);
@@ -132,6 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         login,
         logout,
+        handleUpdateSuccess,
       }}
     >
       {children}

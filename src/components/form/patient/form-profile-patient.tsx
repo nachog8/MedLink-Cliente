@@ -45,18 +45,25 @@ import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+interface Props {
+  patientData: Partial<UserPatient>;
+  reload: () => void;
+}
 export default function EditProfileForm({
-  firstName,
-  lastName,
-  dateOfBirth,
-  gender,
-  aboutMe,
-  phone,
-  email,
-  location,
-  avatar,
-  clinicalData,
-}: Partial<UserPatient>) {
+  patientData: {
+    firstName,
+    lastName,
+    dateOfBirth,
+    gender,
+    aboutMe,
+    phone,
+    email,
+    location,
+    avatar,
+    clinicalData,
+  },
+  reload,
+}: Props) {
   const {
     height,
     weight,
@@ -96,7 +103,7 @@ export default function EditProfileForm({
   useEffect(() => {
     if (state?.success) {
       setIsSubmitted(true);
-      router.refresh();
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

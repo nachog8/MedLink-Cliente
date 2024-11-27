@@ -30,10 +30,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 type FamilyInheritanceFormProps = {
   initialValues?: Partial<FamilyInheritanceFormType>;
+  reload: () => void;
 };
 
 export default function FamilyInheritanceForm({
   initialValues,
+  reload,
 }: FamilyInheritanceFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [state, formAction] = useFormState(
@@ -52,7 +54,7 @@ export default function FamilyInheritanceForm({
   useEffect(() => {
     if (state?.success) {
       setIsSubmitted(true);
-      router.refresh();
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

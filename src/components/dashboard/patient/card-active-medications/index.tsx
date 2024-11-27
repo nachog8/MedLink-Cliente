@@ -23,7 +23,7 @@ import { useProfile } from '@/context/profile-context';
 
 export default function MedicationCard() {
   const { id } = useParams();
-  const { profile } = useAuth();
+  const { profile, handleUpdateSuccess } = useAuth();
   const { visitedProfile } = useProfile();
 
   const isUser = profile?.id === id;
@@ -77,7 +77,7 @@ export default function MedicationCard() {
       {isUser && (
         <CardFooter className="mt-6">
           <ButtonCustomDialog buttonText="Añadir Medicamentos">
-            <MedicationForm />
+            <MedicationForm reload={handleUpdateSuccess} />
           </ButtonCustomDialog>
         </CardFooter>
       )}

@@ -25,7 +25,7 @@ import { useProfile } from '@/context/profile-context';
 
 export default function ClinicalHistoryCard() {
   const { id } = useParams();
-  const { profile } = useAuth();
+  const { profile, handleUpdateSuccess } = useAuth();
   const { visitedProfile } = useProfile();
   const isUser = profile?.id === id;
   if (!profile || (!isUser && !visitedProfile))
@@ -85,7 +85,10 @@ export default function ClinicalHistoryCard() {
               items={translateData(allergiesData, fieldTranslationMap)}
               title="Antecedentes de Alergias"
               form_dialog_information={
-                <AllergyForm initialValues={allergiesData} />
+                <AllergyForm
+                  initialValues={allergiesData}
+                  reload={handleUpdateSuccess}
+                />
               }
               title_dialog_information="Alergias"
             />
@@ -96,7 +99,10 @@ export default function ClinicalHistoryCard() {
               items={translateData(pathologicalData, fieldTranslationMap)}
               title="Antecedentes Patologicos"
               form_dialog_information={
-                <PathologicalForm initialValues={pathologicalData} />
+                <PathologicalForm
+                  initialValues={pathologicalData}
+                  reload={handleUpdateSuccess}
+                />
               }
               title_dialog_information="Enfermedades Patologicas"
             />
@@ -107,7 +113,10 @@ export default function ClinicalHistoryCard() {
               items={translateData(nonPathologicalData, fieldTranslationMap)}
               title="Antecedentes No Patologicos"
               form_dialog_information={
-                <NoPathologicalForm initialValues={nonPathologicalData} />
+                <NoPathologicalForm
+                  initialValues={nonPathologicalData}
+                  reload={handleUpdateSuccess}
+                />
               }
               title_dialog_information="Enfermedades No Patologicas"
             />
@@ -119,7 +128,10 @@ export default function ClinicalHistoryCard() {
               items={translateData(familyInheritance, fieldTranslationMap)}
               title="Antecedentes Heredo Familiar"
               form_dialog_information={
-                <FamilyInheritanceForm initialValues={familyInheritance} />
+                <FamilyInheritanceForm
+                  initialValues={familyInheritance}
+                  reload={handleUpdateSuccess}
+                />
               }
               title_dialog_information="Enfermedades Hereditarias"
             />

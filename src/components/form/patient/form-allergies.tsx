@@ -27,9 +27,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 type AllergyFormProps = {
   initialValues?: Partial<AllergieFormType>;
+  reload: () => void;
 };
 
-export default function AllergyForm({ initialValues }: AllergyFormProps) {
+export default function AllergyForm({
+  initialValues,
+  reload,
+}: AllergyFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [state, formAction] = useFormState(allergiePatientAction, null);
   const router = useRouter();
@@ -44,7 +48,7 @@ export default function AllergyForm({ initialValues }: AllergyFormProps) {
   useEffect(() => {
     if (state?.success) {
       setIsSubmitted(true);
-      router.refresh();
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')

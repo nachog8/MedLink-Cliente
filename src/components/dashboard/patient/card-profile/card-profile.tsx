@@ -26,27 +26,18 @@ import { useProfile } from '@/context/profile-context';
 
 export const CardProfile = () => {
   const { id } = useParams();
-  const { profile } = useAuth();
+  const { profile, handleUpdateSuccess } = useAuth();
   const { visitedProfile } = useProfile();
 
   const isUser = profile?.id === id;
   if (!profile || (!isUser && !visitedProfile)) {
     return <PatientProfileCardSkeleton />;
   }
-  const {
-    avatar,
-    firstName,
-    dateOfBirth,
-    aboutMe,
-    clinicalData,
-    gender,
-    email,
-    location,
-    lastName,
-    phone,
-  } = (visitedProfile ?? profile) as UserPatient;
-  const formattedDate = formatDate(dateOfBirth);
-  const fullName = `${firstName || ''} ${lastName || ''}`.trim() || null;
+  const dataPatient = (visitedProfile ?? profile) as UserPatient;
+  const formattedDate = formatDate(dataPatient.dateOfBirth);
+  const fullName =
+    `${dataPatient.firstName || ''} ${dataPatient.lastName || ''}`.trim() ||
+    null;
 
   const renderDialog = (
     triggerLabel: string,
@@ -70,11 +61,11 @@ export const CardProfile = () => {
       <CardHeader className="flex justify-center pb-0 pt-6">
         <Avatar className="mx-auto h-40 w-40 border-4 border-white shadow-lg">
           <AvatarImage
-            src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${avatar}`}
-            alt={`${firstName}'s avatar`}
+            src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${dataPatient.avatar}`}
+            alt={`${dataPatient.firstName}'s avatar`}
           />
           <AvatarFallback className="text-4xl">
-            {firstName ? firstName[0] : ''}
+            {dataPatient.firstName ? dataPatient.firstName[0] : ''}
           </AvatarFallback>
         </Avatar>
       </CardHeader>
@@ -84,22 +75,22 @@ export const CardProfile = () => {
           <h2 className="text-2xl font-semibold capitalize text-gray-900">
             {fullName || 'Usuario'}
           </h2>
-          {aboutMe && (
+          {dataPatient.aboutMe && (
             <p className="mx-auto mt-4 max-w-md text-sm text-gray-500">
-              {aboutMe}
+              {dataPatient.aboutMe}
             </p>
           )}
         </section>
 
         <PersonalInfoCard
           birthDate={formattedDate}
-          gender={gender || '-'}
-          location={location || '-'}
-          phone={phone || '-'}
-          email={email || '-'}
-          age={String(calculateAge(dateOfBirth)) || '-'}
+          gender={dataPatient.gender || '-'}
+          location={dataPatient.location || '-'}
+          phone={dataPatient.phone || '-'}
+          email={dataPatient.email || '-'}
+          age={String(calculateAge(dataPatient.dateOfBirth)) || '-'}
         />
-        <ClinicalSummary {...clinicalData} />
+        <ClinicalSummary {...dataPatient.clinicalData} />
       </CardContent>
 
       {isUser && (
@@ -110,16 +101,8 @@ export const CardProfile = () => {
             <>
               <ScrollArea className="mt-5 max-h-[70vh] w-full p-3">
                 <EditProfileForm
-                  firstName={firstName}
-                  lastName={lastName}
-                  dateOfBirth={formattedDate}
-                  gender={gender}
-                  aboutMe={aboutMe}
-                  phone={phone}
-                  email={email}
-                  location={location}
-                  avatar={avatar}
-                  clinicalData={clinicalData}
+                  patientData={dataPatient}
+                  reload={handleUpdateSuccess}
                 />
               </ScrollArea>
             </>
@@ -128,7 +111,7 @@ export const CardProfile = () => {
           {renderDialog(
             'Cambiar Contraseña',
             <Settings className="h-4 w-4" />,
-            <PasswordChangeForm />
+            <PasswordChangeForm reload={handleUpdateSuccess} />
           )}
         </CardFooter>
       )}

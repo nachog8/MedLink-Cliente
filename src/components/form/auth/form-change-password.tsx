@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { useFormState } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export const PasswordChangeForm = () => {
+export const PasswordChangeForm = ({ reload }: { reload: () => void }) => {
   const [state, formAction] = useFormState(changePasswordUserAction, null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const form = useForm<SegurityType>({
@@ -33,6 +33,7 @@ export const PasswordChangeForm = () => {
   useEffect(() => {
     if (state?.success) {
       setIsDialogOpen(true);
+      reload();
     } else if (state?.error) {
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
