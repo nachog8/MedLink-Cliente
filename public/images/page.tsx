@@ -1,8 +1,8 @@
-import DashboardCard from '@/components/professionals/card-doctor';
+import DashboardCard from '@/components/list-docs/DashboardCard';
 import { User } from 'lucide-react';
 
 const doctors = [
-  { name: 'Dr. Eduardo Gomez', specialties: 'Cardiología, Neurología', imageUrl: '/images/Eduardo.jpg' },
+  { name: 'Dr. Eduardo Gomez', specialties: 'Cardiología, Neurología', imageUrl: '/images/doctor.jpg' },
   { name: 'Dr. Analia Carmona', specialties: 'Dermatología, Estética', imageUrl: '/images/analia.jpg' },
   { name: 'Dr. Emilia Gonzales', specialties: 'Pediatría, Inmunología', imageUrl: '/images/Emilia.jpg' },
   { name: 'Dr. Daniel Toledo', specialties: 'Ortopedia, Traumatología', imageUrl: '/images/Daniel.jpg' },
