@@ -16,7 +16,7 @@ import {
 import {
   PersonalInfoType,
   personalInfoSchema,
-} from '@/schemas/professionalSchema';
+} from '@/schemas/schemas-professional';
 import { Specialties, UserDoctor } from '@/interfaces/auth';
 import { genderOptions, specialtiesOptions } from '@/data/form-options';
 import { useEffect, useState } from 'react';

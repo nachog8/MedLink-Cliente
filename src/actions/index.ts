@@ -6,7 +6,7 @@ import {
   patientSchema,
   professionalSchema,
   resetPasswordSchema,
-} from '@/schemas';
+} from '@/schemas/schemas-auth';
 
 import { AxiosError } from 'axios';
 import { authService } from '@/services/auth-service';

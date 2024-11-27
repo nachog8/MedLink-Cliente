@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ResetPasswordType, resetPasswordSchema } from '@/schemas';
+import { ResetPasswordType, resetPasswordSchema } from '@/schemas/schemas-auth';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';

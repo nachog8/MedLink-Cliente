@@ -10,7 +10,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ProfessionalFormType, professionalSchema } from '@/schemas';
+import {
+  ProfessionalFormType,
+  professionalSchema,
+} from '@/schemas/schemas-auth';
 import {
   Select,
   SelectContent,

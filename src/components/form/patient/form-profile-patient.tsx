@@ -14,7 +14,7 @@ import {
 import {
   EditProfileFormType,
   editProfileSchema,
-} from '@/schemas/schemas-profile';
+} from '@/schemas/schemas-patient';
 import { FieldInput, InputTypes } from '../fields/field-input';
 import {
   Form,

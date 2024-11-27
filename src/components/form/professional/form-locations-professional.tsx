@@ -9,7 +9,7 @@ import {
 import {
   LocationProfessionalType,
   locationProfessionalSchema,
-} from '@/schemas/professionalSchema';
+} from '@/schemas/schemas-professional';
 
 import { ButtonSubmit } from '@/components/buttons/button-submit';
 import { FieldInput } from '../fields/field-input';

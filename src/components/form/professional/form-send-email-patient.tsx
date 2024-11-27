@@ -4,7 +4,7 @@ import { FieldInput, InputTypes } from '../fields/field-input';
 import {
   SendEmailPatientType,
   sendEmailPatientSchema,
-} from '@/schemas/professionalSchema';
+} from '@/schemas/schemas-professional';
 import { useEffect, useState } from 'react';
 
 import { ButtonSubmit } from '@/components/buttons/button-submit';

@@ -4,7 +4,7 @@ import {
   locationProfessionalSchema,
   personalInfoSchema,
   sendEmailPatientSchema,
-} from '@/schemas/professionalSchema';
+} from '@/schemas/schemas-professional';
 
 import { cookies } from 'next/headers';
 import { professionalService } from '@/services/professional-service';

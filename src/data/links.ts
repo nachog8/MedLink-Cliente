@@ -1,6 +1,6 @@
 export const links = [
-  { name: 'Home', path: '/' },
-  { name: 'Profesionales', path: '/profesionales' },
-  { name: 'Nosotros', path: '/nosotros' },
-  { name: 'Contacto', path: '/contacto' },
+  { label: 'Inicio', href: '/' },
+  { label: 'Profesionales', href: '/profesionales' },
+  { label: 'Nosotros', href: '/nosotros' },
+  { label: 'Contacto', href: '/contacto' },
 ];

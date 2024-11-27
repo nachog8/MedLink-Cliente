@@ -38,11 +38,11 @@ export const MenuNavButton = () => {
           {links.map((link, i) => (
             <SheetClose key={i} asChild>
               <Link
-                href={link.path}
+                href={link.href}
                 className="capitalize text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 md:text-lg"
                 prefetch={false}
               >
-                {link.name}
+                {link.label}
               </Link>
             </SheetClose>
           ))}

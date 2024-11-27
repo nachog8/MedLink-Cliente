@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { FieldInput, InputTypes } from '@/components/form/fields/field-input';
-import { SegurityType, seguritySchema } from '@/schemas/professionalSchema';
+import { SegurityType, seguritySchema } from '@/schemas/schemas-professional';
 import { useEffect, useState } from 'react';
 
 import { ButtonForm } from '@/components/buttons/button-submit-form';

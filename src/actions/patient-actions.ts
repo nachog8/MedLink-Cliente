@@ -8,7 +8,7 @@ import {
   noPathologicalSchema,
   pathologicalSchema,
   securitySchema,
-} from '@/schemas/schemas-profile';
+} from '@/schemas/schemas-patient';
 
 import { convertToBoolean } from '@/lib/convert-boolean';
 import { cookies } from 'next/headers';

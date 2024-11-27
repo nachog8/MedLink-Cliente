@@ -1,7 +1,7 @@
 'use server';
 
 import { AxiosError } from 'axios';
-import { contactSchema } from '@/schemas';
+import { contactSchema } from '@/schemas/schemas-auth';
 import { contactService } from '@/services/contact-service';
 
 const { contactMessage } = contactService;

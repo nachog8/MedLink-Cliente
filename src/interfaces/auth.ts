@@ -3,7 +3,7 @@ import {
   FamilyInheritanceFormType,
   NoPathologicalFormType,
   PathologicalFormType,
-} from '@/schemas/schemas-profile';
+} from '@/schemas/schemas-patient';
 
 export interface Register {
   email: string;

@@ -24,11 +24,11 @@ export default function Navbar() {
           {links.map((link, i) => (
             <Link
               key={i}
-              href={link.path}
+              href={link.href}
               className={`relative capitalize text-gray-500 transition-colors duration-300 hover:text-[#0234a1] dark:text-gray-400 dark:hover:text-[#0234a1]`}
               prefetch={false}
             >
-              {link.name}
+              {link.label}
               {/* Estilos y animación del subrayado */}
               <span className="absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-[#0234a1] transition-transform duration-300 ease-in-out hover:scale-x-100"></span>
             </Link>

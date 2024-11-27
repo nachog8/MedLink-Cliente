@@ -80,12 +80,14 @@ export type ForgotPasswordType = z.infer<typeof forgotPasswordSchema>;
 export const resetPasswordSchema = z
   .object({
     password: z
-      .string({ required_error: 'Password is required' })
-      .min(6, { message: 'Password must be at least 6 characters' }),
-    confirmPassword: z.string().min(1, 'Please confirm your new password'),
+      .string({ required_error: 'La contraseña es obligatoria' })
+      .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+    confirmPassword: z
+      .string()
+      .min(1, 'Por favor confirma tu nueva contraseña'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: 'Las contraseñas no coinciden',
     path: ['confirmPassword'],
   });
 

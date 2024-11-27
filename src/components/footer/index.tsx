@@ -5,12 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { SocialButton } from './footer-button-social';
+import { links } from '@/data/links';
 
 export default function Footer() {
   return (
     <footer className="bg-white font-poppins">
       <div className="container mx-auto px-4 py-8 text-center md:py-12 lg:py-16 lg:text-center">
-        <div className="grid gap-8 lg:grid-cols-4">
+        <div className="grid gap-8 lg:grid-cols-3">
           <div className="space-y-4">
             <Link href="/" className="inline-block">
               <Image
@@ -27,22 +28,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <FooterSection
-            title="Recursos"
-            links={[
-              { href: '/', label: 'Política y privacidad' },
-              { href: '/', label: 'Preguntas frecuentes' },
-              { href: '/contact', label: 'Contacto' },
-            ]}
-          />
-
-          <FooterSection
-            title="Servicios"
-            links={[
-              { href: '/nosotros', label: 'Sobre nosotros' },
-              { href: '/', label: 'Sucursales' },
-            ]}
-          />
+          <FooterSection title="Navegación" links={links} />
 
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Redes Sociales</h3>
@@ -68,26 +54,9 @@ export default function Footer() {
 
         <Separator className="my-8" />
 
-        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} MedLink. Todos los derechos
-            reservados.
-          </p>
-          <div className="flex gap-4">
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground transition-colors hover:text-primary"
-            >
-              Términos
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground transition-colors hover:text-primary"
-            >
-              Privacidad
-            </Link>
-          </div>
-        </div>
+        <p className="text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} MedLink. Todos los derechos reservados.
+        </p>
       </div>
     </footer>
   );
