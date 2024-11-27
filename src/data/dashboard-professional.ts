@@ -34,13 +34,13 @@ export const skills = [
 export const locations = [
   {
     name: 'Hospital de Campaña Corrientes',
-    address: 'Av. Juan B. Justo 4200, CABA',
+    address: 'Av. Pedro Ferré 2755, Corrientes',
     schedule: 'Lunes y Miércoles 9:00 - 15:00',
     insurance: ['OSDE', 'Swiss Medical', 'Galeno'],
   },
   {
     name: 'Consultorio Privado',
-    address: 'Av. Santa Fe 1234, CABA',
+    address: ' San Juan 975, Corrientes',
     schedule: 'Martes y Jueves 14:00 - 20:00',
     insurance: ['OSDE Premium', 'Swiss Medical Plan Oro', 'Consulta Privada'],
   },

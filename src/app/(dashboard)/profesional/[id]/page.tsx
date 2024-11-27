@@ -31,13 +31,7 @@ export default function DoctorProfile() {
   ]);
 
   return (
-    <div className="relative font-poppins">
-      <div
-        className="h-[350px] w-full bg-cover bg-center"
-        style={{
-          backgroundImage: `url('/images/icons/banner.svg')`,
-        }}
-      />
+    <div className="relative px-3 py-20 font-poppins">
       <div className="container mx-auto">
         <ProfileCard />
         <div className="m-10 mx-auto flex max-w-6xl flex-col gap-5 lg:flex-row">

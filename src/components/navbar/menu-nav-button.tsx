@@ -21,7 +21,7 @@ export const MenuNavButton = () => {
           <Menu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="bg-white md:hidden">
+      <SheetContent side="left" className="bg-white lg:hidden">
         <SheetTitle className="flex items-start">
           <div className="flex items-center justify-center gap-5">
             <Image

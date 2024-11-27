@@ -1,14 +1,15 @@
 'use client';
 
 import { User, UserDoctor, UserPatient } from '@/interfaces/auth';
+import { useEffect, useState } from 'react';
 
 import AuthorizationPreview from '@/components/other/message-authorization-preview';
 import { CardProfile } from '@/components/dashboard/patient/card-profile/card-profile';
 import ClinicalHistoryCard from '@/components/dashboard/patient/card-clinical-history';
 import { MedicalDocList } from '@/components/dashboard/patient/card-doc-list';
 import MedicationCard from '@/components/dashboard/patient/card-active-medications';
+import { ProfileError } from '@/components/other/profile-error';
 import { useAuth } from '@/context/auth-context';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 
@@ -18,32 +19,42 @@ export default function Page() {
   const { visitedProfile, loadVisitedProfile, clearVisitedProfile } =
     useProfile();
 
+  const [error, setError] = useState<boolean | null>(false);
+
   const isDoctor = (profile: User): profile is UserDoctor =>
     profile.role === 'Doctor';
 
   useEffect(() => {
     if (!id || typeof id !== 'string') return;
 
-    if (profile && isDoctor(profile)) {
-      const isPatientInList = profile.patients?.some(
-        (patient: UserPatient) => patient.id === id
-      );
-
-      if (isPatientInList) {
-        if (!visitedProfile || visitedProfile.id !== id) {
-          loadVisitedProfile(id, 'patient');
+    const loadProfile = async () => {
+      try {
+        if (profile && isDoctor(profile)) {
+          const isPatientInList = profile.patients?.some(
+            (patient: UserPatient) => patient.id === id
+          );
+          if (isPatientInList) {
+            if (!visitedProfile || visitedProfile.id !== id) {
+              await loadVisitedProfile(id, 'patient');
+            }
+            return;
+          }
         }
-        return;
+        if (profile?.id === id) {
+          clearVisitedProfile();
+          return;
+        }
+        clearVisitedProfile();
+      } catch (err) {
+        setError(true);
       }
-    }
-
-    if (profile?.id === id) {
-      clearVisitedProfile();
-      return;
-    }
-
-    clearVisitedProfile();
+    };
+    loadProfile();
   }, [id, profile, visitedProfile, loadVisitedProfile, clearVisitedProfile]);
+
+  if (error) {
+    return <ProfileError />;
+  }
 
   if (
     !id ||

@@ -78,6 +78,12 @@ export enum BloodPressureTrend {
   RISING = 'RISING',
   FALLING = 'FALLING',
 }
+export interface Location {
+  _id: string;
+  name: string;
+  address: string;
+  openingHours: string;
+}
 
 export interface ClinicalData {
   height: number;
@@ -116,6 +122,6 @@ export interface UserPatient extends User {
 export interface UserDoctor extends User {
   licenseNumber: number;
   specialization: Specialties;
-  clinical: string[];
+  clinic: Location[];
   patients: UserPatient[];
 }

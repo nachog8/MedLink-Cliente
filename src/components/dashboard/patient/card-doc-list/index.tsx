@@ -34,8 +34,7 @@ export function MedicalDocList() {
   const { visitedProfile } = useProfile();
 
   const isUser = profile?.id === id;
-
-  if (!profile && !visitedProfile)
+  if (!profile || (!isUser && !visitedProfile))
     return <PatientDocumentationMedicalSkeleton />;
 
   const { documents } = (visitedProfile ?? profile) as UserPatient;

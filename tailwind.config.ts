@@ -10,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        main: "url('/images/fondo1.jpg')",
+      },
       fontFamily: {
         poppins: ['var(--font-poppins)', 'sans-serif'],
       },
@@ -68,10 +71,10 @@ const config: Config = {
       const newUtilities = {
         '.scrollbar-hide': {
           '-ms-overflow-style': 'none', // IE and Edge
-          'scrollbar-width': 'none',    // Firefox
+          'scrollbar-width': 'none', // Firefox
         },
         '.scrollbar-hide::-webkit-scrollbar': {
-          display: 'none',             // Chrome, Safari, Edge
+          display: 'none', // Chrome, Safari, Edge
         },
       };
       addUtilities(newUtilities);

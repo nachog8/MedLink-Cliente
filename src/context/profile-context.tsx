@@ -2,6 +2,7 @@
 
 import React, { ReactNode, createContext, useState } from 'react';
 
+import Cookies from 'js-cookie';
 import { User } from '@/interfaces/auth';
 import { authService } from '../services/auth-service'; // Aquí se asume que tienes un servicio para obtener datos.
 
@@ -25,13 +26,18 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
    * @param id - ID del usuario a cargar.
    * @param role - Rol del usuario a cargar.
    */
+
   const loadVisitedProfile = async (id: string, role: string) => {
     try {
-      const { payload } = await getUserData(role, id);
-      setVisitedProfile(payload); // Guarda los datos en el estado.
+      const token = Cookies.get('token');
+      if (!token) {
+        throw new Error('No se encontró el token de autenticación');
+      }
+      const { payload } = await getUserData(role, id, token);
+      setVisitedProfile(payload);
     } catch (error) {
       console.error('Error cargando el perfil visitado:', error);
-      setVisitedProfile(null); // Limpia el estado en caso de error.
+      setVisitedProfile(null);
     }
   };
 

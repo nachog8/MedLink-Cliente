@@ -30,8 +30,9 @@ export const CardProfile = () => {
   const { visitedProfile } = useProfile();
 
   const isUser = profile?.id === id;
-  if (!profile && !visitedProfile) return <PatientProfileCardSkeleton />;
-
+  if (!profile || (!isUser && !visitedProfile)) {
+    return <PatientProfileCardSkeleton />;
+  }
   const {
     avatar,
     firstName,

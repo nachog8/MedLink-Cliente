@@ -9,8 +9,11 @@ import {
 import { cookies } from 'next/headers';
 import { professionalService } from '@/services/professional-service';
 
-const { updateProfileProfessional, sendEmailPatientProfessional } =
-  professionalService;
+const {
+  updateProfileProfessional,
+  sendEmailPatientProfessional,
+  addLocationProfessional,
+} = professionalService;
 //Funciones de las Cookies
 export const getCookie = (name: string) => {
   const cookieStore = cookies();
@@ -82,26 +85,7 @@ export async function locationsProfessionalAction(
 ) {
   const data = Object.fromEntries(formData.entries());
 
-  const locationsData = {
-    locations: [],
-  };
-  console.log(data);
-  return;
-  // Object.keys(data).forEach((key) => {
-  //   const match = key.match(/^locations\.(\d+)\.(\w+)$/);
-  //   if (match) {
-  //     const index = parseInt(match[1], 10);
-  //     const field = match[2];
-
-  //     if (!locationsData.locations[index]) {
-  //       locationsData.locations[index] = {};
-  //     }
-
-  //     locationsData.locations[index][field] = data[key];
-  //   }
-  // });
-
-  const validatedFields = locationProfessionalSchema.safeParse(locationsData);
+  const validatedFields = locationProfessionalSchema.safeParse(data);
 
   if (!validatedFields.success) {
     const errorDetails = validatedFields.error.errors.map((err) => ({
@@ -110,10 +94,13 @@ export async function locationsProfessionalAction(
     }));
     return { error: errorDetails };
   }
+  const openingHours = `${data.days} ${data.hours}`;
+  const { days, hours, ...restData } = data;
+  const updatedData = { ...restData, openingHours };
 
   try {
-    const response = await updateProfileProfessional(
-      validatedFields.data,
+    const response = await addLocationProfessional(
+      updatedData,
       await getCookie('token')
     );
 

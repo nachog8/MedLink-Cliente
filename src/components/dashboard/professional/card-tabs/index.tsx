@@ -19,7 +19,6 @@ import { PersonalInfoForm } from '@/components/form/professional/form-personal-i
 import { PersonalInformationTab } from './tab-information-personal';
 import { Separator } from '@/components/ui/separator';
 import { UserDoctor } from '@/interfaces/auth';
-import { locations } from '@/data/dashboard-professional';
 import { useAuth } from '@/context/auth-context';
 import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
@@ -52,7 +51,7 @@ export default function CardMedicalProfessional() {
               )}
               {isSettingsView ? 'Opciones' : 'Perfil'}
             </CardTitle>
-            {isUser && ( // Solo mostrar botón si el perfil es del usuario logueado
+            {isUser && (
               <Button variant="ghost" size="icon" onClick={toggleView}>
                 {isSettingsView ? (
                   <FileText size={40} />
@@ -101,7 +100,7 @@ const DoctorProfileTabs = ({ userDoctor }: { userDoctor: UserDoctor }) => {
               <PersonalInformationTab dataProfile={userDoctor} />
             </TabsContent>
             <TabsContent value="medical">
-              <AtentionMedicalTab locations={locations} />
+              <AtentionMedicalTab locations={userDoctor.clinic} />
             </TabsContent>
           </CardContent>
         </Card>

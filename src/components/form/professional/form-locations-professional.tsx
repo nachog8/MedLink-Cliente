@@ -1,3 +1,4 @@
+import { Building, CalendarDays, Clock, MapPin } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -6,33 +7,29 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  locationProfessionalSchema,
   LocationProfessionalType,
+  locationProfessionalSchema,
 } from '@/schemas/professionalSchema';
-import { useFormState } from 'react-dom';
+
+import { ButtonSubmit } from '@/components/buttons/button-submit';
+import { FieldInput } from '../fields/field-input';
+import { Form } from '@/components/ui/form';
 import { locationsProfessionalAction } from '@/actions/professional-actions';
-import { useEffect } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFormState } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export function LocationsForm() {
   const [state, formAction] = useFormState(locationsProfessionalAction, null);
   const form = useForm<LocationProfessionalType>({
     resolver: zodResolver(locationProfessionalSchema),
     defaultValues: {
-      locations: [{ name: '', address: '', schedule: '' }],
+      name: '',
+      address: '',
+      days: '',
+      hours: '',
     },
   });
   useEffect(() => {
@@ -41,7 +38,6 @@ export function LocationsForm() {
         title: 'Actualizacion de Informacion Exitoso!!',
       });
     } else if (state?.error) {
-      console.log(state?.error);
       const errorMessage = Array.isArray(state.error)
         ? state.error.map((err) => `${err.message}`).join('\n')
         : state.error;
@@ -53,13 +49,6 @@ export function LocationsForm() {
       });
     }
   }, [state]);
-  const addLocation = () => {
-    const currentLocations = form.getValues('locations');
-    form.setValue('locations', [
-      ...currentLocations,
-      { name: '', address: '', schedule: '' },
-    ]);
-  };
 
   return (
     <Card>
@@ -75,57 +64,39 @@ export function LocationsForm() {
       <CardContent>
         <Form {...form}>
           <form action={formAction} className="space-y-5">
-            {form.watch('locations').map((_, index) => (
-              <div key={index} className="space-y-3">
-                <FormField
-                  control={form.control}
-                  name={`locations.${index}.name`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nombre del Establecimiento</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Hospital Central" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`locations.${index}.address`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Dirección</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Necochea 248, Corrientes - Capital"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`locations.${index}.schedule`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Horarios</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Lun-Vie: 9AM-5PM" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            ))}
+            <div className="space-y-3">
+              <FieldInput<LocationProfessionalType>
+                control={form.control}
+                fieldName={`name`}
+                label="Nombre del Establecimiento"
+                icon={<Building size={18} />}
+                placeholder="Hospital Central"
+              />
+              <FieldInput<LocationProfessionalType>
+                control={form.control}
+                fieldName={`address`}
+                label="Dirección del establecimieto"
+                icon={<MapPin size={18} />}
+                placeholder="Hospital Central"
+              />
+              <FieldInput<LocationProfessionalType>
+                control={form.control}
+                fieldName={`days`}
+                label="Días que atiende"
+                icon={<CalendarDays size={18} />}
+                placeholder="Lunes - Viernes"
+              />
+              <FieldInput<LocationProfessionalType>
+                control={form.control}
+                fieldName={`hours`}
+                label="Horarios de atención"
+                icon={<Clock size={18} />}
+                placeholder="8 a 20"
+              />
+            </div>
+
             <div className="grid gap-5 md:justify-items-end">
-              <Button type="button" variant="outline" onClick={addLocation}>
-                Agregar Locación
-              </Button>
-              <Button type="submit">Subir Locación</Button>
+              <ButtonSubmit text="Subir Locación" />
             </div>
           </form>
         </Form>

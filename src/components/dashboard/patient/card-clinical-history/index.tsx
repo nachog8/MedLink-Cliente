@@ -27,8 +27,9 @@ export default function ClinicalHistoryCard() {
   const { id } = useParams();
   const { profile } = useAuth();
   const { visitedProfile } = useProfile();
-
-  if (!profile && !visitedProfile) return <PatientMedicalHistorySkeleton />;
+  const isUser = profile?.id === id;
+  if (!profile || (!isUser && !visitedProfile))
+    return <PatientMedicalHistorySkeleton />;
   const {
     allergiesData,
     familyInheritance,
@@ -36,7 +37,6 @@ export default function ClinicalHistoryCard() {
     pathologicalData,
   } = (visitedProfile ?? profile) as UserPatient;
 
-  const isUser = profile?.id === id;
   return (
     <Card className="h-full w-full">
       <CardHeader>

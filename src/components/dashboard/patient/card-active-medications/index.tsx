@@ -18,7 +18,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserPatient } from '@/interfaces/auth';
 import { formatDate } from '@/lib/date-formatter';
 import { useAuth } from '@/context/auth-context';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useProfile } from '@/context/profile-context';
 
@@ -28,7 +27,8 @@ export default function MedicationCard() {
   const { visitedProfile } = useProfile();
 
   const isUser = profile?.id === id;
-  if (!profile && !visitedProfile) return <PatientActiveMedicationsSkeleton />;
+  if (!profile || (!isUser && !visitedProfile))
+    return <PatientActiveMedicationsSkeleton />;
   const { medications } = (visitedProfile ?? profile) as UserPatient;
   const hasMedications = medications && medications.length > 0;
 
