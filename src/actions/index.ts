@@ -48,7 +48,7 @@ export async function loginAction(prevState: any, formData: FormData) {
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 export async function registerPatientAction(
@@ -87,7 +87,7 @@ export async function registerPatientAction(
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 export async function registerProfessionalAction(
@@ -131,7 +131,7 @@ export async function registerProfessionalAction(
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -165,7 +165,7 @@ export async function forgotPasswordAction(prevState: any, formData: FormData) {
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -201,7 +201,7 @@ export async function resetPasswordAction(prevState: any, formData: FormData) {
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -241,6 +241,6 @@ export async function changePasswordUserAction(
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }

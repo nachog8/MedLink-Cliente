@@ -53,7 +53,7 @@ export default function ProfileCard() {
         <div className="flex flex-col items-center gap-6 md:flex-row md:items-center">
           <Avatar className="h-44 w-44">
             <AvatarImage
-              src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${userDoctor.avatar}`}
+              src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES}${userDoctor.avatar}`}
               alt={`Avatar of ${userDoctor.firstName}`}
               className="object-cover"
             />

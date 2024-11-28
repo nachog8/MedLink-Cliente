@@ -7,14 +7,15 @@ import { useFormStatus } from 'react-dom';
 
 interface ButtonSubmitProps {
   text: string;
+  disable?: boolean;
 }
 
-export const ButtonSubmit = ({ text }: ButtonSubmitProps) => {
+export const ButtonSubmit = ({ text, disable = false }: ButtonSubmitProps) => {
   const { pending } = useFormStatus();
   const form = useFormContext();
 
   const isFormValid = form && form.formState.isValid;
-  const isSubmitDisabled = pending || !isFormValid;
+  const isSubmitDisabled = disable || pending || !isFormValid;
 
   return (
     <Button type="submit" className="my-10 w-full" disabled={isSubmitDisabled}>

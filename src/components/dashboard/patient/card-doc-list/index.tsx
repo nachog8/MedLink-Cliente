@@ -83,7 +83,7 @@ export function MedicalDocList() {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <a
-                            href={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${doc.url}`}
+                            href={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES}${doc.url}`}
                             download={doc.name}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -102,25 +102,6 @@ export function MedicalDocList() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                    {/* Proteger botón de eliminación */}
-                    {/* {isUser && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-red-500 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Eliminar</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )} */}
                   </div>
                 </div>
               ))}
@@ -128,7 +109,6 @@ export function MedicalDocList() {
           </ScrollArea>
         )}
       </CardContent>
-      {/* Proteger CardFooter */}
       {isUser && (
         <CardFooter className="mt-6">
           <FileUploadDialog />

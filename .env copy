@@ -4,7 +4,13 @@ SERVICE_NAME = 'gmail'
 EMAIL_USERNAME = 'medlinkdevlights@gmail.com'
 EMAIL_PASSWORD = 'kesg huap endc wlkc'
 EMAIL_PORT = 587
-contraseña del gmail:FFPy2m2MxeS9edMY
+# contraseña del gmail:FFPy2m2MxeS9edMY
 
 # Google Maps
-GOOGLE_MAPS_API_KEY = AIzaSyB6-RHobnGewae_E3Fqn1OB77yAXUM2sYE
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY = AIzaSyB6-RHobnGewae_E3Fqn1OB77yAXUM2sYE
+
+#HOST DE LA API DEL SERVIDOR
+NEXT_PUBLIC_URL_API = http://localhost:8081/api
+
+#HOST URL_BASE IMAGES
+NEXT_PUBLIC_URL_BASE_IMAGES = http://localhost:8081

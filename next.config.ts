@@ -1,15 +1,13 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'localhost:8081/',
-        port: '8081',
-      },
-    ],
+  env: {
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
+      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_URL_API: process.env.NEXT_PUBLIC_URL_API,
+    NEXT_PUBLIC_URL_BASE_IMAGES: process.env.NEXT_PUBLIC_URL_BASE_IMAGES,
   },
+
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.

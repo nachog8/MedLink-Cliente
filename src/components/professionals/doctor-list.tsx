@@ -29,8 +29,9 @@ export default function DoctorsList({ doctors }: DoctorsListProps) {
                 : ''
             }
             subtitle={'Especialista'}
-            imageUrl={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES || 'http://localhost:8081'}${doctor.avatar}`}
+            imageUrl={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES}${doctor.avatar}`}
             stats={doctor.specialization[0]}
+            tuition={String(doctor.licenseNumber)}
           />
         ))}
       </div>

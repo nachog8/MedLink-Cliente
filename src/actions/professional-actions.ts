@@ -75,7 +75,7 @@ export async function personalInfoProfessionalAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -111,7 +111,7 @@ export async function locationsProfessionalAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -146,6 +146,6 @@ export async function sendEmailPatientProfessionalAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }

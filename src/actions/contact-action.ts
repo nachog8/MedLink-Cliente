@@ -40,6 +40,6 @@ export async function contactAction(prevState: any, formData: FormData) {
     } else if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }

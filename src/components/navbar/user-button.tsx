@@ -44,8 +44,9 @@ export function UserButton() {
             ) : (
               <>
                 <AvatarImage
-                  src={`http://localhost:8081${profile?.avatar}`}
+                  src={`${process.env.NEXT_PUBLIC_URL_BASE_IMAGES}${profile?.avatar}`}
                   alt="User avatar"
+                  className="rounded-full border-2 border-sky-300"
                 />
                 <AvatarFallback>
                   {profile?.firstName ? profile.firstName[0] : 'NN'}

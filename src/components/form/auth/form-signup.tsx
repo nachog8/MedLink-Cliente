@@ -103,7 +103,7 @@ export default function FormSignUp() {
             </FormItem>
           )}
         />
-        <ButtonSubmit text="Iniciar Sesión" />
+        <ButtonSubmit text="Iniciar Sesión" disable={state?.success} />
       </form>
     </Form>
   );

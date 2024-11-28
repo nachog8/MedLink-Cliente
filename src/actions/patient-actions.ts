@@ -85,7 +85,7 @@ export async function edithProfilePatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -121,7 +121,7 @@ export async function updatePasswordPatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -170,7 +170,7 @@ export async function allergiePatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -241,7 +241,7 @@ export async function pathologicalPatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -296,7 +296,7 @@ export async function noPathologicalPatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -356,7 +356,7 @@ export async function familyInheritancePatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }
 
@@ -396,6 +396,6 @@ export async function addMedicationPatientAction(
     if (error instanceof Error) {
       return { error: error.message };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: 'Ocurrió un error inesperado' };
   }
 }

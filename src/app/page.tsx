@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import Image from 'next/image';
@@ -38,8 +36,7 @@ export default function MedicalPage() {
           <Image
             src="/images/home.jpg"
             alt="Banner"
-            layout="fill"
-            objectFit="cover"
+            fill
             className="opacity-80 transition-transform duration-500 ease-in-out group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-500 group-hover:bg-opacity-60"></div>
@@ -64,8 +61,7 @@ export default function MedicalPage() {
                 <Image
                   src="/images/paciente.jpg"
                   alt="Doctor with patient"
-                  layout="fill"
-                  objectFit="cover"
+                  fill
                   className="rounded-lg"
                 />
                 <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-black via-transparent opacity-60"></div>
